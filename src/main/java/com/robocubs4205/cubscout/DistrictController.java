@@ -5,11 +5,9 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by trevor on 2/15/17.
- */
 @RestController
 @RequestMapping("/districts")
 public class DistrictController {
@@ -27,7 +25,7 @@ public class DistrictController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public DistrictResource create(@RequestBody District district) {
+    public DistrictResource create(@Valid @RequestBody District district) {
         districtRepository.save(district);
         return new DistrictResourceAssembler().toResource(district);
     }

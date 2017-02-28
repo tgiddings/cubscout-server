@@ -4,6 +4,7 @@ import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Match implements Identifiable<Long> {
     @GeneratedValue
     private long id;
 
-    @NotNull
+    @NotNull(groups = {Default.class,Creating.class})
     @ManyToOne
     private Event event;
 
@@ -91,4 +92,7 @@ public class Match implements Identifiable<Long> {
     public void setResults(List<Result> results) {
         this.results = results;
     }
+
+    public interface Creating{}
+
 }

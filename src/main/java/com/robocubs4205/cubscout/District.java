@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class District implements Identifiable<String> {
     @Id
+    @NotNull
     private String code;
 
     private String name;

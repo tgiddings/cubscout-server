@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 import java.util.Date;
 
 @Entity
@@ -20,12 +21,12 @@ public class Event implements Identifiable<Long> {
     @OneToOne
     private Game game;
 
-    @NotNull
+    @NotNull(groups = {Default.class,Creating.class})
     private String shortName;
 
     private String address;
 
-    @NotNull
+    @NotNull(groups = {Default.class,Creating.class})
     @OneToOne
     private District district;
 
@@ -96,4 +97,6 @@ public class Event implements Identifiable<Long> {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    public interface Creating{}
 }

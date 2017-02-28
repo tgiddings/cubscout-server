@@ -17,6 +17,7 @@ public class Team implements Identifiable<Long> {
     private int number;
 
     @NotNull
+    @ManyToOne
     private Game game;
 
     private String name;

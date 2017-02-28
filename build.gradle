@@ -23,6 +23,7 @@ war{
     version="0.0.0"
 }
 
+
 repositories {
     jcenter()
 }
@@ -40,6 +41,7 @@ dependencies {
     //compile 'org.springframework.security:spring-security-web:4.2.1.RELEASE'
     compile 'org.hibernate:hibernate-core:5.0.1.Final'
     compile 'com.h2database:h2:1.4.193'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat:1.5.1.RELEASE'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:1.5.1.RELEASE'
 }
 
