@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.rest;
 
 import org.springframework.web.bind.annotation.RestController;
 

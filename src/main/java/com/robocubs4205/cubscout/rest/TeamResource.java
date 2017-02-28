@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
