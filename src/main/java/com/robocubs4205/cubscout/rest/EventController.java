@@ -1,10 +1,10 @@
 package com.robocubs4205.cubscout.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.robocubs4205.cubscout.Event;
-import com.robocubs4205.cubscout.EventRepository;
-import com.robocubs4205.cubscout.Match;
-import com.robocubs4205.cubscout.MatchRepository;
+import com.robocubs4205.cubscout.model.Event;
+import com.robocubs4205.cubscout.model.EventRepository;
+import com.robocubs4205.cubscout.model.Match;
+import com.robocubs4205.cubscout.model.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

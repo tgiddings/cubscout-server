@@ -1,6 +1,6 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.Team;
+import com.robocubs4205.cubscout.model.Team;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;

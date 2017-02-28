@@ -1,6 +1,6 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.Game;
+import com.robocubs4205.cubscout.model.Game;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 /**

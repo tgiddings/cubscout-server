@@ -1,8 +1,8 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.RobotRepository;
-import com.robocubs4205.cubscout.Team;
-import com.robocubs4205.cubscout.TeamRepository;
+import com.robocubs4205.cubscout.model.RobotRepository;
+import com.robocubs4205.cubscout.model.Team;
+import com.robocubs4205.cubscout.model.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.District;
+import com.robocubs4205.cubscout.model.District;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 /**

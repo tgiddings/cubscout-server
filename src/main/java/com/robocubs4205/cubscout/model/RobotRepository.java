@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

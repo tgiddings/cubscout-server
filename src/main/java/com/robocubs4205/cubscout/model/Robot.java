@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 

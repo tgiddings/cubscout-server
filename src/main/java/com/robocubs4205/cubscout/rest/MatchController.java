@@ -2,7 +2,7 @@ package com.robocubs4205.cubscout.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.robocubs4205.cubscout.*;
+import com.robocubs4205.cubscout.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.data.rest.webmvc.json.patch.JsonPatchPatchConverter;

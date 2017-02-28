@@ -1,7 +1,7 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.District;
-import com.robocubs4205.cubscout.DistrictRepository;
+import com.robocubs4205.cubscout.model.District;
+import com.robocubs4205.cubscout.model.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
