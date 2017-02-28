@@ -1,6 +1,5 @@
 package com.robocubs4205.cubscout;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.Entity;

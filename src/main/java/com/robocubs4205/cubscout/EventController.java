@@ -74,9 +74,6 @@ public class EventController {
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)
     MatchResource createMatch(@PathVariable Event event, @RequestBody Match match) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
-        if (match == null || !Objects.equals(match.getEvent().getId(), event.getId())) {
-            throw new ResourceNotFoundException("event does not have that match");
-        }
         match.setEvent(event);
         matchRepository.save(match);
         return new MatchResourceAssembler().toResource(match);

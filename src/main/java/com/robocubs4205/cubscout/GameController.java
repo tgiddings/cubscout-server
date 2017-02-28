@@ -113,7 +113,7 @@ public class GameController {
     public MatchResource createMatch(@PathVariable Game game, @PathVariable Event event,
                                      @Validated(Match.Creating.class) @RequestBody Match match) {
         if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
+        if (event == null || !event.getGame().getId().equals(game.getId()))
             throw new ResourceNotFoundException("game does not have that event");
         return eventController.createMatch(event, match);
     }

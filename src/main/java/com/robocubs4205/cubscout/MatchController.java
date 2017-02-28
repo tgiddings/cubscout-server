@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.data.rest.webmvc.json.patch.JsonPatchPatchConverter;
 import org.springframework.data.rest.webmvc.json.patch.Patch;
-import org.springframework.data.rest.webmvc.json.patch.PatchConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
