@@ -1,10 +1,12 @@
 package com.robocubs4205.cubscout.model;
 
+import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,6 +23,9 @@ public class Game implements Identifiable<Long> {
     private String type;
     @NotNull
     private int year;
+
+    @OneToOne
+    private Scorecard scorecard;
 
     public Game(){}
 
@@ -59,5 +64,13 @@ public class Game implements Identifiable<Long> {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Scorecard getScorecard() {
+        return scorecard;
+    }
+
+    public void setScorecard(Scorecard scorecard) {
+        this.scorecard = scorecard;
     }
 }

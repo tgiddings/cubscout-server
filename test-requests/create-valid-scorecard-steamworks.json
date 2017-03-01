@@ -1,0 +1,7 @@
+{
+  "sections":[
+    {"sectionType":"title","index":1,"title":"amanda"},
+    {"sectionType":"paragraph","index":2,"text":"this is a short paragraph"},
+    {"sectionType":"field","isOptional":false,"fieldType":"COUNT"}
+  ]
+}

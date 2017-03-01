@@ -31,6 +31,10 @@ public class Robot implements Identifiable<Long> {
 
     public Robot(){}
 
+    public Robot(long id){
+        setId(id);
+    }
+
     public Long getId() {
         return id;
     }

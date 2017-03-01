@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f2f5871-2528-43f1-b446-3769377f4d9b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cubscout-schema.sql" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSection.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSectionRepository.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ParagraphSection.java" />
@@ -32,6 +31,7 @@
     </list>
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path=".idea/modules/cubscout-server-rest.iml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -2876,7 +2876,7 @@
       <workItem from="1488232068820" duration="1538000" />
       <workItem from="1488236210921" duration="22951000" />
       <workItem from="1488323290150" duration="22535000" />
-      <workItem from="1488393018273" duration="193000" />
+      <workItem from="1488393018273" duration="292000" />
     </task>
     <task id="LOCAL-00001" summary="make controller class methods consistent&#10;restrict url mappings">
       <created>1488255378529</created>
@@ -2906,11 +2906,18 @@
       <option name="project" value="LOCAL" />
       <updated>1488257726181</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add sql schema for reference">
+      <created>1488393305964</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1488393305964</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49421000" />
+    <option name="totallyTimeSpent" value="49520000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -2963,11 +2970,13 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
     <MESSAGE value="make controller class methods consistent&#10;restrict url mappings" />
     <MESSAGE value="make controller class methods consistent&#10;restrict url mappings&#10;validate the implicit &quot;has&quot; relationship of nested uri resources" />
     <MESSAGE value="move rest-related classes into their own package" />
     <MESSAGE value="move entity and repository classes into their own package" />
-    <option name="LAST_COMMIT_MESSAGE" value="move entity and repository classes into their own package" />
+    <MESSAGE value="add sql schema for reference" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sql schema for reference" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
