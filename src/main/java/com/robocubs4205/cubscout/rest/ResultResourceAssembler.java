@@ -13,7 +13,7 @@ public class ResultResourceAssembler extends IdentifiableResourceAssemblerSuppor
     @Override
     public ResultResource toResource(Result entity) {
          ResultResource resultResource = new ResultResource();
-         resultResource.setScore(entity.getScore());
+         resultResource.setScores(entity.getScores());
          resultResource.add(linkTo(methodOn(RobotController.class).getResults(entity.getRobot())).withSelfRel());
          resultResource.add(linkTo(methodOn(MatchController.class).getAllResults(entity.getMatch())).withSelfRel());
          return resultResource;

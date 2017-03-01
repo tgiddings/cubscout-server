@@ -21,8 +21,9 @@ public class EventResourceAssembler extends IdentifiableResourceAssemblerSupport
         resource.setStartDate(entity.getStartDate());
         resource.setEndDate(entity.getEndDate());
         resource.setDistrict(entity.getDistrict().getCode());
-        resource.add(linkTo(GameController.class).withRel("game"));
-        resource.add(linkTo(DistrictController.class).withRel("district"));
+        resource.add(linkTo(GameController.class).slash(entity.getGame()).withRel("game"));
+        resource.add(linkTo(DistrictController.class).slash(entity.getDistrict()).withRel("district"));
+        resource.add(linkTo(EventController.class).slash(entity).slash("matches").withRel("matches"));
         return resource;
     }
 }

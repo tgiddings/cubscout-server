@@ -65,7 +65,7 @@ public class EventController {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         return new MatchResourceAssembler().toResources(matchRepository.findByEvent(event));
     }
-
+/*
     @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.GET)
     MatchResource getMatch(@PathVariable Event event, @PathVariable Match match) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
@@ -74,7 +74,7 @@ public class EventController {
         }
         return matchController.getMatch(match);
     }
-
+*/
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)
     MatchResource createMatch(@PathVariable Event event, @RequestBody Match match) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
@@ -82,7 +82,7 @@ public class EventController {
         matchRepository.save(match);
         return new MatchResourceAssembler().toResource(match);
     }
-
+/*
     @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.PUT)
     MatchResource updateMatch(@PathVariable Event event, @PathVariable Match match, @RequestBody Match newMatch) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
@@ -110,4 +110,5 @@ public class EventController {
         }
         return matchController.patchMatch(match, newMatchJson);
     }
+    */
 }

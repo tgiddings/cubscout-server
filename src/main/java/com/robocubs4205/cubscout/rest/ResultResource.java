@@ -1,20 +1,23 @@
 package com.robocubs4205.cubscout.rest;
 
+import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import org.springframework.hateoas.ResourceSupport;
+
+import java.util.List;
 
 /**
  * Created by trevor on 2/23/17.
  */
 public class ResultResource extends ResourceSupport {
-    private int score;
+    private List<ScorecardFieldResult> scores;
 
     public ResultResource(){}
 
-    public int getScore() {
-        return score;
+    public List<ScorecardFieldResult> getScores() {
+        return scores;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScores(List<ScorecardFieldResult> scores) {
+        this.scores = scores;
     }
 }

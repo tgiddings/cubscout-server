@@ -17,7 +17,9 @@ public class MatchResourceAssembler extends IdentifiableResourceAssemblerSupport
         resource.setMatchId(entity.getId());
         resource.setNumber(entity.getNumber());
         resource.setType(entity.getType());
-        resource.add(linkTo(EventController.class).withRel("event"));
+        resource.add(linkTo(EventController.class).slash(entity.getEvent()).withRel("event"));
+        resource.add(linkTo(MatchController.class).slash("results").withRel("results"));
+        resource.add(linkTo(MatchController.class).slash("robots").withRel("robots"));
         return resource;
     }
 }

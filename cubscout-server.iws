@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f2f5871-2528-43f1-b446-3769377f4d9b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSectionRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ParagraphSection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/Scorecard.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardFieldResult.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardSection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardSectionRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/TitleSection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/ScorecardController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/ScorecardResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/ScorecardResourceAssembler.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test-requests/create-valid-scorecard-steamworks.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cubscout-server.iws" afterPath="$PROJECT_DIR$/cubscout-server.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Game.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Result.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Result.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/DistrictController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/DistrictController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventResourceAssembler.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventResourceAssembler.java" />
@@ -2876,7 +2860,7 @@
       <workItem from="1488232068820" duration="1538000" />
       <workItem from="1488236210921" duration="22951000" />
       <workItem from="1488323290150" duration="22535000" />
-      <workItem from="1488393018273" duration="292000" />
+      <workItem from="1488393018273" duration="401000" />
     </task>
     <task id="LOCAL-00001" summary="make controller class methods consistent&#10;restrict url mappings">
       <created>1488255378529</created>
@@ -2913,11 +2897,25 @@
       <option name="project" value="LOCAL" />
       <updated>1488393305964</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add scorecard entities and controller">
+      <created>1488393380030</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1488393380030</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add scorecard entities and controller">
+      <created>1488393419548</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1488393419548</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49520000" />
+    <option name="totallyTimeSpent" value="49629000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -2971,12 +2969,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="make controller class methods consistent&#10;restrict url mappings" />
     <MESSAGE value="make controller class methods consistent&#10;restrict url mappings&#10;validate the implicit &quot;has&quot; relationship of nested uri resources" />
     <MESSAGE value="move rest-related classes into their own package" />
     <MESSAGE value="move entity and repository classes into their own package" />
     <MESSAGE value="add sql schema for reference" />
-    <option name="LAST_COMMIT_MESSAGE" value="add sql schema for reference" />
+    <MESSAGE value="add scorecard entities and controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="add scorecard entities and controller" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">

@@ -28,6 +28,7 @@ public class DistrictController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public DistrictResource create(@Valid @RequestBody District district) {
+        if(districtRepository.findByCode(district.getCode())!=null) throw new DistrictConflictException();
         districtRepository.save(district);
         return new DistrictResourceAssembler().toResource(district);
     }
@@ -50,5 +51,9 @@ public class DistrictController {
     public void delete(@PathVariable District district){
         if(district==null)throw new ResourceNotFoundException();
         districtRepository.delete(district);
+    }
+
+    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "District with that code already exists")
+    private class DistrictConflictException extends RuntimeException {
     }
 }
