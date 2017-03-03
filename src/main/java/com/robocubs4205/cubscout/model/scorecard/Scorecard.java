@@ -18,10 +18,10 @@ public class Scorecard implements Identifiable<Long> {
     @GeneratedValue
     private long id;
 
-    @OneToOne
-    @NotNull
+    @OneToOne(optional = false)
     private Game game;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "scorecard")
     @NotEmpty(groups = {Default.class,Creating.class})
     private List<ScorecardSection> sections;
 

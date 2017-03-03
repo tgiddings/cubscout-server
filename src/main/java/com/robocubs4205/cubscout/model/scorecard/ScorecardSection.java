@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model.scorecard;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -25,7 +26,8 @@ public abstract class ScorecardSection {
     @NotNull
     private int index;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JsonIgnore
     private Scorecard scorecard;
 
     public ScorecardSection(){}

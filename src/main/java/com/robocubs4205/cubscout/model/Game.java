@@ -3,11 +3,9 @@ package com.robocubs4205.cubscout.model;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by trevor on 2/14/17.
@@ -17,15 +15,24 @@ public class Game implements Identifiable<Long> {
     @Id
     @GeneratedValue
     private long id;
+
     @NotNull
     private String name;
+
     @NotNull
     private String type;
+
     @NotNull
     private int year;
 
-    @OneToOne
+    @OneToMany(mappedBy = "game")
+    private List<Event> events;
+
+    @OneToOne(mappedBy = "game")
     private Scorecard scorecard;
+
+    @OneToMany(mappedBy = "game")
+    private List<Team> teams;
 
     public Game(){}
 
@@ -73,4 +80,19 @@ public class Game implements Identifiable<Long> {
     public void setScorecard(Scorecard scorecard) {
         this.scorecard = scorecard;
     }
+
+    void setEvents(List<Event> events){
+        this.events = events;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void addEvent(Event event){
+        events.add(event);
+        event.setGame(this);
+    }
+
+
 }

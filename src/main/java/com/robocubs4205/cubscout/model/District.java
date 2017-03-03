@@ -4,7 +4,9 @@ import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by trevor on 2/14/17.
@@ -12,10 +14,12 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class District implements Identifiable<String> {
     @Id
-    @NotNull
     private String code;
 
     private String name;
+
+    @OneToMany(mappedBy = "district")
+    private List<Event> events;
 
     public District(){}
 
@@ -42,5 +46,13 @@ public class District implements Identifiable<String> {
     @Override
     public String getId() {
         return getCode();
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }

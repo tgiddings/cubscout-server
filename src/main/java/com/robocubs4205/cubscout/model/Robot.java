@@ -26,7 +26,7 @@ public class Robot implements Identifiable<Long> {
     private int year;
 
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "robots")
     private List<Match> matches;
 
     public Robot(){}

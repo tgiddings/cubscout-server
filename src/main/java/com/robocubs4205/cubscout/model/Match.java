@@ -18,13 +18,14 @@ public class Match implements Identifiable<Long> {
     private long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Event event;
 
     @ManyToMany
+    @JoinTable
     private List<Robot> robots;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "match")
     private List<Result> results;
 
     @NotNull(groups = {Default.class,Creating.class})

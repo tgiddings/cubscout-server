@@ -9,27 +9,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.List;
 
+//todo: detailed properties
+
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"match","robot"}))
-public class Result implements Identifiable<Long>{
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"match", "robot"}))
+public class Result implements Identifiable<Long> {
     @Id
     @GeneratedValue
     private long id;
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name="match")
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "match")
     private Match match;
-    @ManyToOne
-    @NotNull(groups = {Default.class,Creating.class})
-    @JoinColumn(name="robot")
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "robot")
+    @NotNull(groups = {Default.class, Creating.class})
     private Robot robot;
 
     @ManyToOne
-    @NotNull(groups = {Default.class,Creating.class})
+    @NotNull(groups = {Default.class, Creating.class})
     private Scorecard scorecard;
 
     @OneToMany
-    private List<ScorecardFieldResult>  scores;
+    private List<ScorecardFieldResult> scores;
 
     public Result() {
     }
@@ -74,5 +77,6 @@ public class Result implements Identifiable<Long>{
         this.scorecard = scorecard;
     }
 
-    public interface Creating{}
+    public interface Creating {
+    }
 }
