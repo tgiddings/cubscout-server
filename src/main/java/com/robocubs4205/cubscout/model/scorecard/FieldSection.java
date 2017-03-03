@@ -5,19 +5,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by trevor on 2/27/17.
  */
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldSection extends ScorecardSection {
     @Enumerated(EnumType.STRING)
+    @NotNull
     private FieldType type;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull
+    private String name;
+
     private FieldSection.NullWhen nullWhen;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String CheckBoxMessage;
 
     private boolean isOptional;
@@ -55,6 +59,14 @@ public class FieldSection extends ScorecardSection {
 
     public void setOptional(boolean optional) {
         isOptional = optional;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public enum NullWhen {

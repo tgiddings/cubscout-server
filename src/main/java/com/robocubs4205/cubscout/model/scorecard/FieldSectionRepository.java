@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FieldSectionRepository extends JpaRepository<FieldSection,Long>{
     FieldSection findById(long id);
-    FieldSection findByIdAndScoreCard(long id, Scorecard scorecard);
+    FieldSection findByIdAndScorecard(long id, Scorecard scorecard);
 }
