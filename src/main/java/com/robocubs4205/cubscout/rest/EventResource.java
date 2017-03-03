@@ -1,5 +1,6 @@
 package com.robocubs4205.cubscout.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public class EventResource extends ResourceSupport {
 
     public EventResource(){}
 
+    @JsonProperty("id")
     public long getEventId() {
         return id;
     }

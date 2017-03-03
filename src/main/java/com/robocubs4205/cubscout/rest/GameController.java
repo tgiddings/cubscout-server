@@ -13,9 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,19 +29,17 @@ public class GameController {
     private final GameRepository gameRepository;
     private final EventRepository eventRepository;
     private final DistrictRepository districtRepository;
-    private final EventController eventController;
     private final ScorecardRepository scorecardRepository;
     private final ScorecardSectionRepository scorecardSectionRepository;
 
     @Autowired
     public GameController(GameRepository gameRepository, EventRepository eventRepository,
-                          DistrictRepository districtRepository, EventController eventController,
+                          DistrictRepository districtRepository,
                           ScorecardRepository scorecardRepository,
                           ScorecardSectionRepository scorecardSectionRepository) {
         this.gameRepository = gameRepository;
         this.eventRepository = eventRepository;
         this.districtRepository = districtRepository;
-        this.eventController = eventController;
         this.scorecardRepository = scorecardRepository;
         this.scorecardSectionRepository = scorecardSectionRepository;
     }
@@ -83,14 +85,6 @@ public class GameController {
         return new EventResourceAssembler().toResources(eventRepository.findByGame(game));
     }
 
-    /*@RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}", method = RequestMethod.GET)
-    public EventResource getEvent(@PathVariable Game game, @PathVariable Event event) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.getEvent(event);
-    }*/
-
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
@@ -98,8 +92,10 @@ public class GameController {
                                      @Validated(Event.Creating.class) @RequestBody Event event) {
         if (game == null) throw new ResourceNotFoundException("game does not exist");
         event.setGame(game);
-        event.setDistrict(districtRepository.findByCode(event.getDistrict().getCode()));
-        if (event.getDistrict() == null) throw new DistrictDoesNotExistException();
+        if(event.getDistrict()!=null) {
+            event.setDistrict(districtRepository.findByCode(event.getDistrict().getCode()));
+            if (event.getDistrict() == null) throw new DistrictDoesNotExistException();
+        }
         eventRepository.save(event);
         return new EventResourceAssembler().toResource(event);
     }
@@ -108,7 +104,7 @@ public class GameController {
     public List<ScorecardResource> getAllScorecards(@PathVariable Game game) {
         if (game == null) throw new ResourceNotFoundException("game does not exist");
         if(game.getScorecard()==null) return new ArrayList<>();
-        else return new ScorecardResourceAssembler().toResources(Arrays.asList(game.getScorecard()));
+        else return new ScorecardResourceAssembler().toResources(Collections.singletonList(game.getScorecard()));
     }
 
 
@@ -117,85 +113,15 @@ public class GameController {
                                              @Validated(Scorecard.Creating.class) @RequestBody Scorecard scorecard) {
         if (game == null) throw new ResourceNotFoundException("game does not exist");
         if (game.getScorecard() != null) throw new GameAlreadyHasScorecardException();
-        scorecardSectionRepository.save(scorecard.getSections());
         scorecard.setGame(game);
         scorecardRepository.save(scorecard);
+        scorecard.getSections().forEach(scorecardSection->scorecardSection.setScorecard(scorecard));
+        scorecardSectionRepository.save(scorecard.getSections());
         game.setScorecard(scorecard);
         gameRepository.save(game);
         return new ScorecardResourceAssembler().toResource(scorecard);
     }
 
-    /*@RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}", method = RequestMethod.PUT)
-    public EventResource updateEvent(@PathVariable Game game, @PathVariable Event event,
-                                     @Validated(Event.Creating.class) @RequestBody Event newEvent) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.updateEvent(event, newEvent);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvent(@PathVariable Game game, @PathVariable Event event) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        eventController.deleteEvent(event);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public MatchResource createMatch(@PathVariable Game game, @PathVariable Event event,
-                                     @Validated(Match.Creating.class) @RequestBody Match match) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || !event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.createMatch(event, match);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches", method = RequestMethod.GET)
-    public List<MatchResource> getAllMatchesFromEvent(@PathVariable Game game, @PathVariable Event event) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.getAllMatches(event);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.GET)
-    public MatchResource getMatch(@PathVariable Game game, @PathVariable Event event, @PathVariable Match match) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.getMatch(event, match);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.PUT)
-    public MatchResource updateMatch(@PathVariable Game game, @PathVariable Event event, @PathVariable Match match,
-                                     @RequestBody Match newMatch) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.updateMatch(event, match, newMatch);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.PATCH)
-    public MatchResource patchMatch(@PathVariable Game game, @PathVariable Event event, @PathVariable Match match,
-                                    @RequestBody JsonNode newMatchJson){
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        return eventController.patchMatch(event, match, newMatchJson);
-    }
-
-    @RequestMapping(value = "/{game:[0-9]+}/events/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod
-            .DELETE)
-    public void deleteMatch(@PathVariable Game game, @PathVariable Event event, @PathVariable Match match) {
-        if (game == null) throw new ResourceNotFoundException("game does not exist");
-        if (event == null || event.getGame().getId().equals(game.getId()))
-            throw new ResourceNotFoundException("game does not have that event");
-        eventController.deleteMatch(event, match);
-    }
-*/
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "District does not exist")
     class DistrictDoesNotExistException extends RuntimeException {
     }

@@ -19,14 +19,11 @@ import java.util.Objects;
 public class EventController {
     private final EventRepository eventRepository;
     private final MatchRepository matchRepository;
-    private final MatchController matchController;
 
     @Autowired
-    public EventController(EventRepository eventRepository, MatchRepository matchRepository,
-                           MatchController matchController) {
+    public EventController(EventRepository eventRepository, MatchRepository matchRepository) {
         this.eventRepository = eventRepository;
         this.matchRepository = matchRepository;
-        this.matchController = matchController;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -65,16 +62,7 @@ public class EventController {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         return new MatchResourceAssembler().toResources(matchRepository.findByEvent(event));
     }
-/*
-    @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.GET)
-    MatchResource getMatch(@PathVariable Event event, @PathVariable Match match) {
-        if (event == null) throw new ResourceNotFoundException("event does not exist");
-        if (match == null || !Objects.equals(match.getEvent().getId(), event.getId())) {
-            throw new ResourceNotFoundException("event does not have that match");
-        }
-        return matchController.getMatch(match);
-    }
-*/
+
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)
     MatchResource createMatch(@PathVariable Event event, @RequestBody Match match) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
@@ -82,33 +70,4 @@ public class EventController {
         matchRepository.save(match);
         return new MatchResourceAssembler().toResource(match);
     }
-/*
-    @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.PUT)
-    MatchResource updateMatch(@PathVariable Event event, @PathVariable Match match, @RequestBody Match newMatch) {
-        if (event == null) throw new ResourceNotFoundException("event does not exist");
-        if (match == null || !Objects.equals(match.getEvent().getId(), event.getId())) {
-            throw new ResourceNotFoundException("event does not have that match");
-        }
-        return matchController.updateMatch(match, newMatch);
-    }
-
-    @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.DELETE)
-    public void deleteMatch(@PathVariable Event event, @PathVariable Match match) {
-        if (event == null) throw new ResourceNotFoundException("event does not exist");
-        if (match == null || !Objects.equals(match.getEvent().getId(), event.getId())) {
-            throw new ResourceNotFoundException("event does not have that match");
-        }
-        matchController.deleteMatch(match);
-    }
-
-    @RequestMapping(value = "/{event:[0-9]+}/matches/{match:[0-9]+}", method = RequestMethod.PATCH)
-    public MatchResource patchMatch(@PathVariable Event event, @PathVariable Match match,
-                                    @RequestBody JsonNode newMatchJson) {
-        if (event == null) throw new ResourceNotFoundException("event does not exist");
-        if (match == null || !Objects.equals(match.getEvent().getId(), event.getId())) {
-            throw new ResourceNotFoundException("event does not have that match");
-        }
-        return matchController.patchMatch(match, newMatchJson);
-    }
-    */
 }

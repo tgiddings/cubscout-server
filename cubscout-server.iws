@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5f2f5871-2528-43f1-b446-3769377f4d9b" name="Default" comment="remove controller methods for unnecessary resource nesting in urls">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test-requests/create-valid-event-regional.json" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/ResultController.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cubscout-server.iws" afterPath="$PROJECT_DIR$/cubscout-server.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventResource.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/EventResource.java" />
@@ -2832,7 +2831,7 @@
       <workItem from="1488323290150" duration="22535000" />
       <workItem from="1488393018273" duration="467000" />
       <workItem from="1488492773882" duration="10839000" />
-      <workItem from="1488518063358" duration="853000" />
+      <workItem from="1488518063358" duration="899000" />
     </task>
     <task id="LOCAL-00001" summary="make controller class methods consistent&#10;restrict url mappings">
       <created>1488255378529</created>
@@ -2904,11 +2903,18 @@
       <option name="project" value="LOCAL" />
       <updated>1488518921272</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="remove unused empty result controller">
+      <created>1488518968155</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1488518968155</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61387000" />
+    <option name="totallyTimeSpent" value="61433000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -2973,7 +2979,8 @@
     <MESSAGE value="remove controller methods for unnecessary resource nesting in urls" />
     <MESSAGE value="correct misconfigured relationship annotations in most model objects" />
     <MESSAGE value="fixed misconfigured json serialization annotations and repository method names" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed misconfigured json serialization annotations and repository method names" />
+    <MESSAGE value="remove unused empty result controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove unused empty result controller" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
