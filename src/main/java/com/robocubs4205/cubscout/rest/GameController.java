@@ -1,10 +1,8 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardSection;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardSectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -13,15 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/games")

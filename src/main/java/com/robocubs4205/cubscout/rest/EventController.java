@@ -1,6 +1,5 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.robocubs4205.cubscout.model.Event;
 import com.robocubs4205.cubscout.model.EventRepository;
 import com.robocubs4205.cubscout.model.Match;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 
 @RestController

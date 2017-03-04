@@ -4,7 +4,6 @@ import com.robocubs4205.cubscout.model.Game;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by trevor on 2/15/17.
