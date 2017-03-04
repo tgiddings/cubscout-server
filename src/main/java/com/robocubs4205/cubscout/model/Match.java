@@ -6,8 +6,8 @@ import org.springframework.hateoas.Identifiable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/14/17.
@@ -24,10 +24,10 @@ public class Match implements Identifiable<Long> {
 
     @ManyToMany
     @JoinTable
-    private List<Robot> robots;
+    private Set<Robot> robots = new HashSet<>();
 
     @OneToMany(mappedBy = "match")
-    private List<Result> results;
+    private Set<Result> results = new HashSet<>();
 
     @NotNull(groups = {Default.class,Creating.class})
     private int number;
@@ -54,14 +54,8 @@ public class Match implements Identifiable<Long> {
         this.event = event;
     }
 
-    public List<Robot> getRobots() {
-        nullRobotsToEmptyList();
+    public Set<Robot> getRobots() {
         return robots;
-    }
-
-    public void setRobots(List<Robot> robots) {
-        nullRobotsToEmptyList();
-        this.robots = robots;
     }
 
     public int getNumber() {
@@ -80,18 +74,8 @@ public class Match implements Identifiable<Long> {
         this.type = type;
     }
 
-    @PreUpdate
-    @PrePersist
-    void nullRobotsToEmptyList(){
-        if(robots==null) robots = new ArrayList<>();
-    }
-
-    public List<Result> getResults() {
+    public Set<Result> getResults() {
         return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
     }
 
     public interface Creating{}

@@ -42,4 +42,12 @@ public class ScorecardFieldResult {
     public void setId(long id) {
         this.id = id;
     }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
 }

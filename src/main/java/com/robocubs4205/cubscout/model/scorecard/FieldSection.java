@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/27/17.
@@ -20,11 +23,14 @@ public class FieldSection extends ScorecardSection {
     @NotNull
     private String name;
 
-    private FieldSection.NullWhen nullWhen;
+    private NullWhen nullWhen;
 
     private String CheckBoxMessage;
 
     private boolean isOptional;
+
+    @OneToMany(mappedBy = "field")
+    private Set<ScorecardFieldResult> results = new HashSet<>();
 
     public FieldSection() {
     }
@@ -67,6 +73,10 @@ public class FieldSection extends ScorecardSection {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<ScorecardFieldResult> getResults() {
+        return results;
     }
 
     public enum NullWhen {

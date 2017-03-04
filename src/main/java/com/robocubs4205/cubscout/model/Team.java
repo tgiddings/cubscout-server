@@ -2,7 +2,10 @@ package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +27,7 @@ public class Team implements Identifiable<Long> {
     private District district;
 
     @OneToMany(mappedBy = "team")
-    private Set<Robot> robots;
+    private Set<Robot> robots = new HashSet<>();
 
     public Team() {
     }
@@ -35,10 +38,6 @@ public class Team implements Identifiable<Long> {
 
     public Set<Robot> getRobots() {
         return robots;
-    }
-
-    public void setRobots(Set<Robot> robots) {
-        this.robots = robots;
     }
 
     @Override

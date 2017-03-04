@@ -1,10 +1,10 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.robocubs4205.cubscout.model.*;
-import com.robocubs4205.cubscout.model.scorecard.FieldSection;
-import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
+import com.robocubs4205.cubscout.model.Match;
+import com.robocubs4205.cubscout.model.MatchRepository;
+import com.robocubs4205.cubscout.model.Robot;
+import com.robocubs4205.cubscout.model.RobotRepository;
+import com.robocubs4205.cubscout.model.scorecard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/matches")
@@ -82,9 +81,9 @@ public class MatchController {
 
         //validate scores match sections in scorecard
         //todo: reduce database hits
-        result.setScores(result.getScores().stream().peek(scorecardFieldResult -> scorecardFieldResult.setField(
-                fieldSectionRepository.findByIdAndScorecard(scorecardFieldResult.getId(), result.getScorecard())))
-                               .collect(Collectors.toList()));
+        //noinspection ResultOfMethodCallIgnored
+        result.getScores().stream().peek(scorecardFieldResult -> scorecardFieldResult.setField(
+                fieldSectionRepository.findByIdAndScorecard(scorecardFieldResult.getId(), result.getScorecard())));
 
         if (result.getScores().stream().anyMatch(scorecardFieldResult -> scorecardFieldResult.getField() == null)) {
             throw new ScoresDontMatchScorecardException();

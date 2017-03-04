@@ -1,13 +1,11 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
@@ -31,9 +29,6 @@ public abstract class ScorecardSection {
     @ManyToOne(optional = false)
     @JsonIgnore
     private Scorecard scorecard;
-
-    @OneToMany(mappedBy = "field")
-    private List<ScorecardFieldResult> results;
 
     public ScorecardSection(){}
 
@@ -60,5 +55,4 @@ public abstract class ScorecardSection {
     public void setScorecard(Scorecard scorecard) {
         this.scorecard = scorecard;
     }
-
 }

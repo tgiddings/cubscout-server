@@ -1,9 +1,9 @@
 package com.robocubs4205.cubscout.rest;
 
 import com.robocubs4205.cubscout.model.Match;
-import com.robocubs4205.cubscout.model.ResultRepository;
 import com.robocubs4205.cubscout.model.Robot;
 import com.robocubs4205.cubscout.model.RobotRepository;
+import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

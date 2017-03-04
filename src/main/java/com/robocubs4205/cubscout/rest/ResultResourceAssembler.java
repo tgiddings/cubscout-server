@@ -1,9 +1,10 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.model.Result;
+import com.robocubs4205.cubscout.model.scorecard.Result;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 public class ResultResourceAssembler extends IdentifiableResourceAssemblerSupport<Result,ResultResource> {
     public ResultResourceAssembler() {
