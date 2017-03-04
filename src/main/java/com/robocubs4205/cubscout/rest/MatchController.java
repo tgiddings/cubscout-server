@@ -27,7 +27,8 @@ public class MatchController {
     private final FieldSectionRepository fieldSectionRepository;
 
     @Autowired
-    public MatchController(MatchRepository matchRepository, ResultRepository resultRepository,
+    public MatchController(MatchRepository matchRepository,
+                           ResultRepository resultRepository,
                            RobotRepository robotRepository,
                            ScorecardRepository scorecardRepository,
                            FieldSectionRepository fieldSectionRepository) {
@@ -40,31 +41,37 @@ public class MatchController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<MatchResource> getAllMatches() {
-        return new MatchResourceAssembler().toResources(matchRepository.findAll());
+        return new MatchResourceAssembler()
+                .toResources(matchRepository.findAll());
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.GET)
     public MatchResource getMatch(@PathVariable Match match) {
-        if (match == null) throw new ResourceNotFoundException("match does not exist");
+        if (match == null)
+            throw new ResourceNotFoundException("match does not exist");
         return new MatchResourceAssembler().toResource(match);
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.PUT)
-    public MatchResource updateMatch(@PathVariable Match match, @RequestBody Match newMatch) {
-        if (match == null) throw new ResourceNotFoundException("match does not exist");
+    public MatchResource updateMatch(@PathVariable Match match,
+                                     @RequestBody Match newMatch) {
+        if (match == null)
+            throw new ResourceNotFoundException("match does not exist");
         match.setNumber(newMatch.getNumber());
         return new MatchResourceAssembler().toResource(match);
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.DELETE)
     public void deleteMatch(@PathVariable Match match) {
-        if (match == null) throw new ResourceNotFoundException("match does not exist");
+        if (match == null)
+            throw new ResourceNotFoundException("match does not exist");
         matchRepository.delete(match);
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)
     public List<RobotResource> getAllRobots(@PathVariable Match match) {
-        if (match == null) throw new ResourceNotFoundException("match does not exist");
+        if (match == null)
+            throw new ResourceNotFoundException("match does not exist");
         return new RobotResourceAssembler().toResources(match.getRobots());
     }
 
@@ -74,59 +81,92 @@ public class MatchController {
                                        @Validated(Result.Creating.class) @RequestBody Result result) {
         if (match == null) throw new ResourceNotFoundException();
 
-        result.setScorecard(scorecardRepository.findById(result.getScorecard().getId()));
+        result.setScorecard(scorecardRepository
+                .findById(result.getScorecard().getId()));
         if (result.getScorecard() == null) {
             throw new ScorecardDoesNotExistException();
         }
 
-        Robot existingRobot = robotRepository.findById(result.getRobot().getId());
-        if (existingRobot == null) {
-            robotRepository.save(result.getRobot()); //create new robot
-        } else result.setRobot(existingRobot);
+        result.setMatch(match);
 
         //remove null scores
-        result.getScores().removeIf(scorecardFieldResult -> scorecardFieldResult.getScore() == null);
+        result.getScores().removeIf(
+                fieldResult -> fieldResult.getScore() == null
+        );
 
-        //validate scores match sections in scorecard
+        //replace transient robot with entity from database
+        Robot existingRobot = robotRepository
+                .findById(result.getRobot().getId());
+        if (existingRobot == null)
+            robotRepository.save(result.getRobot()); //create new robot
+        else result.setRobot(existingRobot);
+
+        //replace transient FieldSections with entities from database
+        //todo: reduce database hits
+        //noinspection ResultOfMethodCallIgnored
+        result.getScores().stream()
+              .peek(fieldResult -> fieldResult.setField(
+                      fieldSectionRepository.findByIdAndScorecard(
+                              fieldResult.getId(),
+                              result.getScorecard())))
+              .peek(fieldResult -> {
+                  if (fieldResult.getField() == null)
+                      throw new ScoresDoNotExistException();
+              })
+              .close();
+
+
         if (!result.scoresMatchScorecardSections()) {
-            throw new ScoresDontMatchScorecardException();
+            throw new ScoresDoNotMatchScorecardException();
         }
 
-        //validate missing scorecard sections correspond only to optional fields
-        if (result.allMissingScoresAreOptional()) {
+        if (!result.allMissingScoresAreOptional()) {
             throw new RequiredScoresAbsentException();
         }
 
-        //replace transient ScorecardFields with entities from database
-        //todo: reduce database hits
-        //noinspection ResultOfMethodCallIgnored
-        result.getScores().stream().peek(scorecardFieldResult -> scorecardFieldResult.setField(
-                fieldSectionRepository.findByIdAndScorecard(scorecardFieldResult.getId(), result.getScorecard()))).close();
+        if (!result.gameMatchesScorecard()) {
+            throw new GameDoesNotMatchScorecardException();
+        }
 
-        result.setMatch(match);
         resultRepository.save(result);
         return new ResultResourceAssembler().toResource(result);
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.GET)
     public List<ResultResource> getAllResults(@PathVariable Match match) {
-        if (match == null) throw new ResourceNotFoundException("match does not exist");
-        return new ResultResourceAssembler().toResources(resultRepository.findByMatch(match));
+        if (match == null)
+            throw new ResourceNotFoundException("match does not exist");
+        return new ResultResourceAssembler()
+                .toResources(resultRepository.findByMatch(match));
     }
 
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "The Scorecard specified does not exist")
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "The Scorecard specified does not exist")
     private class ScorecardDoesNotExistException extends RuntimeException {
     }
 
     //todo: allow detailed errors
 
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "The scores provided do not match the specified" +
-            " scorecard")
-    private class ScoresDontMatchScorecardException extends RuntimeException {
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "The scores provided do not match the specified" +
+                    " scorecard")
+    private class ScoresDoNotMatchScorecardException extends RuntimeException {
     }
 
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "Some scores required by the specified " +
-            "scorecard are absent or null")
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "Some scores required by the specified " +
+                    "scorecard are absent or null")
     private class RequiredScoresAbsentException extends RuntimeException {
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "The Game for this match does not match the " +
+                    "game for the specified scorecard")
+    private class GameDoesNotMatchScorecardException extends RuntimeException {
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "The scores provided do not match any scorecard")
+    private class ScoresDoNotExistException extends RuntimeException {
     }
 }
