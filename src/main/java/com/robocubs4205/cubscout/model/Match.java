@@ -1,5 +1,6 @@
 package com.robocubs4205.cubscout.model;
 
+import com.robocubs4205.cubscout.model.scorecard.Result;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;

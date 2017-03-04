@@ -25,6 +25,9 @@ public class Scorecard implements Identifiable<Long> {
     @NotEmpty(groups = {Default.class,Creating.class})
     private List<ScorecardSection> sections;
 
+    @OneToMany(mappedBy = "scorecard")
+    private List<Result> results;
+
     public Scorecard() {
     }
 
@@ -60,6 +63,14 @@ public class Scorecard implements Identifiable<Long> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 
     public interface Creating{

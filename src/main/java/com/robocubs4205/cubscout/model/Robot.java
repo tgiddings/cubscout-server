@@ -29,6 +29,9 @@ public class Robot implements Identifiable<Long> {
     @ManyToMany(mappedBy = "robots")
     private List<Match> matches;
 
+    @ManyToOne
+    private Game game;
+
     public Robot(){}
 
     public Robot(long id){
@@ -87,5 +90,13 @@ public class Robot implements Identifiable<Long> {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

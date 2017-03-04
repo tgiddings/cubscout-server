@@ -16,10 +16,12 @@ public class Team implements Identifiable<Long> {
     @NotNull
     private int number;
 
-    @ManyToOne(optional = false)
-    private Game game;
-
     private String name;
+
+    @NotNull
+    private String gameType;
+
+    private District district;
 
     @OneToMany(mappedBy = "team")
     private Set<Robot> robots;
@@ -31,14 +33,11 @@ public class Team implements Identifiable<Long> {
         this.number = number;
     }
 
-    @NotNull
     public Set<Robot> getRobots() {
-        //nullRobotsToEmpty();
         return robots;
     }
 
     public void setRobots(Set<Robot> robots) {
-        //nullRobotsToEmpty();
         this.robots = robots;
     }
 
@@ -67,17 +66,19 @@ public class Team implements Identifiable<Long> {
         this.number = number;
     }
 
-    /*@PrePersist
-    @PreUpdate
-    private void nullRobotsToEmpty() {
-        if (robots == null) robots = new HashSet<>();
-    }*/
-
-    public Game getGame() {
-        return game;
+    public String getGameType() {
+        return gameType;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }

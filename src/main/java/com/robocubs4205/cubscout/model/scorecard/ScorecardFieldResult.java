@@ -8,8 +8,12 @@ import javax.persistence.ManyToOne;
 public class ScorecardFieldResult {
     @Id
     private long id;
-    @ManyToOne
+
+    @ManyToOne(optional=false)
     private FieldSection field;
+
+    @ManyToOne(optional = false)
+    private Result result;
 
     private Integer score;
 

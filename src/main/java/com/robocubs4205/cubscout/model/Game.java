@@ -32,7 +32,7 @@ public class Game implements Identifiable<Long> {
     private Scorecard scorecard;
 
     @OneToMany(mappedBy = "game")
-    private List<Team> teams;
+    private List<Robot> robots;
 
     public Game(){}
 
@@ -95,4 +95,11 @@ public class Game implements Identifiable<Long> {
     }
 
 
+    public List<Robot> getRobots() {
+        return robots;
+    }
+
+    public void setRobots(List<Robot> robots) {
+        this.robots = robots;
+    }
 }

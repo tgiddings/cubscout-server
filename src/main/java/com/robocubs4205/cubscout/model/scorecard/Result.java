@@ -1,5 +1,7 @@
-package com.robocubs4205.cubscout.model;
+package com.robocubs4205.cubscout.model.scorecard;
 
+import com.robocubs4205.cubscout.model.Match;
+import com.robocubs4205.cubscout.model.Robot;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import org.springframework.hateoas.Identifiable;
@@ -8,8 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.List;
-
-//todo: detailed properties
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"match", "robot"}))
@@ -27,11 +27,11 @@ public class Result implements Identifiable<Long> {
     @NotNull(groups = {Default.class, Creating.class})
     private Robot robot;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull(groups = {Default.class, Creating.class})
     private Scorecard scorecard;
 
-    @OneToMany
+    @OneToMany(mappedBy = "result")
     private List<ScorecardFieldResult> scores;
 
     public Result() {

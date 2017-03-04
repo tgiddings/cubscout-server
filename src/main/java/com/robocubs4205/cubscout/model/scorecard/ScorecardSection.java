@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "sectionType")
@@ -29,6 +31,9 @@ public abstract class ScorecardSection {
     @ManyToOne(optional = false)
     @JsonIgnore
     private Scorecard scorecard;
+
+    @OneToMany(mappedBy = "field")
+    private List<ScorecardFieldResult> results;
 
     public ScorecardSection(){}
 
