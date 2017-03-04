@@ -1,9 +1,6 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.model.Match;
-import com.robocubs4205.cubscout.model.MatchRepository;
-import com.robocubs4205.cubscout.model.Robot;
-import com.robocubs4205.cubscout.model.RobotRepository;
+import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
@@ -25,18 +22,21 @@ public class MatchController {
 
     private final ScorecardRepository scorecardRepository;
     private final FieldSectionRepository fieldSectionRepository;
+    private final TeamRepository teamRepository;
 
     @Autowired
     public MatchController(MatchRepository matchRepository,
                            ResultRepository resultRepository,
                            RobotRepository robotRepository,
                            ScorecardRepository scorecardRepository,
-                           FieldSectionRepository fieldSectionRepository) {
+                           FieldSectionRepository fieldSectionRepository,
+                           TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.resultRepository = resultRepository;
         this.robotRepository = robotRepository;
         this.scorecardRepository = scorecardRepository;
         this.fieldSectionRepository = fieldSectionRepository;
+        this.teamRepository = teamRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -98,9 +98,14 @@ public class MatchController {
         //replace transient robot with entity from database
         Robot existingRobot = robotRepository
                 .findById(result.getRobot().getId());
-        if (existingRobot == null)
+        if (existingRobot == null) {
+            Team existingTeam = teamRepository
+                    .findByNumberAndGameType(
+                            result.getRobot().getNumber(),
+                            result.getScorecard().getGame().getType());
+            if(existingTeam!=null) result.getRobot().setTeam(existingTeam);
             robotRepository.save(result.getRobot()); //create new robot
-        else result.setRobot(existingRobot);
+        } else result.setRobot(existingRobot);
 
         //replace transient FieldSections with entities from database
         //todo: reduce database hits
