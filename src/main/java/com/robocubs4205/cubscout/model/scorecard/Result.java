@@ -5,10 +5,12 @@ import com.robocubs4205.cubscout.model.Robot;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"match", "robot"}))
@@ -34,6 +36,43 @@ public class Result implements Identifiable<Long> {
     private Set<ScorecardFieldResult> scores = new HashSet<>();
 
     public Result() {
+    }
+
+    @AssertTrue
+    public boolean scoresMatchScorecardSections() {
+        return scores.stream().allMatch(
+                score -> scorecard.getSections()
+                                  .stream()
+                                  .filter(section -> section instanceof FieldSection)
+                                  .map(section -> (FieldSection) section)
+                                  .anyMatch(fieldSection ->
+                                          fieldSection.getId() == score
+                                                  .getField().getId())
+        )||scores.isEmpty();
+    }
+
+    @AssertTrue
+    public boolean allMissingScoresAreOptional() {
+        Stream<FieldSection> requiredSections = scorecard.getSections().stream()
+                                                         .filter(scorecardSection -> scorecardSection instanceof FieldSection)
+                                                         .map(scorecardSection -> (FieldSection) scorecardSection)
+                                                         .filter(fieldSection -> !fieldSection.isOptional());
+        //null fields
+        return requiredSections.anyMatch(
+                fieldSection -> scores.stream()
+                                      .filter(scorecardFieldResult -> {
+                                          return scorecardFieldResult.getField().getId() ==
+                                                  fieldSection.getId();
+                                      })
+                                      .anyMatch(scorecardFieldResult -> scorecardFieldResult
+                                              .getScore() == null)
+        ) && requiredSections.noneMatch( //missing fields
+                fieldSection -> scores.stream()
+                                      .noneMatch(scorecardFieldResult -> {
+                                          return scorecardFieldResult.getField()
+                                                                     .getId() ==
+                                                  fieldSection.getId();
+                                      }));
     }
 
     public Match getMatch() {

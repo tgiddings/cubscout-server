@@ -4,7 +4,10 @@ import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.MatchRepository;
 import com.robocubs4205.cubscout.model.Robot;
 import com.robocubs4205.cubscout.model.RobotRepository;
-import com.robocubs4205.cubscout.model.scorecard.*;
+import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
+import com.robocubs4205.cubscout.model.scorecard.Result;
+import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
+import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -70,51 +73,35 @@ public class MatchController {
     public ResultResource createResult(@PathVariable Match match,
                                        @Validated(Result.Creating.class) @RequestBody Result result) {
         if (match == null) throw new ResourceNotFoundException();
+
         result.setScorecard(scorecardRepository.findById(result.getScorecard().getId()));
         if (result.getScorecard() == null) {
             throw new ScorecardDoesNotExistException();
         }
+
         Robot existingRobot = robotRepository.findById(result.getRobot().getId());
         if (existingRobot == null) {
             robotRepository.save(result.getRobot()); //create new robot
         } else result.setRobot(existingRobot);
 
-        //validate scores match sections in scorecard
-        //todo: reduce database hits
-        //noinspection ResultOfMethodCallIgnored
-        result.getScores().stream().peek(scorecardFieldResult -> scorecardFieldResult.setField(
-                fieldSectionRepository.findByIdAndScorecard(scorecardFieldResult.getId(), result.getScorecard())));
+        //remove null scores
+        result.getScores().removeIf(scorecardFieldResult -> scorecardFieldResult.getScore() == null);
 
-        if (result.getScores().stream().anyMatch(scorecardFieldResult -> scorecardFieldResult.getField() == null)) {
+        //validate scores match sections in scorecard
+        if (!result.scoresMatchScorecardSections()) {
             throw new ScoresDontMatchScorecardException();
         }
 
         //validate missing scorecard sections correspond only to optional fields
-        //todo: move validation logic into domain objects
-        if (result.getScorecard().getSections().stream()
-                  .filter(scorecardSection -> scorecardSection instanceof FieldSection)
-                  .map(scorecardSection -> (FieldSection) scorecardSection)
-                  .filter(fieldSection -> !fieldSection.isOptional()).anyMatch(
-                        fieldSection -> result.getScores().stream().noneMatch(
-                                scorecardFieldResult -> scorecardFieldResult.getField().getId() == fieldSection
-                                        .getId()))) {
+        if (result.allMissingScoresAreOptional()) {
             throw new RequiredScoresAbsentException();
         }
 
-        //validate null scores correspond only to optional fields
-        if (result.getScorecard().getSections().stream()
-                  .filter(scorecardSection -> scorecardSection instanceof FieldSection)
-                  .map(scorecardSection -> (FieldSection) scorecardSection)
-                  .filter(fieldSection -> !fieldSection.isOptional()).anyMatch(
-                        fieldSection -> result.getScores().stream()
-                                              .filter(scorecardFieldResult -> {
-                                                  return scorecardFieldResult.getField().getId() ==
-                                                          fieldSection.getId();
-                                              })
-                                              .anyMatch(scorecardFieldResult -> scorecardFieldResult.getScore() == null)
-                )) {
-            throw new RequiredScoresNullException();
-        }
+        //replace transient ScorecardFields with entities from database
+        //todo: reduce database hits
+        //noinspection ResultOfMethodCallIgnored
+        result.getScores().stream().peek(scorecardFieldResult -> scorecardFieldResult.setField(
+                fieldSectionRepository.findByIdAndScorecard(scorecardFieldResult.getId(), result.getScorecard()))).close();
 
         result.setMatch(match);
         resultRepository.save(result);
@@ -128,23 +115,18 @@ public class MatchController {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "The Scorecard specified does not exist")
-    class ScorecardDoesNotExistException extends RuntimeException {
+    private class ScorecardDoesNotExistException extends RuntimeException {
     }
 
     //todo: allow detailed errors
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "The scores provided do not match the specified" +
             " scorecard")
-    class ScoresDontMatchScorecardException extends RuntimeException {
+    private class ScoresDontMatchScorecardException extends RuntimeException {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "Some scores required by the specified " +
-            "scorecard are absent")
-    class RequiredScoresAbsentException extends RuntimeException {
-    }
-
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY, reason = "Some scores required by the specified " +
-            "scorecard are null")
-    class RequiredScoresNullException extends RuntimeException {
+            "scorecard are absent or null")
+    private class RequiredScoresAbsentException extends RuntimeException {
     }
 }
