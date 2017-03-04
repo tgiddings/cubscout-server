@@ -67,7 +67,7 @@ public class ResultEntityTest {
         assertTrue(result.scoresMatchScorecardSections());
     }
     @Test
-    public void scoresMatchScorecardSections_OneField_FieldsDontMatch_ReturnsFalse(){
+    public void scoresMatchScorecardSections_OneField_FieldsDoNotMatch_ReturnsFalse(){
         HashSet<ScorecardSection> sections = new HashSet<>();
         FieldSection section = new FieldSection();
         section.setId(1);
@@ -251,7 +251,7 @@ public class ResultEntityTest {
         assertTrue(result.allMissingScoresAreOptional());
     }
     @Test
-    public void allMissingScoresAreOptional_OneField_FieldsDontMatch_ReturnsFalse(){
+    public void allMissingScoresAreOptional_OneField_FieldsDoNotMatch_ReturnsFalse(){
         HashSet<ScorecardSection> sections = new HashSet<>();
         FieldSection section = new FieldSection();
         section.setId(1);

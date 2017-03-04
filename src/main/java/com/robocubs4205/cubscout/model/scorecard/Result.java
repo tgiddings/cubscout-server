@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -43,27 +44,28 @@ public class Result implements Identifiable<Long> {
 
     @AssertTrue
     public boolean scoresMatchScorecardSections() {
-        return scores.isEmpty() || scores.stream().allMatch(
-                score -> scorecard.getSections()
-                                  .stream()
-                                  .filter(section -> section instanceof FieldSection)
-                                  .map(section -> (FieldSection) section)
-                                  .anyMatch(fieldSection ->
-                                                    fieldSection.getId() == score
-                                                            .getField().getId())
+        return scores.isEmpty() || scores.stream().allMatch(score ->
+                scorecard.getSections()
+                         .stream()
+                         .filter(section -> section instanceof FieldSection)
+                         .map(section -> (FieldSection) section)
+                         .anyMatch(fieldSection ->
+                                 fieldSection.getId() ==
+                                         score.getField().getId())
         );
     }
 
     @AssertTrue
     public boolean allMissingScoresAreOptional() {
-        Supplier<Stream<FieldSection>> requiredSections = ()->
+        Supplier<Stream<FieldSection>> requiredSections = () ->
                 scorecard.getSections().stream()
-                         .filter(scorecardSection -> scorecardSection instanceof FieldSection)
-                         .map(scorecardSection -> (FieldSection) scorecardSection)
+                         .filter(section -> section instanceof FieldSection)
+                         .map(section -> (FieldSection) section)
                          .filter(fieldSection -> !fieldSection.isOptional());
 
 
-        List<FieldSection> collect = requiredSections.get().collect(Collectors.toList());
+        List<FieldSection> collect = requiredSections.get().collect(
+                Collectors.toList());
         return collect.isEmpty()
                 || requiredSections.get().noneMatch(
                 fieldSection -> scores.stream()
@@ -73,6 +75,12 @@ public class Result implements Identifiable<Long> {
                                                   fieldSection.getId();
                                       })
         );
+    }
+
+    @AssertTrue
+    public boolean gameMatchesScorecard() {
+        return Objects.equals(match.getEvent().getGame().getId(),
+                scorecard.getGame().getId());
     }
 
     public Match getMatch() {
