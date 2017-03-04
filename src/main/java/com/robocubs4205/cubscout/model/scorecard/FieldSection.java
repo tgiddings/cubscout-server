@@ -27,7 +27,7 @@ public class FieldSection extends ScorecardSection {
 
     private String CheckBoxMessage;
 
-    private boolean isOptional;
+    private boolean isOptional = false;
 
     @OneToMany(mappedBy = "field")
     private Set<ScorecardFieldResult> results = new HashSet<>();

@@ -9,7 +9,10 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Entity
@@ -40,39 +43,36 @@ public class Result implements Identifiable<Long> {
 
     @AssertTrue
     public boolean scoresMatchScorecardSections() {
-        return scores.stream().allMatch(
+        return scores.isEmpty() || scores.stream().allMatch(
                 score -> scorecard.getSections()
                                   .stream()
                                   .filter(section -> section instanceof FieldSection)
                                   .map(section -> (FieldSection) section)
                                   .anyMatch(fieldSection ->
-                                          fieldSection.getId() == score
-                                                  .getField().getId())
-        )||scores.isEmpty();
+                                                    fieldSection.getId() == score
+                                                            .getField().getId())
+        );
     }
 
     @AssertTrue
     public boolean allMissingScoresAreOptional() {
-        Stream<FieldSection> requiredSections = scorecard.getSections().stream()
-                                                         .filter(scorecardSection -> scorecardSection instanceof FieldSection)
-                                                         .map(scorecardSection -> (FieldSection) scorecardSection)
-                                                         .filter(fieldSection -> !fieldSection.isOptional());
-        //null fields
-        return requiredSections.anyMatch(
-                fieldSection -> scores.stream()
-                                      .filter(scorecardFieldResult -> {
-                                          return scorecardFieldResult.getField().getId() ==
-                                                  fieldSection.getId();
-                                      })
-                                      .anyMatch(scorecardFieldResult -> scorecardFieldResult
-                                              .getScore() == null)
-        ) && requiredSections.noneMatch( //missing fields
+        Supplier<Stream<FieldSection>> requiredSections = ()->
+                scorecard.getSections().stream()
+                         .filter(scorecardSection -> scorecardSection instanceof FieldSection)
+                         .map(scorecardSection -> (FieldSection) scorecardSection)
+                         .filter(fieldSection -> !fieldSection.isOptional());
+
+
+        List<FieldSection> collect = requiredSections.get().collect(Collectors.toList());
+        return collect.isEmpty()
+                || requiredSections.get().noneMatch(
                 fieldSection -> scores.stream()
                                       .noneMatch(scorecardFieldResult -> {
                                           return scorecardFieldResult.getField()
                                                                      .getId() ==
                                                   fieldSection.getId();
-                                      }));
+                                      })
+        );
     }
 
     public Match getMatch() {
