@@ -3,9 +3,10 @@ package com.robocubs4205.cubscout.model;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/14/17.
@@ -16,7 +17,7 @@ public class Robot implements Identifiable<Long> {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Team team;
 
     @NotNull
@@ -27,12 +28,20 @@ public class Robot implements Identifiable<Long> {
 
     private String name;
     @ManyToMany(mappedBy = "robots")
-    private List<Match> matches;
+    private Set<Match> matches = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    private Game game;
 
     public Robot(){}
 
     public Robot(long id){
         setId(id);
+    }
+
+    @AssertTrue
+    public boolean numberMatchesTeam(){
+        return number==team.getNumber();
     }
 
     public Long getId() {
@@ -67,18 +76,8 @@ public class Robot implements Identifiable<Long> {
         this.team = team;
     }
 
-    public List<Match> getMatches() {
+    public Set<Match> getMatches() {
         return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
-    }
-
-    @PrePersist
-    @PreUpdate
-    private void nullMatchesToEmptyList(){
-        if(matches==null) matches = new ArrayList<>();
     }
 
     public int getYear() {
@@ -87,5 +86,13 @@ public class Robot implements Identifiable<Long> {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

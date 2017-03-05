@@ -5,10 +5,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
-import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -23,7 +22,10 @@ public class Scorecard implements Identifiable<Long> {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "scorecard")
     @NotEmpty(groups = {Default.class,Creating.class})
-    private List<ScorecardSection> sections;
+    private Set<ScorecardSection> sections;
+
+    @OneToMany(mappedBy = "scorecard")
+    private Set<Result> results;
 
     public Scorecard() {
     }
@@ -40,12 +42,8 @@ public class Scorecard implements Identifiable<Long> {
         this.game = game;
     }
 
-    public List<ScorecardSection> getSections() {
+    public Set<ScorecardSection> getSections() {
         return sections;
-    }
-
-    public void setSections(List<ScorecardSection> sections) {
-        this.sections = sections;
     }
 
     public List<FieldSection> getFields() {
@@ -60,6 +58,10 @@ public class Scorecard implements Identifiable<Long> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<Result> getResults() {
+        return results;
     }
 
     public interface Creating{

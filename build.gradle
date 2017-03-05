@@ -42,6 +42,8 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.0.1.Final'
     compile 'com.h2database:h2:1.4.193'
     compile 'org.springframework.boot:spring-boot-starter-tomcat:1.5.1.RELEASE'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:1.5.1.RELEASE'
 }
 

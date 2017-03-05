@@ -6,7 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event implements Identifiable<Long> {
@@ -27,7 +28,7 @@ public class Event implements Identifiable<Long> {
     private District district;
 
     @OneToMany(mappedBy = "event")
-    private List<Match> matches;
+    private Set<Match> matches = new HashSet<>();
 
     private Date startDate;
 
@@ -97,12 +98,8 @@ public class Event implements Identifiable<Long> {
         this.endDate = endDate;
     }
 
-    public List<Match> getMatches() {
+    public Set<Match> getMatches() {
         return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
     }
 
     public interface Creating{}

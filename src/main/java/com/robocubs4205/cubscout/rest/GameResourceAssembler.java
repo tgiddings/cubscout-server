@@ -4,12 +4,12 @@ import com.robocubs4205.cubscout.model.Game;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by trevor on 2/15/17.
  */
-public class GameResourceAssembler extends IdentifiableResourceAssemblerSupport<Game, GameResource> {
+public class GameResourceAssembler extends
+        IdentifiableResourceAssemblerSupport<Game, GameResource> {
     public GameResourceAssembler() {
         super(GameController.class, GameResource.class);
     }
@@ -22,9 +22,13 @@ public class GameResourceAssembler extends IdentifiableResourceAssemblerSupport<
         resource.setType(entity.getType());
         resource.setYear(entity.getYear());
         if (entity.getScorecard() != null) {
-            resource.add(linkTo(ScorecardController.class).slash(entity.getScorecard()).withRel("scorecard"));
+            resource.add(linkTo(ScorecardController.class).slash(entity.getScorecard())
+                    .withRel("scorecard"));
         }
-        resource.add(linkTo(GameController.class).slash(entity).slash("events").withRel("events"));
+        resource.add(linkTo(GameController.class).slash(entity).slash("events")
+                .withRel("events"));
+        resource.add(linkTo(GameController.class).slash(entity).slash("robots")
+                .withRel("robots"));
         return resource;
     }
 }
