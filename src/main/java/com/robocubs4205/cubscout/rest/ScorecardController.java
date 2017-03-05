@@ -33,4 +33,10 @@ public class ScorecardController {
         if(scorecard==null)throw new ResourceNotFoundException("scorecard does not exist");
         return new ScorecardResourceAssembler().toResource(scorecard);
     }
+
+    @RequestMapping(value = "/{scorecard:[0-9]+}/results")
+    public List<ResultResource> getResults(@PathVariable Scorecard scorecard) {
+        if(scorecard==null)throw new ResourceNotFoundException("scorecard does not exist");
+        return new ResultResourceAssembler().toResources(scorecard.getResults());
+    }
 }

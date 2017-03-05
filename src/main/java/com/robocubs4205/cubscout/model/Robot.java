@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,13 +30,18 @@ public class Robot implements Identifiable<Long> {
     @ManyToMany(mappedBy = "robots")
     private Set<Match> matches = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Game game;
 
     public Robot(){}
 
     public Robot(long id){
         setId(id);
+    }
+
+    @AssertTrue
+    public boolean numberMatchesTeam(){
+        return number==team.getNumber();
     }
 
     public Long getId() {

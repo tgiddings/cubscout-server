@@ -14,7 +14,6 @@ public class EventResource extends ResourceSupport {
     private String address;
     private Date startDate;
     private Date endDate;
-    private String district;
 
     public EventResource(){}
 
@@ -57,13 +56,5 @@ public class EventResource extends ResourceSupport {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getDistrict() {
-        return district;
     }
 }

@@ -8,6 +8,9 @@ import org.springframework.hateoas.ResourceSupport;
  */
 public class RobotResource extends ResourceSupport{
     private long id;
+    private int number;
+    private int year;
+    private String name;
     public RobotResource(){}
 
     @JsonProperty("id")
@@ -17,5 +20,29 @@ public class RobotResource extends ResourceSupport{
 
     public void setRobotId(long id) {
         this.id = id;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

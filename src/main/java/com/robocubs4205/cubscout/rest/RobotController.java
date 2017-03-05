@@ -1,6 +1,5 @@
 package com.robocubs4205.cubscout.rest;
 
-import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.Robot;
 import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
@@ -28,8 +27,8 @@ public class RobotController {
         return new RobotResourceAssembler().toResources(robotRepository.findAll());
     }
 
-    @RequestMapping(value = "/{robot}", method = RequestMethod.GET)
-    public RobotResource get(@PathVariable Robot robot) {
+    @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.GET)
+    public RobotResource getRobot(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
         return new RobotResourceAssembler().toResource(robot);
     }
@@ -41,33 +40,27 @@ public class RobotController {
         return new RobotResourceAssembler().toResource(robot);
     }
 
-    @RequestMapping(value = "/{robot}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.PUT)
     public RobotResource update(@PathVariable Robot robot, @RequestBody Robot newRobot) {
         //robot has no properties currently
         return new RobotResourceAssembler().toResource(robot);
     }
 
-    @RequestMapping(value = "/{robot}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Robot robot) {
         robotRepository.delete(robot);
     }
 
-    @RequestMapping(value = "/{robot}/results",method = RequestMethod.GET)
+    @RequestMapping(value = "/{robot:[0-9]+}/results",method = RequestMethod.GET)
     public List<ResultResource> getResults(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
         return new ResultResourceAssembler().toResources(resultRepository.findByRobot(robot));
     }
 
-    @RequestMapping(value = "/{robot}/matches",method = RequestMethod.GET)
+    @RequestMapping(value = "/{robot:[0-9]+}/matches",method = RequestMethod.GET)
     public List<MatchResource> getMatches(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
         return new MatchResourceAssembler().toResources(robot.getMatches());
-    }
-
-    @RequestMapping(value = "/{robot}/matches/{match}/results",method = RequestMethod.GET)
-    public ResultResource getResults(@PathVariable Robot robot, @PathVariable Match match) {
-        if (robot == null || match == null) throw new ResourceNotFoundException();
-        return new ResultResourceAssembler().toResource(resultRepository.findByRobotAndMatch(robot, match));
     }
 }

@@ -9,4 +9,6 @@ import java.util.Set;
 public interface TeamRepository extends JpaRepository<Team,Long>{
     Team findById(int id);
     Set<Team> findByNumber(int number);
+
+    Team findByNumberAndGameType(int number, String gameType);
 }
