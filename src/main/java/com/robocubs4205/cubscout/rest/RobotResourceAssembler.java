@@ -20,9 +20,7 @@ public class RobotResourceAssembler extends IdentifiableResourceAssemblerSupport
         resource.setNumber(entity.getNumber());
         resource.setYear(entity.getYear());
         resource.setName(entity.getName());
-        if (entity.getTeam() == null) {
-            resource.add(linkTo(TeamController.class).slash(entity.getTeam()).withRel("team"));
-        }
+        resource.add(linkTo(TeamController.class).slash(entity.getTeam()).withRel("team"));
         resource.add(linkTo(RobotController.class).slash(entity).slash("matches")
                                                   .withRel("matches"));
         return resource;

@@ -26,8 +26,6 @@ public class EventResourceAssembler extends IdentifiableResourceAssemblerSupport
                                                          .withRel("district"));
         }
         resource.add(linkTo(GameController.class).slash(entity.getGame()).withRel("game"));
-        resource.add(linkTo(DistrictController.class).slash(entity.getDistrict())
-                                                     .withRel("district"));
         resource.add(linkTo(EventController.class).slash(entity).slash("matches")
                                                   .withRel("matches"));
         return resource;
