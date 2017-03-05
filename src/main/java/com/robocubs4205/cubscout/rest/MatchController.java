@@ -98,13 +98,25 @@ public class MatchController {
         //replace transient robot with entity from database
         Robot existingRobot = robotRepository
                 .findById(result.getRobot().getId());
-        if (existingRobot == null) {
+        if (existingRobot == null) { //create new robot
+            //find team for this robot
             Team existingTeam = teamRepository
                     .findByNumberAndGameType(
                             result.getRobot().getNumber(),
                             result.getScorecard().getGame().getType());
-            if(existingTeam!=null) result.getRobot().setTeam(existingTeam);
-            robotRepository.save(result.getRobot()); //create new robot
+            if (existingTeam == null) {
+                Team team = new Team();
+                team.setNumber(result.getRobot().getNumber());
+                team.setGameType(result.getMatch().getEvent().getGame().getType());
+                team.setDistrict(result.getMatch().getEvent().getDistrict());
+                teamRepository.save(team);
+                result.getRobot().setTeam(team);
+            }
+            else result.getRobot().setTeam(existingTeam);
+
+            result.getRobot().setGame(result.getMatch().getEvent().getGame());
+
+            robotRepository.save(result.getRobot());
         } else result.setRobot(existingRobot);
 
         //replace transient FieldSections with entities from database

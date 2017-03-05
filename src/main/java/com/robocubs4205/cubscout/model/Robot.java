@@ -17,7 +17,7 @@ public class Robot implements Identifiable<Long> {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Team team;
 
     @NotNull
