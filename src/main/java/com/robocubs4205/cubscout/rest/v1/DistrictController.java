@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.District;
 import com.robocubs4205.cubscout.model.DistrictRepository;
@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/districts")
+@RequestMapping(value = "/districts",produces = "application/vnd.robocubs-v1+json")
 public class DistrictController {
     private final DistrictRepository districtRepository;
 

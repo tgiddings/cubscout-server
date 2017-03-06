@@ -1,20 +1,25 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
 
-public class TeamResource extends ResourceSupport{
+/**
+ * Created by trevor on 2/17/17.
+ */
+public class MatchResource extends ResourceSupport{
     private long id;
     private int number;
-    private String name;
-    public TeamResource(){}
+    private String type;
+
+    public MatchResource() {
+    }
 
     @JsonProperty("id")
-    public long getTeamId() {
+    public long getMatchId() {
         return id;
     }
 
-    public void setTeamId(long id) {
+    public void setMatchId(long id) {
         this.id = id;
     }
 
@@ -26,11 +31,11 @@ public class TeamResource extends ResourceSupport{
         this.number = number;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 }

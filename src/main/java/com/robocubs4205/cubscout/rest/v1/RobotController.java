@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.ResultRepository;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/robots")
+@RequestMapping(value = "/robots",produces = "application/vnd.robocubs-v1+json")
 public class RobotController {
     private final RobotRepository robotRepository;
     private final ResultRepository resultRepository;

@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.Team;
@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/teams")
+@RequestMapping(value = "/teams",produces = "application/vnd.robocubs-v1+json")
 public class TeamController {
     private final TeamRepository teamRepository;
     private final RobotRepository robotRepository;

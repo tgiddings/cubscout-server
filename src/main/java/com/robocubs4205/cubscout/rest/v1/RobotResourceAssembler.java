@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.Robot;
 import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;

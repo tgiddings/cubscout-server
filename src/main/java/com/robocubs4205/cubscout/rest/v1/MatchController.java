@@ -1,6 +1,5 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.FieldSection;
 import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/matches")
+@RequestMapping(value = "/matches",produces = "application/vnd.robocubs-v1+json")
 public class MatchController {
     private final MatchRepository matchRepository;
     private final ResultRepository resultRepository;

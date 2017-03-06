@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.rest;
+package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import org.springframework.hateoas.ResourceSupport;
