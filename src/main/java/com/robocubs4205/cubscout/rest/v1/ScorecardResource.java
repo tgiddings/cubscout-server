@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardSection;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/28/17.
@@ -12,15 +12,15 @@ import java.util.List;
 public class ScorecardResource extends ResourceSupport{
     private long id;
 
-    private List<ScorecardSection> sections;
+    private Set<ScorecardSection> sections;
 
     public ScorecardResource(){}
 
-    public List<ScorecardSection> getSections() {
+    public Set<ScorecardSection> getSections() {
         return sections;
     }
 
-    public void setSections(List<ScorecardSection> sections) {
+    public void setSections(Set<ScorecardSection> sections) {
         this.sections = sections;
     }
 

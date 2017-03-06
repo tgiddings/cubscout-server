@@ -25,7 +25,7 @@ public class TeamController {
     List<TeamResource> getAll(){
         return new TeamResourceAssembler().toResources(teamRepository.findAll());
     }
-    @RequestMapping(value = "/{team}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{team:[0-9]+}",method = RequestMethod.GET)
     TeamResource get(@PathVariable Team team){
         if(team==null) throw new ResourceNotFoundException();
         return new TeamResourceAssembler().toResource(team);
@@ -35,7 +35,7 @@ public class TeamController {
         teamRepository.save(team);
         return new TeamResourceAssembler().toResource(team);
     }
-    @RequestMapping(value = "/{team}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/{team:[0-9]+}",method = RequestMethod.PUT)
     public TeamResource update(@PathVariable Team team, @RequestBody Team newTeam){
         if(team==null) throw new ResourceNotFoundException();
         team.setNumber(newTeam.getNumber());
@@ -43,7 +43,7 @@ public class TeamController {
         teamRepository.save(team);
         return new TeamResourceAssembler().toResource(team);
     }
-    @RequestMapping(value = "/{team}/matches",method = RequestMethod.GET)
+    @RequestMapping(value = "/{team:[0-9]+}/matches",method = RequestMethod.GET)
     public List<RobotResource> getRobots(@PathVariable Team team){
         return new RobotResourceAssembler().toResources(robotRepository.findByTeam(team));
     }

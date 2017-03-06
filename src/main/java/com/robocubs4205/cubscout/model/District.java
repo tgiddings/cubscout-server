@@ -5,8 +5,8 @@ import org.springframework.hateoas.Identifiable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/14/17.
@@ -19,7 +19,10 @@ public class District implements Identifiable<String> {
     private String name;
 
     @OneToMany(mappedBy = "district")
-    private List<Event> events;
+    private Set<Event> events = new HashSet<>();
+
+    @OneToMany(mappedBy = "district")
+    private Set<Team> teams = new HashSet<>();
 
     public District(){}
 
@@ -48,11 +51,11 @@ public class District implements Identifiable<String> {
         return getCode();
     }
 
-    public List<Event> getEvents() {
+    public Set<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public Set<Team> getTeams() {
+        return teams;
     }
 }

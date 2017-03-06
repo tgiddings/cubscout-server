@@ -5,7 +5,8 @@ import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by trevor on 2/14/17.
@@ -26,13 +27,13 @@ public class Game implements Identifiable<Long> {
     private int year;
 
     @OneToMany(mappedBy = "game")
-    private List<Event> events;
+    private Set<Event> events = new HashSet<>();
 
     @OneToOne(mappedBy = "game")
     private Scorecard scorecard;
 
     @OneToMany(mappedBy = "game")
-    private List<Team> teams;
+    private Set<Robot> robots = new HashSet<>();
 
     public Game(){}
 
@@ -81,18 +82,11 @@ public class Game implements Identifiable<Long> {
         this.scorecard = scorecard;
     }
 
-    void setEvents(List<Event> events){
-        this.events = events;
-    }
-
-    public List<Event> getEvents() {
+    public Set<Event> getEvents() {
         return events;
     }
 
-    public void addEvent(Event event){
-        events.add(event);
-        event.setGame(this);
+    public Set<Robot> getRobots() {
+        return robots;
     }
-
-
 }

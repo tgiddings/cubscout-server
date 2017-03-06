@@ -5,7 +5,8 @@ import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-public class ScorecardResourceAssembler extends IdentifiableResourceAssemblerSupport<Scorecard,ScorecardResource>{
+public class ScorecardResourceAssembler extends
+        IdentifiableResourceAssemblerSupport<Scorecard, ScorecardResource> {
     public ScorecardResourceAssembler() {
         super(ScorecardController.class, ScorecardResource.class);
     }
@@ -15,7 +16,10 @@ public class ScorecardResourceAssembler extends IdentifiableResourceAssemblerSup
         ScorecardResource resource = createResource(entity);
         resource.setScorecardId(entity.getId());
         resource.setSections(entity.getSections());
-        resource.add(linkTo(GameController.class).slash(entity.getGame()).withRel("game"));
+        resource.add(linkTo(GameController.class).slash(entity.getGame())
+                                                 .withRel("game"));
+        resource.add(linkTo(ScorecardController.class).slash(entity).slash("results")
+                                                      .withRel("results"));
         return resource;
     }
 }

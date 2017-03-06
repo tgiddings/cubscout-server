@@ -7,6 +7,7 @@ public class TeamResource extends ResourceSupport{
     private long id;
     private int number;
     private String name;
+    private String gameType;
     public TeamResource(){}
 
     @JsonProperty("id")
@@ -32,5 +33,13 @@ public class TeamResource extends ResourceSupport{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 }

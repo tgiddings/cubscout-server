@@ -34,7 +34,7 @@ public class DistrictController {
     }
 
     @RequestMapping(value = "/{district}", method = RequestMethod.GET)
-    public DistrictResource get(@PathVariable District district) {
+    public DistrictResource getDistrict(@PathVariable District district) {
         return new DistrictResourceAssembler().toResource(district);
     }
 
@@ -51,6 +51,17 @@ public class DistrictController {
     public void delete(@PathVariable District district){
         if(district==null)throw new ResourceNotFoundException();
         districtRepository.delete(district);
+    }
+    @RequestMapping(value = "/{district}/events",method = RequestMethod.GET)
+    public List<EventResource> getEvents(@PathVariable District district) {
+        if(district==null)throw new ResourceNotFoundException();
+        return new EventResourceAssembler().toResources(district.getEvents());
+    }
+
+    @RequestMapping(value = "/{district}/teams",method = RequestMethod.GET)
+    public List<TeamResource> getTeams(@PathVariable District district) {
+        if(district==null)throw new ResourceNotFoundException();
+        return new TeamResourceAssembler().toResources(district.getTeams());
     }
 
     @ResponseStatus(value = HttpStatus.CONFLICT, reason = "District with that code already exists")
