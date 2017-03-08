@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.DoubleAdder;
 import java.util.function.BiConsumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ public class ResultUtil {
     public static Collector<Result, ?, Result> resultAverager() {
         class Container {
             private final ConcurrentMap<Long, AtomicInteger> countMap = new ConcurrentHashMap<>();
-            private final ConcurrentMap<Long, AtomicReference<Float>> scoreMap = new ConcurrentHashMap<>();
+            private final ConcurrentMap<Long, DoubleAdder> scoreMap = new ConcurrentHashMap<>();
             private final ConcurrentMap<Long, FieldSection> fieldMap = new ConcurrentHashMap<>();
         }
         BiConsumer<Container, Result> accumulator = (container, result) -> {
@@ -30,8 +31,7 @@ public class ResultUtil {
                       })
                       .filter(scorecardFieldResult -> scorecardFieldResult.getScore() != null)
                       .peek(scorecardFieldResult -> container.countMap.get(fieldId).incrementAndGet())
-                      .forEach(scorecardFieldResult -> score.getAndAccumulate(scorecardFieldResult.getScore(),
-                                                                              (aFloat, aFloat2) -> aFloat + aFloat2));
+                      .forEach(scorecardFieldResult -> score.add(scorecardFieldResult.getScore()));
             });
 
             //get fields not in container
@@ -48,9 +48,12 @@ public class ResultUtil {
                           .peek(scorecardFieldResult -> container.fieldMap
                                   .putIfAbsent(scorecardFieldResult.getField().getId(),
                                                scorecardFieldResult.getField()))
-                          .forEach(scorecardFieldResult -> container.scoreMap
-                                  .putIfAbsent(scorecardFieldResult.getField().getId(),
-                                               new AtomicReference<>(scorecardFieldResult.getScore())));
+                          .forEach(scorecardFieldResult -> {
+                              container.scoreMap.putIfAbsent(scorecardFieldResult.getField().getId(),
+                                                             new DoubleAdder());
+                              container.scoreMap.get(scorecardFieldResult.getField().getId())
+                                                .add(scorecardFieldResult.getScore());
+                          });
         };
 
         return Collector.of(Container::new, accumulator, (container, container2) -> {
@@ -64,7 +67,7 @@ public class ResultUtil {
 
             container.scoreMap.forEach((fieldId, score) -> {
                 ScorecardFieldResult fieldResult = new ScorecardFieldResult();
-                fieldResult.setScore(score.get() / container.countMap.keySet().stream()
+                fieldResult.setScore(score.floatValue() / container.countMap.keySet().stream()
                                                                      .filter(id -> Objects.equals(id, fieldId))
                                                                      .map(id -> container.countMap.get(id).get())
                                                                      .findFirst().get());
