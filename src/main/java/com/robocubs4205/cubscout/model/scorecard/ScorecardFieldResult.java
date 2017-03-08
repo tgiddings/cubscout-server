@@ -15,7 +15,7 @@ public class ScorecardFieldResult {
     @ManyToOne(optional = false)
     private Result result;
 
-    private Integer score;
+    private Float score;
 
     public ScorecardFieldResult(){}
 
@@ -27,11 +27,11 @@ public class ScorecardFieldResult {
         this.field = field;
     }
 
-    public Integer getScore() {
+    public Float getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 

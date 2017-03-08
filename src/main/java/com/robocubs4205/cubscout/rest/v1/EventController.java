@@ -1,19 +1,25 @@
 package com.robocubs4205.cubscout.rest.v1;
 
-import com.robocubs4205.cubscout.model.Event;
-import com.robocubs4205.cubscout.model.EventRepository;
-import com.robocubs4205.cubscout.model.Match;
-import com.robocubs4205.cubscout.model.MatchRepository;
+import com.robocubs4205.cubscout.model.*;
+import com.robocubs4205.cubscout.model.scorecard.Result;
+import com.robocubs4205.cubscout.model.scorecard.Scorecard;
+import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
+import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.persistence.FieldResult;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping(value = "/events",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/events", produces = "application/vnd.robocubs-v1+json")
 public class EventController {
     private final EventRepository eventRepository;
     private final MatchRepository matchRepository;
@@ -67,5 +73,28 @@ public class EventController {
         match.setEvent(event);
         matchRepository.save(match);
         return new MatchResourceAssembler().toResource(match);
+    }
+
+    @RequestMapping(value = "/{event:[0-9]+}/results", method = RequestMethod.GET)
+    List<ResultResource> getResults(@PathVariable Event event, @RequestParam("scorecard") Scorecard scorecard) {
+        Function<Match, Set<Result>> resultsForScorecard = match -> match.getResults().stream().filter(result -> {
+            return Objects
+                    .equals(result.getScorecard().getId(), scorecard.getId());
+        }).collect(Collectors.toSet());
+
+        BiFunction<Set<Result>, Robot, Set<Result>> resultsForRobot = (results, robot) -> {
+            return results.stream().filter(result -> Objects.equals(result.getRobot().getId(), robot.getId()))
+                          .collect(Collectors.toSet());
+        };
+
+        Function<Match, Set<Result>> averageResultsForMatch =
+                match -> match.getRobots().stream()
+                              .map(robot -> resultsForRobot.apply(resultsForScorecard.apply(match), robot)
+                                                           .stream().collect(ResultUtil.resultAverager()))
+                              .collect(Collectors.toSet());
+
+        Set<Result> results = event.getMatches().stream().map(averageResultsForMatch).flatMap(Collection::stream)
+                                   .collect(Collectors.toSet());
+        return new ResultResourceAssembler().toResources(results);
     }
 }
