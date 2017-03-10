@@ -1,6 +1,7 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.*;
+import com.robocubs4205.cubscout.model.scorecard.FieldSection;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardSectionRepository;
@@ -11,10 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
 @RequestMapping(value ="/games",produces = "application/vnd.robocubs-v1+json")
@@ -24,6 +31,9 @@ public class GameController {
     private final DistrictRepository districtRepository;
     private final ScorecardRepository scorecardRepository;
     private final ScorecardSectionRepository scorecardSectionRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     public GameController(GameRepository gameRepository,
@@ -53,9 +63,11 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public GameResource createGame(@Valid @RequestBody Game game) {
+    public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
         gameRepository.save(game);
-        return new GameResourceAssembler().toResource(game);
+        GameResource gameResource = new GameResourceAssembler().toResource(game);
+        response.setHeader(LOCATION,gameResource.getLink("self").getHref());
+        return gameResource;
     }
 
     @RequestMapping(value = "/{game:[0-9]+}", method = RequestMethod.PUT)
@@ -90,7 +102,8 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
     public EventResource createEvent(@PathVariable Game game,
-                                     @Validated(Event.Creating.class) @RequestBody Event event) {
+                                     @Validated(Event.Creating.class) @RequestBody Event event,
+                                     HttpServletResponse response) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         event.setGame(game);
@@ -101,7 +114,9 @@ public class GameController {
                 throw new DistrictDoesNotExistException();
         }
         eventRepository.save(event);
-        return new EventResourceAssembler().toResource(event);
+        EventResource eventResource = new EventResourceAssembler().toResource(event);
+        response.setHeader(LOCATION,eventResource.getLink("self").getHref());
+        return eventResource;
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.GET)
@@ -113,23 +128,24 @@ public class GameController {
                 .toResources(Collections.singletonList(game.getScorecard()));
     }
 
-
+    @Transactional
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.POST)
     public ScorecardResource createScorecard(@PathVariable Game game,
                                              @Validated(Scorecard.Creating.class)
-                                             @RequestBody Scorecard scorecard) {
+                                             @RequestBody Scorecard scorecard,
+                                             HttpServletResponse response) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         if (game.getScorecard() != null)
             throw new GameAlreadyHasScorecardException();
         scorecard.setGame(game);
+        scorecard.getSections().forEach(scorecardSection -> scorecardSection.setScorecard(scorecard));
         scorecardRepository.save(scorecard);
-        scorecard.getSections().forEach(scorecardSection -> scorecardSection
-                .setScorecard(scorecard));
-        scorecardSectionRepository.save(scorecard.getSections());
-        game.setScorecard(scorecard);
-        gameRepository.save(game);
-        return new ScorecardResourceAssembler().toResource(scorecard);
+        entityManager.refresh(scorecard);
+
+        ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(scorecard);
+        response.setHeader(LOCATION,scorecardResource.getLink("self").getHref());
+        return scorecardResource;
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/robots", method = RequestMethod.GET)

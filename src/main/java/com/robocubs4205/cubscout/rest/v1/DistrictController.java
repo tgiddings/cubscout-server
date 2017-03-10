@@ -7,8 +7,11 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
 @RequestMapping(value = "/districts",produces = "application/vnd.robocubs-v1+json")
@@ -27,10 +30,12 @@ public class DistrictController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public DistrictResource create(@Valid @RequestBody District district) {
+    public DistrictResource create(@Valid @RequestBody District district, HttpServletResponse response) {
         if(districtRepository.findByCode(district.getCode())!=null) throw new DistrictConflictException();
         districtRepository.save(district);
-        return new DistrictResourceAssembler().toResource(district);
+        DistrictResource districtResource = new DistrictResourceAssembler().toResource(district);
+        response.setHeader(LOCATION,districtResource.getLink("self").getHref());
+        return districtResource;
     }
 
     @RequestMapping(value = "/{district}", method = RequestMethod.GET)

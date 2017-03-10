@@ -8,7 +8,10 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
 @RequestMapping(value = "/robots",produces = "application/vnd.robocubs-v1+json")
@@ -35,9 +38,11 @@ public class RobotController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public RobotResource create(@RequestBody Robot robot) {
+    public RobotResource create(@RequestBody Robot robot, HttpServletResponse response) {
         robotRepository.save(robot);
-        return new RobotResourceAssembler().toResource(robot);
+        RobotResource robotResource = new RobotResourceAssembler().toResource(robot);
+        response.setHeader(LOCATION,robotResource.getLink("self").getHref());
+        return robotResource;
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.PUT)
