@@ -91,10 +91,19 @@ public class EventController {
                 match -> match.getRobots().stream()
                               .map(robot -> resultsForRobot.apply(resultsForScorecard.apply(match), robot)
                                                            .stream().collect(ResultUtil.resultAverager()))
+                              .peek(result -> result.setMatch(match))
                               .collect(Collectors.toSet());
 
-        Set<Result> results = event.getMatches().stream().map(averageResultsForMatch).flatMap(Collection::stream)
-                                   .collect(Collectors.toSet());
+        BiFunction<Event,Set<Result>,Set<Result>> averageResultsForEventFromAverageResultsForMatch =
+                (event1,results) -> event.getMatches().stream()
+                                         .flatMap(match -> match.getRobots().stream())
+                                         .map(robot -> resultsForRobot.apply(results,robot).stream()
+                                                                      .collect(ResultUtil.resultAverager()))
+                                         .collect(Collectors.toSet());
+
+        Set<Result> results =
+        event.getMatches().stream().map(averageResultsForMatch).flatMap(Collection::stream).collect(Collectors.toSet());
+
         return new ResultResourceAssembler().toResources(results);
     }
 }

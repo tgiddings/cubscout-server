@@ -1,11 +1,10 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,10 +28,19 @@ public class FieldSection extends ScorecardSection {
 
     private boolean isOptional = false;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "field")
     private Set<ScorecardFieldResult> results = new HashSet<>();
 
+    @OneToOne(optional = false,mappedBy = "field",cascade = CascadeType.ALL)
+    private ScoreWeight weight;
+
     public FieldSection() {
+    }
+
+    @JsonCreator
+    public FieldSection(int id){
+        setId(id);
     }
 
     public FieldType getType() {
@@ -77,6 +85,14 @@ public class FieldSection extends ScorecardSection {
 
     public Set<ScorecardFieldResult> getResults() {
         return results;
+    }
+
+    public ScoreWeight getWeight() {
+        return weight;
+    }
+
+    public void setWeight(ScoreWeight weight) {
+        this.weight = weight;
     }
 
     public enum NullWhen {

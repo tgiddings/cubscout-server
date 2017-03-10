@@ -1,6 +1,7 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.*;
+import com.robocubs4205.cubscout.model.scorecard.FieldSection;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardSectionRepository;
@@ -11,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +28,9 @@ public class GameController {
     private final DistrictRepository districtRepository;
     private final ScorecardRepository scorecardRepository;
     private final ScorecardSectionRepository scorecardSectionRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     public GameController(GameRepository gameRepository,
@@ -113,7 +120,7 @@ public class GameController {
                 .toResources(Collections.singletonList(game.getScorecard()));
     }
 
-
+    @Transactional
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.POST)
     public ScorecardResource createScorecard(@PathVariable Game game,
                                              @Validated(Scorecard.Creating.class)
@@ -123,12 +130,13 @@ public class GameController {
         if (game.getScorecard() != null)
             throw new GameAlreadyHasScorecardException();
         scorecard.setGame(game);
+        scorecard.getSections().forEach(scorecardSection -> scorecardSection.setScorecard(scorecard));
+        scorecard.getSections().stream().filter(scorecardSection -> scorecardSection instanceof FieldSection)
+                 .map(scorecardSection -> (FieldSection)scorecardSection)
+                 .forEach(fieldSection -> fieldSection.getWeight().setField(fieldSection));
         scorecardRepository.save(scorecard);
-        scorecard.getSections().forEach(scorecardSection -> scorecardSection
-                .setScorecard(scorecard));
-        scorecardSectionRepository.save(scorecard.getSections());
-        game.setScorecard(scorecard);
-        gameRepository.save(game);
+        entityManager.refresh(scorecard);
+
         return new ScorecardResourceAssembler().toResource(scorecard);
     }
 

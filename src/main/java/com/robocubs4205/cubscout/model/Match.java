@@ -22,8 +22,12 @@ public class Match implements Identifiable<Long> {
     @ManyToOne(optional = false)
     private Event event;
 
-    @ManyToMany
-    @JoinTable
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(
+            name = "match_robot",
+            joinColumns = {@JoinColumn(name = "Match_id")},
+            inverseJoinColumns = {@JoinColumn(name = "Robot_id")}
+    )
     private Set<Robot> robots = new HashSet<>();
 
     @OneToMany(mappedBy = "match")
