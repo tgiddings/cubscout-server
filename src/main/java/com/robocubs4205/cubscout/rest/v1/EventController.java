@@ -10,12 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 
 @RestController
@@ -69,11 +72,14 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)
-    MatchResource createMatch(@PathVariable Event event, @RequestBody Match match) {
+    @ResponseStatus(HttpStatus.CREATED)
+    MatchResource createMatch(@PathVariable Event event, @RequestBody Match match, HttpServletResponse response) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         match.setEvent(event);
         match = matchRepository.saveAndFlush(match);
-        return new MatchResourceAssembler().toResource(match);
+        MatchResource matchResource = new MatchResourceAssembler().toResource(match);
+        response.setHeader(LOCATION,matchResource.getLink("self").getHref());
+        return matchResource;
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/results", method = RequestMethod.GET)

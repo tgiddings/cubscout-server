@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
 @RequestMapping(value = "/matches",produces = "application/vnd.robocubs-v1+json")
@@ -78,9 +81,11 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResultResource createResult(@PathVariable Match match,
                                        @Validated(Result.Creating.class)
-                                       @RequestBody Result result) {
+                                       @RequestBody Result result,
+                                       HttpServletResponse response) {
         if (match == null) throw new ResourceNotFoundException();
 
         result.setScorecard(scorecardRepository
@@ -153,7 +158,9 @@ public class MatchController {
 
         Result finalResult = resultRepository.saveAndFlush(result);
 
-        return new ResultResourceAssembler().toResource(finalResult);
+        ResultResource resultResource = new ResultResourceAssembler().toResource(result);
+        response.setHeader(LOCATION,resultResource.getLink("self").getHref());
+        return resultResource;
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.GET)

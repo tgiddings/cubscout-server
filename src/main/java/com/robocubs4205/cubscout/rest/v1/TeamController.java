@@ -5,10 +5,14 @@ import com.robocubs4205.cubscout.model.Team;
 import com.robocubs4205.cubscout.model.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
 @RequestMapping(value = "/teams",produces = "application/vnd.robocubs-v1+json")
@@ -31,9 +35,12 @@ public class TeamController {
         return new TeamResourceAssembler().toResource(team);
     }
     @RequestMapping(method = RequestMethod.POST)
-    public TeamResource create(@Valid @RequestBody Team team){
+    @ResponseStatus(HttpStatus.CREATED)
+    public TeamResource create(@Valid @RequestBody Team team,HttpServletResponse response){
         team = teamRepository.saveAndFlush(team);
-        return new TeamResourceAssembler().toResource(team);
+        TeamResource teamResource = new TeamResourceAssembler().toResource(team);
+        response.setHeader(LOCATION,teamResource.getLink("self").getHref());
+        return teamResource;
     }
     @RequestMapping(value = "/{team:[0-9]+}",method = RequestMethod.PUT)
     public TeamResource update(@PathVariable Team team, @RequestBody Team newTeam){
