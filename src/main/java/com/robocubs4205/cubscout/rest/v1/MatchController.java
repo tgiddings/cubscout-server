@@ -1,16 +1,16 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.*;
-import com.robocubs4205.cubscout.model.scorecard.*;
+import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
+import com.robocubs4205.cubscout.model.scorecard.Result;
+import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
+import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -23,9 +23,6 @@ public class MatchController {
     private final ScorecardRepository scorecardRepository;
     private final FieldSectionRepository fieldSectionRepository;
     private final TeamRepository teamRepository;
-
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Autowired
     public MatchController(MatchRepository matchRepository,
@@ -61,6 +58,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         match.setNumber(newMatch.getNumber());
+        matchRepository.saveAndFlush(match);
         return new MatchResourceAssembler().toResource(match);
     }
 
@@ -69,6 +67,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         matchRepository.delete(match);
+        matchRepository.flush();
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)
@@ -78,8 +77,6 @@ public class MatchController {
         return new RobotResourceAssembler().toResources(match.getRobots());
     }
 
-
-    @Transactional
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.POST)
     public ResultResource createResult(@PathVariable Match match,
                                        @Validated(Result.Creating.class)
@@ -113,17 +110,14 @@ public class MatchController {
                 team.setNumber(result.getRobot().getNumber());
                 team.setGameType(result.getMatch().getEvent().getGame().getType());
                 team.setDistrict(result.getMatch().getEvent().getDistrict());
-                teamRepository.save(team);
-                result.getRobot().setTeam(team);
+                result.getRobot().setTeam(teamRepository.saveAndFlush(team));
             }
             else result.getRobot().setTeam(existingTeam);
 
             result.getRobot().setGame(result.getMatch().getEvent().getGame());
 
-            robotRepository.save(result.getRobot());
-            entityManager.refresh(result.getRobot());
+            result.setRobot(robotRepository.save(result.getRobot()));
         } else result.setRobot(existingRobot);
-        List<Robot> all = robotRepository.findAll();
 
         //replace transient FieldSections with entities from database
         //todo: reduce database hits
@@ -152,15 +146,13 @@ public class MatchController {
             throw new GameDoesNotMatchScorecardException();
         }
 
-        resultRepository.save(result);
-        match.getRobots().add(result.getRobot());
-        result.getRobot().getMatches().add(match);
-        robotRepository.save(result.getRobot());
-        matchRepository.save(match);
-        entityManager.refresh(result);
-        entityManager.refresh(result.getRobot());
-        entityManager.refresh(match);
-        return new ResultResourceAssembler().toResource(result);
+        Result finalResult = resultRepository.saveAndFlush(result);
+
+        match.getRobots().add(finalResult.getRobot());
+        finalResult.getRobot().getMatches().add(match);
+        finalResult.setRobot(robotRepository.saveAndFlush(finalResult.getRobot()));
+        matchRepository.saveAndFlush(match);
+        return new ResultResourceAssembler().toResource(finalResult);
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.GET)

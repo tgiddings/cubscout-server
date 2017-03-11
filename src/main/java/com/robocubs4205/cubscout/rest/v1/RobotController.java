@@ -36,13 +36,14 @@ public class RobotController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public RobotResource create(@RequestBody Robot robot) {
-        robotRepository.save(robot);
+        robot = robotRepository.saveAndFlush(robot);
         return new RobotResourceAssembler().toResource(robot);
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.PUT)
     public RobotResource update(@PathVariable Robot robot, @RequestBody Robot newRobot) {
-        //robot has no properties currently
+        robot.setYear(newRobot.getYear());
+        robot = robotRepository.saveAndFlush(robot);
         return new RobotResourceAssembler().toResource(robot);
     }
 
@@ -50,6 +51,7 @@ public class RobotController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Robot robot) {
         robotRepository.delete(robot);
+        robotRepository.flush();
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}/results",method = RequestMethod.GET)

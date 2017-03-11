@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class GameController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public GameResource createGame(@Valid @RequestBody Game game) {
-        gameRepository.save(game);
+        game = gameRepository.saveAndFlush(game);
         return new GameResourceAssembler().toResource(game);
     }
 
@@ -73,7 +72,7 @@ public class GameController {
         game.setName(newGame.getName());
         game.setYear(newGame.getYear());
         game.setType(newGame.getType());
-        gameRepository.save(game);
+        game = gameRepository.saveAndFlush(game);
         return new GameResourceAssembler().toResource(game);
     }
 
@@ -83,14 +82,14 @@ public class GameController {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         gameRepository.delete(game);
+        gameRepository.flush();
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.GET)
     public List<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new EventResourceAssembler()
-                .toResources(eventRepository.findByGame(game));
+        return new EventResourceAssembler().toResources(eventRepository.findByGame(game));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
@@ -107,7 +106,7 @@ public class GameController {
             if (event.getDistrict() == null)
                 throw new DistrictDoesNotExistException();
         }
-        eventRepository.save(event);
+        event = eventRepository.saveAndFlush(event);
         return new EventResourceAssembler().toResource(event);
     }
 
@@ -134,10 +133,9 @@ public class GameController {
         scorecard.getSections().stream().filter(scorecardSection -> scorecardSection instanceof FieldSection)
                  .map(scorecardSection -> (FieldSection)scorecardSection)
                  .forEach(fieldSection -> fieldSection.getWeight().setField(fieldSection));
-        scorecardRepository.save(scorecard);
-        entityManager.refresh(scorecard);
+        Scorecard finalScorecard = scorecardRepository.saveAndFlush(scorecard);
 
-        return new ScorecardResourceAssembler().toResource(scorecard);
+        return new ScorecardResourceAssembler().toResource(finalScorecard);
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/robots", method = RequestMethod.GET)

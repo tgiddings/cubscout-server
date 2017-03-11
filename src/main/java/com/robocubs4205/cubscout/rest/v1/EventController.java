@@ -3,18 +3,18 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.FieldResult;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.*;
-import java.util.stream.Collector;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -50,7 +50,7 @@ public class EventController {
         event.setStartDate(newEvent.getStartDate());
         event.setEndDate(newEvent.getEndDate());
         event.setAddress(newEvent.getAddress());
-        eventRepository.save(event);
+        event = eventRepository.saveAndFlush(event);
         return new EventResourceAssembler().toResource(event);
     }
 
@@ -59,6 +59,7 @@ public class EventController {
     void deleteEvent(@PathVariable Event event) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         eventRepository.delete(event);
+        eventRepository.flush();
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.GET)
@@ -71,7 +72,7 @@ public class EventController {
     MatchResource createMatch(@PathVariable Event event, @RequestBody Match match) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         match.setEvent(event);
-        matchRepository.save(match);
+        match = matchRepository.saveAndFlush(match);
         return new MatchResourceAssembler().toResource(match);
     }
 
