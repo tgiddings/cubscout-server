@@ -27,12 +27,7 @@ public class Robot implements Identifiable<Long> {
     private int year;
 
     private String name;
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "match_robot",
-            inverseJoinColumns = {@JoinColumn(name = "Match_id")},
-            joinColumns = {@JoinColumn(name = "Robot_id")}
-    )
+    @ManyToMany(cascade = CascadeType.PERSIST,mappedBy = "robots")
     private Set<Match> matches = new HashSet<>();
 
     @ManyToOne(optional = false)

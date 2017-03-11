@@ -146,12 +146,13 @@ public class MatchController {
             throw new GameDoesNotMatchScorecardException();
         }
 
+        match.getRobots().add(result.getRobot());
+        result.getRobot().getMatches().add(match);
+        result.setRobot(robotRepository.saveAndFlush(result.getRobot()));
+        matchRepository.saveAndFlush(match);
+
         Result finalResult = resultRepository.saveAndFlush(result);
 
-        match.getRobots().add(finalResult.getRobot());
-        finalResult.getRobot().getMatches().add(match);
-        finalResult.setRobot(robotRepository.saveAndFlush(finalResult.getRobot()));
-        matchRepository.saveAndFlush(match);
         return new ResultResourceAssembler().toResource(finalResult);
     }
 

@@ -77,34 +77,58 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/results", method = RequestMethod.GET)
-    List<ResultResource> getResults(@PathVariable Event event, @RequestParam("scorecard") Scorecard scorecard) {
-        Function<Match, Set<Result>> resultsForScorecard = match -> match.getResults().stream().filter(result -> {
-            return Objects
-                    .equals(result.getScorecard().getId(), scorecard.getId());
-        }).collect(Collectors.toSet());
+    List<ResultResource> getResults(@PathVariable Event event,
+                                    @RequestParam("scorecard") Scorecard scorecard) {
+        Function<Match, Set<Result>> resultsForScorecard = match -> match.getResults().stream()
+                                                                         .filter(result -> {
+                                                                             return Objects
+                                                                                     .equals(result
+                                                                                             .getScorecard()
+                                                                                             .getId(), scorecard
+                                                                                             .getId());
+                                                                         }).collect(Collectors
+                        .toSet());
 
         BiFunction<Set<Result>, Robot, Set<Result>> resultsForRobot = (results, robot) -> {
-            return results.stream().filter(result -> Objects.equals(result.getRobot().getId(), robot.getId()))
+            return results.stream().filter(result -> Objects
+                    .equals(result.getRobot().getId(), robot.getId()))
                           .collect(Collectors.toSet());
         };
 
         Function<Match, Set<Result>> averageResultsForMatch =
                 match -> match.getRobots().stream()
-                              .map(robot -> resultsForRobot.apply(resultsForScorecard.apply(match), robot)
-                                                           .stream().collect(ResultUtil.resultAverager()))
+                              .map(robot -> {
+                                  Result result = resultsForRobot
+                                          .apply(resultsForScorecard.apply(match), robot)
+                                          .stream().collect(ResultUtil.resultAverager());
+                                  result.setRobot(robot);
+                                  return result;
+                              })
                               .peek(result -> result.setMatch(match))
                               .collect(Collectors.toSet());
 
-        BiFunction<Event,Set<Result>,Set<Result>> averageResultsForEventFromAverageResultsForMatch =
-                (event1,results) -> event.getMatches().stream()
-                                         .flatMap(match -> match.getRobots().stream())
-                                         .map(robot -> resultsForRobot.apply(results,robot).stream()
-                                                                      .collect(ResultUtil.resultAverager()))
-                                         .collect(Collectors.toSet());
+        BiFunction<Event, Set<Result>, Set<Result>>
+                averageResultsForEventFromAverageResultsForMatch =
+                (event1, results) -> event.getMatches().stream()
+                                          .flatMap(match -> match.getRobots().stream())
+                                          .distinct()
+                                          .map(robot -> {
+                                              Result result =
+                                                      resultsForRobot.apply(results, robot)
+                                                                     .stream()
+                                                                     .collect(ResultUtil
+                                                                             .resultAverager());
+                                              result.setRobot(robot);
+                                              return result;
+                                          })
+                                          .collect(Collectors.toSet());
 
-        Set<Result> results =
-        event.getMatches().stream().map(averageResultsForMatch).flatMap(Collection::stream).collect(Collectors.toSet());
-
+        Set<Result> results = averageResultsForEventFromAverageResultsForMatch.apply(
+                event,
+                event.getMatches().stream()
+                     .map(averageResultsForMatch)
+                     .flatMap(Collection::stream)
+                     .collect(Collectors.toSet()));
         return new ResultResourceAssembler().toResources(results);
     }
 }
