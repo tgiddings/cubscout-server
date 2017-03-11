@@ -17,18 +17,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"match", "robot"}))
 public class Result implements Identifiable<Long> {
     @Id
     @GeneratedValue
     private long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "match")
     private Match match;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "robot")
     @NotNull(groups = {Default.class, Creating.class})
     private Robot robot;
 
@@ -36,7 +33,7 @@ public class Result implements Identifiable<Long> {
     @NotNull(groups = {Default.class, Creating.class})
     private Scorecard scorecard;
 
-    @OneToMany(mappedBy = "result")
+    @OneToMany(mappedBy = "result",cascade = CascadeType.PERSIST)
     private Set<ScorecardFieldResult> scores = new HashSet<>();
 
     public Result() {

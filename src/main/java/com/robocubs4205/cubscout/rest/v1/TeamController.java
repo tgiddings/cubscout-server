@@ -36,8 +36,8 @@ public class TeamController {
     }
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public TeamResource create(@Valid @RequestBody Team team, HttpServletResponse response){
-        teamRepository.save(team);
+    public TeamResource create(@Valid @RequestBody Team team,HttpServletResponse response){
+        team = teamRepository.saveAndFlush(team);
         TeamResource teamResource = new TeamResourceAssembler().toResource(team);
         response.setHeader(LOCATION,teamResource.getLink("self").getHref());
         return teamResource;
@@ -47,7 +47,7 @@ public class TeamController {
         if(team==null) throw new ResourceNotFoundException();
         team.setNumber(newTeam.getNumber());
         team.setName(newTeam.getName());
-        teamRepository.save(team);
+        team = teamRepository.saveAndFlush(team);
         return new TeamResourceAssembler().toResource(team);
     }
     @RequestMapping(value = "/{team:[0-9]+}/matches",method = RequestMethod.GET)

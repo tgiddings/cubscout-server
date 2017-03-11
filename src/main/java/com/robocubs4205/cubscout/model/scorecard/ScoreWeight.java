@@ -1,28 +1,33 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
-public class ScorecardFieldResult {
+public class ScoreWeight {
     @Id
     @GeneratedValue
     private long id;
-
-    @ManyToOne(optional=false)
+    @JsonIgnore
+    @OneToOne(optional = false)
     private FieldSection field;
 
-    @JsonIgnore
-    @ManyToOne(optional = false)
-    private Result result;
+    private float weight;
 
-    private Float score;
+    public ScoreWeight(){}
 
-    public ScorecardFieldResult(){}
+    public ScoreWeight(float weight){
+        setWeight(weight);
+    }
+
+    public ScoreWeight(int weight){
+        setWeight(weight);
+    }
 
     public FieldSection getField() {
         return field;
@@ -32,12 +37,12 @@ public class ScorecardFieldResult {
         this.field = field;
     }
 
-    public Float getScore() {
-        return score;
+    public float getWeight() {
+        return weight;
     }
 
-    public void setScore(Float score) {
-        this.score = score;
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     public long getId() {
@@ -46,13 +51,5 @@ public class ScorecardFieldResult {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
     }
 }

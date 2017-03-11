@@ -2,13 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f2f5871-2528-43f1-b446-3769377f4d9b" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScoreWeight.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test-requests/create-valid-match-2.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test-requests/create-valid-result-match-2-robocubs.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cubscout-server.iws" afterPath="$PROJECT_DIR$/cubscout-server.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Match.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Match.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/RobotRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/RobotRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSection.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSectionRepository.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/FieldSectionRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/Result.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/Result.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardFieldResult.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardFieldResult.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameResourceAssembler.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameResourceAssembler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java" afterPath="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json" afterPath="$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test-requests/create-valid-scorecard-steamworks.json" afterPath="$PROJECT_DIR$/test-requests/create-valid-scorecard-steamworks.json" />
     </list>
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -125,58 +135,41 @@
       <file leaf-file-name="MatchController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="155" column="30" lean-forward="false" selection-start-line="155" selection-start-column="30" selection-end-line="155" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RobotController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="43" column="32" lean-forward="false" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
+            <state relative-caret-position="129">
+              <caret line="154" column="8" lean-forward="true" selection-start-line="154" selection-start-column="8" selection-end-line="154" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TeamController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java">
+      <file leaf-file-name="Result.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/Result.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="41" column="31" lean-forward="false" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="132" column="35" lean-forward="false" selection-start-line="132" selection-start-column="29" selection-end-line="132" selection-end-column="35" />
+            <state relative-caret-position="72">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="29" selection-end-column="24" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#7156#7260#1" expanded="false" />
-                <element signature="e#7339#7514#1" expanded="false" />
-                <marker date="1489118477442" expanded="false" signature="6970:7150" ph="{...}" />
-                <marker date="1489118477442" expanded="false" signature="7326:7333" ph="{...}" />
-                <marker date="1489118477442" expanded="false" signature="7468:7514" ph="@{...}" />
-                <marker date="1489118477442" expanded="false" signature="7583:7590" ph="{...}" />
+                <element signature="method#allMissingScoresAreOptional#0;class#Result#0" expanded="false" />
+                <element signature="method#gameMatchesScorecard#0;class#Result#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DistrictController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java">
+      <file leaf-file-name="Match.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Match.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="36" column="78" lean-forward="false" selection-start-line="36" selection-start-column="78" selection-end-line="36" selection-end-column="78" />
+            <state relative-caret-position="162">
+              <caret line="25" column="6" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="30" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Robot.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -185,11 +178,19 @@
       <file leaf-file-name="EventController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="73" column="31" lean-forward="false" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="293">
+              <caret line="103" column="0" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create-valid-result-match-1-robocubs.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -208,17 +209,13 @@
     <findStrings>
       <find>toList()</find>
       <find>scorecardRepository</find>
-      <find>create</find>
     </findStrings>
-    <dirStrings>
-      <dir>$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="result_aggregation" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
   </component>
@@ -617,7 +614,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="dummy://restClient/response327.txt" root0="SKIP_INSPECTION" />
+    <setting file="dummy://restClient/response325.txt" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -647,7 +644,10 @@
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/MatchController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Result.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/GameController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/ScorecardController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultUtilTests.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/FieldAveragerTests.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultAveragerTests.java" />
@@ -656,6 +656,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScoreWeight.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/Scorecard.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardSection.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameResourceAssembler.java" />
         <option value="$PROJECT_DIR$/test-requests/create-valid-match-2.json" />
         <option value="$PROJECT_DIR$/test-requests/create-valid-result-match-2-robocubs.json" />
@@ -666,13 +668,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/scorecard/ScorecardFieldResult.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Match.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java" />
-        <option value="$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json" />
-        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java" />
+        <option value="$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json" />
       </list>
     </option>
   </component>
@@ -860,7 +857,101 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="v1" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cubscout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scorecard" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -884,7 +975,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.4643678" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest" />
   </component>
   <component name="RecentsManager">
@@ -908,27 +999,6 @@
   <component name="RestClientSettings">
     <option name="REQUEST_HISTORY">
       <list>
-        <RestClientRequest>
-          <option name="httpMethod" value="POST" />
-          <option name="urlBase" value="http://localhost:8080" />
-          <option name="urlPath" value="games" />
-          <option name="headers">
-            <list>
-              <KeyValuePair>
-                <option name="key" value="Accept" />
-                <option name="value" value="application/vnd.robocubs-v1+json" />
-              </KeyValuePair>
-              <KeyValuePair>
-                <option name="key" value="Content-Type" />
-                <option name="value" value="application/json" />
-              </KeyValuePair>
-            </list>
-          </option>
-          <option name="parametersEnabled" value="true" />
-          <option name="haveFileToSend" value="true" />
-          <option name="textToSend" value="" />
-          <option name="filesToSend" value="$PROJECT_DIR$/test-requests/create-valid-game-steamworks.json" />
-        </RestClientRequest>
         <RestClientRequest>
           <option name="httpMethod" value="POST" />
           <option name="urlBase" value="http://localhost:8080" />
@@ -1012,6 +1082,27 @@
           <option name="haveFileToSend" value="true" />
           <option name="textToSend" value="" />
           <option name="filesToSend" value="$PROJECT_DIR$/test-requests/create-valid-scorecard-steamworks.json" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="POST" />
+          <option name="urlBase" value="http://localhost:8080" />
+          <option name="urlPath" value="games" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="application/vnd.robocubs-v1+json" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Content-Type" />
+                <option name="value" value="application/json" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="haveFileToSend" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="$PROJECT_DIR$/test-requests/create-valid-game-steamworks.json" />
         </RestClientRequest>
         <RestClientRequest>
           <option name="httpMethod" value="GET" />
@@ -2875,7 +2966,7 @@
       <workItem from="1488926169671" duration="20371000" />
       <workItem from="1488953766550" duration="3544000" />
       <workItem from="1489014144889" duration="11037000" />
-      <workItem from="1489098506161" duration="14212000" />
+      <workItem from="1489098506161" duration="12867000" />
     </task>
     <task id="LOCAL-00001" summary="make controller class methods consistent&#10;restrict url mappings">
       <created>1488255378529</created>
@@ -2975,14 +3066,7 @@
       <option name="project" value="LOCAL" />
       <updated>1489015330142</updated>
     </task>
-    <task id="LOCAL-00015" summary="partial commit">
-      <created>1489117714019</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1489117714019</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -3018,11 +3102,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116112000" />
+    <option name="totallyTimeSpent" value="114767000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -3036,14 +3120,14 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5807292" sideWeight="0.49806094" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.47046414" sideWeight="0.49806094" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33966243" sideWeight="0.49806094" order="15" side_tool="false" content_ui="tabs" x="-39" y="405" width="1855" height="349" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41983122" sideWeight="0.49806094" order="15" side_tool="false" content_ui="tabs" x="-39" y="405" width="1855" height="349" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3407173" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299075" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -3052,7 +3136,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28919667" sideWeight="0.49384886" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28531855" sideWeight="0.50615114" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991913" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -3088,24 +3172,63 @@
     <MESSAGE value="add api versioning via MIME type. fixed scorecard controller not having controller annotation. resolves #1" />
     <MESSAGE value="change scores to floats&#10;create Utility class for aggregating results&#10;created collectors for averaging results and for combining field results into a match result" />
     <MESSAGE value="replace AtomicReference&lt;Float&gt; with DoubleAdder" />
-    <MESSAGE value="partial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="partial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="replace AtomicReference&lt;Float&gt; with DoubleAdder" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultAveragerTests.java</url>
+          <line>187</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultAveragerTests.java</url>
+          <line>162</line>
+          <properties />
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultAveragerTests.java</url>
+          <line>72</line>
+          <properties />
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/robocubs4205/cubscout/ResultAveragerTests.java</url>
+          <line>114</line>
+          <properties />
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java</url>
-          <line>75</line>
+          <line>103</line>
           <properties />
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java</url>
+          <line>91</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java</url>
-          <line>154</line>
+          <line>162</line>
           <properties />
           <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java</url>
+          <line>160</line>
+          <properties />
+          <option name="timeStamp" value="87" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="88" />
@@ -3118,6 +3241,27 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Result.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="13" column="24" lean-forward="false" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="79" lean-forward="false" selection-start-line="13" selection-start-column="79" selection-end-line="13" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="16" column="22" lean-forward="false" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/stream/BaseStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="771">
@@ -3225,7 +3369,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="69" column="55" lean-forward="false" selection-start-line="69" selection-start-column="55" selection-end-line="69" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="method#resultBuilder#0;class#ResultUtil#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3233,7 +3380,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
           <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="method#ResultAverager_OneResult_OneField_SameNumberOfFields#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_OneResult_OneField_SameScoreAsOriginal#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_TwoResults_Identical_OneField_SameNumberOfFields#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_TwoResults_Identical_OneField_SameScoreAsOriginal#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_OneResult_TwoFields_SameNumberOfFields#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_TwoResults_DifferentFields_TwoFieldsInResult#0;class#ResultAveragerTests#0" expanded="false" />
+            <element signature="method#ResultAverager_TwoResults_DifferentFields_SameScores#0;class#ResultAveragerTests#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3303,7 +3458,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="12" lean-forward="false" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+          <folding>
+            <marker date="1489022163271" expanded="true" signature="7058:7104" ph="@{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3311,7 +3475,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="13" column="19" lean-forward="false" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#553#554#0" expanded="false" />
+            <element signature="e#586#587#0" expanded="false" />
+            <element signature="e#623#624#0" expanded="false" />
+            <element signature="e#656#657#0" expanded="false" />
+            <element signature="e#694#695#0" expanded="false" />
+            <element signature="e#722#723#0" expanded="false" />
+            <element signature="e#770#771#0" expanded="false" />
+            <element signature="e#804#805#0" expanded="false" />
+            <element signature="e#836#837#0" expanded="false" />
+            <element signature="e#865#866#0" expanded="false" />
+            <element signature="e#908#909#0" expanded="false" />
+            <element signature="e#944#945#0" expanded="false" />
+            <element signature="e#971#972#0" expanded="false" />
+            <element signature="e#996#997#0" expanded="false" />
+            <element signature="e#1030#1031#0" expanded="false" />
+            <element signature="e#1058#1059#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3335,7 +3517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3376,8 +3557,8 @@
         <state relative-caret-position="234">
           <caret line="18" column="4" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="15" />
           <folding>
-            <element signature="e#526#527#0" expanded="false" />
-            <element signature="e#560#561#0" expanded="false" />
+            <element signature="e#654#655#0" expanded="false" />
+            <element signature="e#688#689#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3409,6 +3590,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="103" column="0" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test-requests/create-valid-result-match-1-robocubs.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -3428,10 +3617,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+        <state relative-caret-position="129">
+          <caret line="154" column="8" lean-forward="true" selection-start-line="154" selection-start-column="8" selection-end-line="154" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -3444,62 +3633,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/GameController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/model/Robot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="132" column="35" lean-forward="false" selection-start-line="132" selection-start-column="29" selection-end-line="132" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7156#7260#1" expanded="false" />
-            <element signature="e#7339#7514#1" expanded="false" />
-            <marker date="1489118477442" expanded="false" signature="6970:7150" ph="{...}" />
-            <marker date="1489118477442" expanded="false" signature="7326:7333" ph="{...}" />
-            <marker date="1489118477442" expanded="false" signature="7468:7514" ph="@{...}" />
-            <marker date="1489118477442" expanded="false" signature="7583:7590" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/DistrictController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="36" column="78" lean-forward="false" selection-start-line="36" selection-start-column="78" selection-end-line="36" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/EventController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="73" column="31" lean-forward="false" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/MatchController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="155" column="30" lean-forward="false" selection-start-line="155" selection-start-column="30" selection-end-line="155" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/RobotController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="43" column="32" lean-forward="false" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/robocubs4205/cubscout/rest/v1/TeamController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="41" column="31" lean-forward="false" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
+        <state relative-caret-position="90">
+          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
           <folding />
         </state>
       </provider>

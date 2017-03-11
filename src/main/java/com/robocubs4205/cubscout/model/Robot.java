@@ -27,7 +27,7 @@ public class Robot implements Identifiable<Long> {
     private int year;
 
     private String name;
-    @ManyToMany(mappedBy = "robots")
+    @ManyToMany(cascade = CascadeType.PERSIST,mappedBy = "robots")
     private Set<Match> matches = new HashSet<>();
 
     @ManyToOne(optional = false)

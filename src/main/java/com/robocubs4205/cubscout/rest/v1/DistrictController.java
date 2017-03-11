@@ -32,7 +32,7 @@ public class DistrictController {
     @ResponseStatus(HttpStatus.CREATED)
     public DistrictResource create(@Valid @RequestBody District district, HttpServletResponse response) {
         if(districtRepository.findByCode(district.getCode())!=null) throw new DistrictConflictException();
-        districtRepository.save(district);
+        district = districtRepository.saveAndFlush(district);
         DistrictResource districtResource = new DistrictResourceAssembler().toResource(district);
         response.setHeader(LOCATION,districtResource.getLink("self").getHref());
         return districtResource;
@@ -48,7 +48,7 @@ public class DistrictController {
         if(district==null)throw new ResourceNotFoundException();
         district.setCode(newDistrict.getCode());
         district.setName(newDistrict.getName());
-        districtRepository.save(district);
+        district = districtRepository.saveAndFlush(district);
         return new DistrictResourceAssembler().toResource(district);
     }
     @RequestMapping(value = "/{district}",method = RequestMethod.DELETE)
@@ -56,6 +56,7 @@ public class DistrictController {
     public void delete(@PathVariable District district){
         if(district==null)throw new ResourceNotFoundException();
         districtRepository.delete(district);
+        districtRepository.flush();
     }
     @RequestMapping(value = "/{district}/events",method = RequestMethod.GET)
     public List<EventResource> getEvents(@PathVariable District district) {

@@ -20,7 +20,7 @@ public class Scorecard implements Identifiable<Long> {
     @OneToOne(optional = false)
     private Game game;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "scorecard")
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
     @NotEmpty(groups = {Default.class,Creating.class})
     private Set<ScorecardSection> sections;
 

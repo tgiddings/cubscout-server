@@ -13,7 +13,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ResultEntityTest {
+public class ResultEntityTests {
     @Mock
     private Scorecard scorecard;
     @Test

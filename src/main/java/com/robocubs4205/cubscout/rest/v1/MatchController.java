@@ -61,6 +61,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         match.setNumber(newMatch.getNumber());
+        matchRepository.saveAndFlush(match);
         return new MatchResourceAssembler().toResource(match);
     }
 
@@ -69,6 +70,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         matchRepository.delete(match);
+        matchRepository.flush();
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)
@@ -77,7 +79,6 @@ public class MatchController {
             throw new ResourceNotFoundException("match does not exist");
         return new RobotResourceAssembler().toResources(match.getRobots());
     }
-
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -102,7 +103,7 @@ public class MatchController {
 
         //replace transient robot with entity from database
         Robot existingRobot = robotRepository
-                .findById(result.getRobot().getId());
+                .findByNumberAndGame(result.getRobot().getNumber(),result.getRobot().getGame());
         if (existingRobot == null) { //create new robot
             //find team for this robot
             Team existingTeam = teamRepository
@@ -114,14 +115,13 @@ public class MatchController {
                 team.setNumber(result.getRobot().getNumber());
                 team.setGameType(result.getMatch().getEvent().getGame().getType());
                 team.setDistrict(result.getMatch().getEvent().getDistrict());
-                teamRepository.save(team);
-                result.getRobot().setTeam(team);
+                result.getRobot().setTeam(teamRepository.saveAndFlush(team));
             }
             else result.getRobot().setTeam(existingTeam);
 
             result.getRobot().setGame(result.getMatch().getEvent().getGame());
 
-            robotRepository.save(result.getRobot());
+            result.setRobot(robotRepository.save(result.getRobot()));
         } else result.setRobot(existingRobot);
 
         //replace transient FieldSections with entities from database
@@ -130,13 +130,13 @@ public class MatchController {
         result.getScores().stream()
               .peek(fieldResult -> fieldResult.setField(
                       fieldSectionRepository.findByIdAndScorecard(
-                              fieldResult.getId(),
+                              fieldResult.getField().getId(),
                               result.getScorecard())))
               .peek(fieldResult -> {
                   if (fieldResult.getField() == null)
                       throw new ScoresDoNotExistException();
               })
-              .close();
+              .forEach(fieldResult->fieldResult.setResult(result));
 
 
         if (!result.scoresMatchScorecardSections()) {
@@ -151,7 +151,13 @@ public class MatchController {
             throw new GameDoesNotMatchScorecardException();
         }
 
-        resultRepository.save(result);
+        match.getRobots().add(result.getRobot());
+        result.getRobot().getMatches().add(match);
+        result.setRobot(robotRepository.saveAndFlush(result.getRobot()));
+        matchRepository.saveAndFlush(match);
+
+        Result finalResult = resultRepository.saveAndFlush(result);
+
         ResultResource resultResource = new ResultResourceAssembler().toResource(result);
         response.setHeader(LOCATION,resultResource.getLink("self").getHref());
         return resultResource;

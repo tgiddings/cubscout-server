@@ -13,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +33,6 @@ public class GameController {
     private final DistrictRepository districtRepository;
     private final ScorecardRepository scorecardRepository;
     private final ScorecardSectionRepository scorecardSectionRepository;
-
-    @PersistenceContext
-    EntityManager entityManager;
 
     @Autowired
     public GameController(GameRepository gameRepository,
@@ -64,7 +63,7 @@ public class GameController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
-        gameRepository.save(game);
+        game = gameRepository.saveAndFlush(game);
         GameResource gameResource = new GameResourceAssembler().toResource(game);
         response.setHeader(LOCATION,gameResource.getLink("self").getHref());
         return gameResource;
@@ -78,7 +77,7 @@ public class GameController {
         game.setName(newGame.getName());
         game.setYear(newGame.getYear());
         game.setType(newGame.getType());
-        gameRepository.save(game);
+        game = gameRepository.saveAndFlush(game);
         return new GameResourceAssembler().toResource(game);
     }
 
@@ -88,14 +87,14 @@ public class GameController {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         gameRepository.delete(game);
+        gameRepository.flush();
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.GET)
     public List<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new EventResourceAssembler()
-                .toResources(eventRepository.findByGame(game));
+        return new EventResourceAssembler().toResources(eventRepository.findByGame(game));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
@@ -113,7 +112,7 @@ public class GameController {
             if (event.getDistrict() == null)
                 throw new DistrictDoesNotExistException();
         }
-        eventRepository.save(event);
+        event = eventRepository.saveAndFlush(event);
         EventResource eventResource = new EventResourceAssembler().toResource(event);
         response.setHeader(LOCATION,eventResource.getLink("self").getHref());
         return eventResource;
@@ -140,8 +139,10 @@ public class GameController {
             throw new GameAlreadyHasScorecardException();
         scorecard.setGame(game);
         scorecard.getSections().forEach(scorecardSection -> scorecardSection.setScorecard(scorecard));
-        scorecardRepository.save(scorecard);
-        entityManager.refresh(scorecard);
+        scorecard.getSections().stream().filter(scorecardSection -> scorecardSection instanceof FieldSection)
+                 .map(scorecardSection -> (FieldSection)scorecardSection)
+                 .forEach(fieldSection -> fieldSection.getWeight().setField(fieldSection));
+        Scorecard finalScorecard = scorecardRepository.saveAndFlush(scorecard);
 
         ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(scorecard);
         response.setHeader(LOCATION,scorecardResource.getLink("self").getHref());
