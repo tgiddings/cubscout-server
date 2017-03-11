@@ -9,8 +9,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +22,7 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 
 
 @RestController
-@RequestMapping(value = "/events", produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/api/events", produces = "application/vnd.robocubs-v1+json")
 public class EventController {
     private final EventRepository eventRepository;
     private final MatchRepository matchRepository;

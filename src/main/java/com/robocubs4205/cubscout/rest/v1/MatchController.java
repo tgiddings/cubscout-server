@@ -17,7 +17,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value = "/matches",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/api/matches",produces = "application/vnd.robocubs-v1+json")
 public class MatchController {
     private final MatchRepository matchRepository;
     private final ResultRepository resultRepository;

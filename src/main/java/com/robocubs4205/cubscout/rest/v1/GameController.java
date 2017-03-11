@@ -12,11 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -26,7 +21,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value ="/games",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value ="/api/games",produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
     private final EventRepository eventRepository;

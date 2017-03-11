@@ -14,7 +14,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value = "/robots",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/api/robots",produces = "application/vnd.robocubs-v1+json")
 public class RobotController {
     private final RobotRepository robotRepository;
     private final ResultRepository resultRepository;
