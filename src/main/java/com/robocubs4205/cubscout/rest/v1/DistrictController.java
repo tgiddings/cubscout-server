@@ -14,7 +14,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value = "/api/districts",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/districts",produces = "application/vnd.robocubs-v1+json")
 public class DistrictController {
     private final DistrictRepository districtRepository;
 

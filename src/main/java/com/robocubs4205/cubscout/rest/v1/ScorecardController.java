@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/scorecards",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/scorecards",produces = "application/vnd.robocubs-v1+json")
 public class ScorecardController {
 
     private final ScorecardRepository scorecardRepository;
