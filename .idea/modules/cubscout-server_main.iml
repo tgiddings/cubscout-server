@@ -8,7 +8,7 @@
         </fileset>
       </configuration>
     </facet>
-    <facet type="web" name="Web Gradle : cubscout-0.0.0.war">
+    <facet type="web" name="Web Gradle : cubscout-rest-1.0.0.war">
       <configuration>
         <webroots>
           <root url="file://$MODULE_DIR$/../../src/main/webapp" relative="/" />

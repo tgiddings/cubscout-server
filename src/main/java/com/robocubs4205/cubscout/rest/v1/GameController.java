@@ -21,7 +21,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value ="/api/games",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value ="/games",produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
     private final EventRepository eventRepository;

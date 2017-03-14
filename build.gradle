@@ -19,10 +19,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 war{
-    baseName="cubscout"
-    version="0.0.0"
+    baseName="cubscout-rest"
+    version="1.0.0"
 }
-
 
 repositories {
     jcenter()

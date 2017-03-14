@@ -22,7 +22,7 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 
 
 @RestController
-@RequestMapping(value = "/api/events", produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/events", produces = "application/vnd.robocubs-v1+json")
 public class EventController {
     private final EventRepository eventRepository;
     private final MatchRepository matchRepository;
