@@ -1,7 +1,9 @@
 {
   "sections":[
-    {"sectionType":"title","index":1,"title":"amanda"},
-    {"sectionType":"paragraph","index":2,"text":"this is a short paragraph"},
-    {"sectionType":"field","label":"Joe","isOptional":false,"type":"COUNT","weight":1}
+    {"sectionType":"field","label":"Defense effectiveness","isOptional":true,"type":"Rating","weight":1,"index":1},
+    {"sectionType":"field","label":"Low boiler effectiveness","isOptional":true,"type":"Rating","weight":1,"index":2},
+    {"sectionType":"field","label":"High boiler effectiveness","isOptional":true,"type":"Rating","weight":1,"index":3},
+    {"sectionType":"field","label":"Gears taken to airship","isOptional":true,"type":"Count","weight":1,"index":4}
+
   ]
 }

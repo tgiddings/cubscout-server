@@ -24,7 +24,8 @@ public abstract class ScorecardSection {
     private long id;
 
     @NotNull
-    private int index;
+    private Integer index;
+
 
     @ManyToOne(optional = false)
     @JsonIgnore
