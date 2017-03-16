@@ -4,14 +4,12 @@ import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:8081","http://192.168.254.33:8081","https://api.beta.robocubs4205.com"})
 @RequestMapping(value = "/scorecards",produces = "application/vnd.robocubs-v1+json")
 public class ScorecardController {
 
