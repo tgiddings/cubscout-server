@@ -21,7 +21,7 @@ public class GameResourceAssembler extends
         resource.setName(entity.getName());
         resource.setType(entity.getType());
         resource.setYear(entity.getYear());
-        resource.add(linkTo(GameController.class).slash("scorecards").withRel("scorecards"));
+        resource.add(linkTo(GameController.class).slash(entity).slash("scorecards").withRel("scorecards"));
         resource.add(linkTo(GameController.class).slash(entity).slash("events")
                 .withRel("events"));
         resource.add(linkTo(GameController.class).slash(entity).slash("robots")
