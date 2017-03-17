@@ -21,7 +21,6 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:8081","http://192.168.254.33:8081","https://api.beta.robocubs4205.com"})
 @RequestMapping(value ="/games",produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
