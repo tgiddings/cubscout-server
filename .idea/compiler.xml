@@ -10,6 +10,8 @@
       <module name="cubscout-server_test" target="1.8" />
       <module name="rest_main" target="1.8" />
       <module name="rest_test" target="1.8" />
+      <module name="webapp_main" target="1.8" />
+      <module name="webapp_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

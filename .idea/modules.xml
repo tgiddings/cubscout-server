@@ -9,6 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest/rest.iml" filepath="$PROJECT_DIR$/.idea/modules/rest/rest.iml" group="rest" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest/rest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/rest/rest_main.iml" group="rest" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest/rest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/rest/rest_test.iml" group="rest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webapp/webapp.iml" filepath="$PROJECT_DIR$/.idea/modules/webapp/webapp.iml" group="webapp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webapp/webapp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/webapp/webapp_main.iml" group="webapp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webapp/webapp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/webapp/webapp_test.iml" group="webapp" />
     </modules>
   </component>
 </project>

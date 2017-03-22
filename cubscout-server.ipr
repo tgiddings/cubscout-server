@@ -52,6 +52,7 @@
       <module filepath="$PROJECT_DIR$/rest/rest.iml" fileurl="file://$PROJECT_DIR$/rest/rest.iml"/>
       <module filepath="$PROJECT_DIR$/core/core.iml" fileurl="file://$PROJECT_DIR$/core/core.iml"/>
       <module filepath="$PROJECT_DIR$/blue-scraper/blue-scraper.iml" fileurl="file://$PROJECT_DIR$/blue-scraper/blue-scraper.iml"/>
+      <module filepath="$PROJECT_DIR$/webapp/webapp.iml" fileurl="file://$PROJECT_DIR$/webapp/webapp.iml"/>
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-type="JavaSDK" assert-jdk-15="true" project-jdk-name="1.8">

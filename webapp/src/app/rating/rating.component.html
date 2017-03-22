@@ -1,0 +1,4 @@
+<div>
+  <h6>{{label}}</h6>
+  <div><i *ngFor="let index of numStars | arrayWithSize" [style]="'content: '+(rating>index) ? '★':'☆'"></i></div>
+</div>

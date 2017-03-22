@@ -1,0 +1,32 @@
+<div style="width: 280px; margin:24px auto;padding:16px">
+  <md-select ngDefaultControl placeholder="Game" [(ngModel)]="selectedGame" (change)="selectedGameChange()"
+             style="width: 280px;height: 48px;margin: 8px 0">
+    <ng-container *ngIf="games">
+      <md-option *ngFor="let game of games" [value]="game" ngDefaultControl>{{game.name}}</md-option>
+    </ng-container>
+  </md-select>
+  <md-select ngDefaultControl [(ngModel)]="selectedEvent" [placeholder]="selectedGame?'Event':'Please select a game'"
+             style="width: 280px;height: 48px;margin: 8px 0">
+    <ng-container *ngIf="events">
+      <md-option *ngFor="let event of events" [value]="event" ngDefaultControl>{{event.shortName}}</md-option>
+    </ng-container>
+  </md-select>
+  <ng-container *ngIf="scorecard">
+    <ng-container *ngFor="let section of scorecard.sections | sortScorecardSection">
+      <md-input-container *ngIf="isFieldSection(section)&&toFieldSection(section).type=='COUNT'"
+                          title="{{toFieldSection(section).label}}"
+                          style="width:280px;">
+        <input mdInput placeholder="{{toFieldSection(section).label}}" type="number" min="0" ngDefaultControl>
+      </md-input-container>
+      <app-rating *ngIf="isFieldSection(section)&&toFieldSection(section).type=='RATING'"
+                        [numStars]="5"
+                        [label]="toFieldSection(section).label">
+      </app-rating>
+      <h3 *ngIf="isTitleSection(section)"
+          style="width:280px;">{{toTitleSection(section).title}}</h3>
+      <p *ngIf="isParagraphSection(section)"
+         style="width:280px;">{{toParagraphSection(section).text}}</p>
+    </ng-container>
+    <button md-raised-button (click)="submitButtonPressed()">Submit</button>
+  </ng-container>
+</div>
