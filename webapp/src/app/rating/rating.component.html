@@ -1,4 +1,12 @@
-<div>
-  <h6>{{label}}</h6>
-  <div><i *ngFor="let index of numStars | arrayWithSize" [style]="'content: '+(rating>index) ? '★':'☆'"></i></div>
+<div style="font-size: 18px">
+  <h6 style="margin: 0">{{label}}</h6>
+  <div>
+    <button *ngFor="let index of numStars | arrayWithSize"
+            (click)="setRating(index+1)"
+            style="padding: 0;border: none;background: none;font-size:40px;">{{charForStar(index)}}
+    </button>
+    <button
+      (click)="setRating(0)"
+      style="padding: 0;border: none;background: none;">clear</button>
+  </div>
 </div>

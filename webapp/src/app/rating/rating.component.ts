@@ -35,12 +35,21 @@ export class RatingComponent implements OnInit {
 
   private _numStars:number;
 
-  private _rating:number;
+  private _rating:number = 0;
 
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  setRating(rating:number):void{
+    this.rating = rating;
+    console.log(this.rating);
+  }
+
+  charForStar(index:number):string{
+    return index<this.rating?"★":"☆";
   }
 
 }
