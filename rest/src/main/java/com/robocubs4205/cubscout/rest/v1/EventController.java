@@ -18,6 +18,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.robocubs4205.cubscout.util.ResultUtil.averageResultsForMatch;
+import static com.robocubs4205.cubscout.util.ResultUtil.resultsForRobot;
+import static com.robocubs4205.cubscout.util.ResultUtil.resultsForScorecard;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 
@@ -85,33 +88,6 @@ public class EventController {
     @RequestMapping(value = "/{event:[0-9]+}/results", method = RequestMethod.GET)
     JsonArrayContainer<ResultResource> getResults(@PathVariable Event event,
                                     @RequestParam("scorecard") Scorecard scorecard) {
-        Function<Match, Set<Result>> resultsForScorecard = match -> match.getResults().stream()
-                                                                         .filter(result -> {
-                                                                             return Objects
-                                                                                     .equals(result
-                                                                                             .getScorecard()
-                                                                                             .getId(), scorecard
-                                                                                             .getId());
-                                                                         }).collect(Collectors
-                        .toSet());
-
-        BiFunction<Set<Result>, Robot, Set<Result>> resultsForRobot = (results, robot) -> {
-            return results.stream().filter(result -> Objects
-                    .equals(result.getRobot().getId(), robot.getId()))
-                          .collect(Collectors.toSet());
-        };
-
-        Function<Match, Set<Result>> averageResultsForMatch =
-                match -> match.getRobots().stream()
-                              .map(robot -> {
-                                  Result result = resultsForRobot
-                                          .apply(resultsForScorecard.apply(match), robot)
-                                          .stream().collect(ResultUtil.resultAverager());
-                                  result.setRobot(robot);
-                                  return result;
-                              })
-                              .peek(result -> result.setMatch(match))
-                              .collect(Collectors.toSet());
 
         BiFunction<Event, Set<Result>, Set<Result>>
                 averageResultsForEventFromAverageResultsForMatch =
@@ -122,8 +98,7 @@ public class EventController {
                                               Result result =
                                                       resultsForRobot.apply(results, robot)
                                                                      .stream()
-                                                                     .collect(ResultUtil
-                                                                             .resultAverager());
+                                                                     .collect(ResultUtil.resultAverager());
                                               result.setRobot(robot);
                                               return result;
                                           })
@@ -132,9 +107,10 @@ public class EventController {
         Set<Result> results = averageResultsForEventFromAverageResultsForMatch.apply(
                 event,
                 event.getMatches().stream()
-                     .map(averageResultsForMatch)
+                     .map(match->averageResultsForMatch.apply(match,scorecard))
                      .flatMap(Collection::stream)
                      .collect(Collectors.toSet()));
+
         return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(results));
     }
 }

@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.*;
+import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
+import static com.robocubs4205.cubscout.util.ResultUtil.averageResultsForMatch;
+import static com.robocubs4205.cubscout.util.ResultUtil.resultsForRobot;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
@@ -163,6 +166,40 @@ public class GameController {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(game.getRobots()));
+    }
+
+    @RequestMapping(value = "/{game:[0-9]+}/results", method = RequestMethod.GET)
+    public JsonArrayContainer<ResultResource> getResults(@PathVariable Game game,
+                                                         @RequestParam("scorecard") Scorecard scorecard){
+        BiFunction<Game, Set<Result>, Set<Result>>
+                averageResultsForGameFromAverageResultsForMatch =
+                (game1, results) -> game1.getEvents().stream().flatMap(event->event.getMatches().stream())
+                                          .flatMap(match -> match.getRobots().stream())
+                                          .distinct()
+                                          .map(robot -> {
+                                              Set<Result> res = resultsForRobot.apply(results, robot);
+                                              Result result =
+                                                      resultsForRobot.apply(results, robot)
+                                                                     .stream()
+                                                                     .collect(ResultUtil.resultAverager());
+                                              result.setRobot(robot);
+                                              return result;
+                                          })
+                                          .collect(Collectors.toSet());
+
+        Set<Result> res = game.getEvents().stream().flatMap(event -> event.getMatches().stream())
+                              .map(match->averageResultsForMatch.apply(match,scorecard))
+                              .flatMap(Collection::stream)
+                              .collect(Collectors.toSet());
+
+        Set<Result> results = averageResultsForGameFromAverageResultsForMatch.apply(
+                game,
+                game.getEvents().stream().flatMap(event -> event.getMatches().stream())
+                     .map(match->averageResultsForMatch.apply(match,scorecard))
+                     .flatMap(Collection::stream)
+                     .collect(Collectors.toSet()));
+
+        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(results));
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
