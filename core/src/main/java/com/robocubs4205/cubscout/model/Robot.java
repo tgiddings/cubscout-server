@@ -12,6 +12,7 @@ import java.util.Set;
  * Created by trevor on 2/14/17.
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"number","game"}))
 public class Robot implements Identifiable<Long> {
     @Id
     @GeneratedValue
@@ -31,6 +32,7 @@ public class Robot implements Identifiable<Long> {
     private Set<Match> matches = new HashSet<>();
 
     @ManyToOne(optional = false)
+    @JoinColumn(name="game")
     private Game game;
 
     public Robot(){}

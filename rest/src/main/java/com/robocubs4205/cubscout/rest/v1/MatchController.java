@@ -104,7 +104,7 @@ public class MatchController {
 
         //replace transient robot with entity from database
         Robot existingRobot = robotRepository
-                .findByNumberAndGame(result.getRobot().getNumber(),result.getRobot().getGame());
+                .findByNumberAndGame(result.getRobot().getNumber(),result.getScorecard().getGame());
         if (existingRobot == null) { //create new robot
             //find team for this robot
             Team existingTeam = teamRepository
