@@ -23,6 +23,7 @@ public class RobotResourceAssembler extends IdentifiableResourceAssemblerSupport
         resource.add(linkTo(TeamController.class).slash(entity.getTeam()).withRel("team"));
         resource.add(linkTo(RobotController.class).slash(entity).slash("matches")
                                                   .withRel("matches"));
+        resource.add(linkTo(GameController.class).slash(entity.getGame()).withRel("game"));
         return resource;
     }
 }
