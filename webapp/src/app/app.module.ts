@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {HttpModule, JsonpModule} from '@angular/http';
+import { RouterModule, Routes } from '@angular/router';
 
-import {AppComponent, sortScorecardSectionPipe} from './app.component';
+import {AppComponent} from './app.component';
 import {MaterialModule} from "@angular/material";
 
 import 'hammerjs'
@@ -13,20 +14,29 @@ import {EventService} from "./event.service";
 import {ApiRootService} from "./api-root.service";
 import { RatingComponent } from './rating/rating.component';
 import { ArrayWithSizePipe } from './array-with-size.pipe';
+import { MakeScorecardComponent } from './make-scorecard/make-scorecard.component';
+import {FillScorecardComponent, sortScorecardSectionPipe} from './fill-scorecard/fill-scorecard.component';
+
+const routs:Routes = [
+  {path:'fill_scorecard', component: FillScorecardComponent}
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     sortScorecardSectionPipe,
     RatingComponent,
-    ArrayWithSizePipe
+    ArrayWithSizePipe,
+    MakeScorecardComponent,
+    FillScorecardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     JsonpModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule.forRoot(routs)
   ],
   providers: [
     ScorecardService,
