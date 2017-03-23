@@ -3,6 +3,8 @@
 **/.idea/libraries/*
 .gradle
 
+*.iml
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
