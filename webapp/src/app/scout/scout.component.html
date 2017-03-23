@@ -13,20 +13,28 @@
   </md-select>
   <ng-container *ngIf="scorecard">
     <ng-container *ngFor="let section of scorecard.sections | sortScorecardSection">
-      <md-input-container *ngIf="isFieldSection(section)&&toFieldSection(section).type=='COUNT'"
-                          title="{{toFieldSection(section).label}}"
-                          style="width:280px;">
-        <input mdInput placeholder="{{toFieldSection(section).label}}" type="number" min="0" ngDefaultControl>
-      </md-input-container>
-      <app-rating *ngIf="isFieldSection(section)&&toFieldSection(section).type=='RATING'"
-                  [numStars]="5"
-                  [label]="toFieldSection(section).label">
-      </app-rating>
+      <ng-container *ngIf="isFieldSection(section)">
+        <div style="display:flex;align-items: baseline" *ngIf="toFieldSection(section).optional">
+          <h6>{{toFieldSection(section).checkboxMessage}}</h6>
+          <input type="checkbox">
+        </div>
+        <md-input-container *ngIf="toFieldSection(section).type=='COUNT'"
+                            title="{{toFieldSection(section).label}}"
+                            style="width:280px;">
+          <input mdInput (input)="setScore(section.index,$event.target.value)"
+                 placeholder="{{toFieldSection(section).label}}" type="number" min="0" ngDefaultControl>
+        </md-input-container>
+        <app-rating *ngIf="toFieldSection(section).type=='RATING'"
+                    [numStars]="5"
+                    (onRatingSet)="setScore(section.index,$event)"
+                    [label]="toFieldSection(section).label">
+        </app-rating>
+      </ng-container>
       <h3 *ngIf="isTitleSection(section)"
           style="width:280px;">{{toTitleSection(section).title}}</h3>
       <p *ngIf="isParagraphSection(section)"
          style="width:280px;">{{toParagraphSection(section).text}}</p>
     </ng-container>
-    <button md-raised-button (click)="submitButtonPressed()">Submit</button>
+    <button color="primary" md-raised-button (click)="submitButtonPressed()">Submit</button>
   </ng-container>
 </div>

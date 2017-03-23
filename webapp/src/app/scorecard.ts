@@ -23,7 +23,7 @@ export class FieldSection extends ScorecardSection{
   type:string;
   nullWhen:NullWhen;
   checkboxMessage:string;
-  isOptional:boolean;
+  optional:boolean;
   weight:number;
   constructor(values: Object = {}) {
     super(values);

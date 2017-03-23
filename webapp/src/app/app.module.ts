@@ -15,10 +15,10 @@ import {ApiRootService} from "./api-root.service";
 import { RatingComponent } from './rating/rating.component';
 import { ArrayWithSizePipe } from './array-with-size.pipe';
 import { MakeScorecardComponent } from './make-scorecard/make-scorecard.component';
-import {FillScorecardComponent, sortScorecardSectionPipe} from './fill-scorecard/fill-scorecard.component';
+import {ScoutComponent, sortScorecardSectionPipe} from './scout/scout.component';
 
 const routs:Routes = [
-  {path:'fill_scorecard', component: FillScorecardComponent}
+  {path:'fill_scorecard', component: ScoutComponent}
 ];
 
 @NgModule({
@@ -28,7 +28,7 @@ const routs:Routes = [
     RatingComponent,
     ArrayWithSizePipe,
     MakeScorecardComponent,
-    FillScorecardComponent
+    ScoutComponent
   ],
   imports: [
     BrowserModule,

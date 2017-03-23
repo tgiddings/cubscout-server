@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-rating',
@@ -6,7 +6,14 @@ import {Component, OnInit, Input, Output} from '@angular/core';
   styleUrls: ['./rating.component.css']
 })
 export class RatingComponent implements OnInit {
+  get onRatingSet(): EventEmitter<any> {
+    return this._onRatingSet;
+  }
+
   @Output()
+  set onRatingSet(value: EventEmitter<any>) {
+    this._onRatingSet = value;
+  }
   @Input()
   get rating(): number {
     return this._rating;
@@ -14,6 +21,7 @@ export class RatingComponent implements OnInit {
 
   set rating(value: number) {
     this._rating = value;
+    this.onRatingSet.emit(this.rating);
   }
   get numStars(): number {
     return this._numStars;
@@ -37,10 +45,13 @@ export class RatingComponent implements OnInit {
 
   private _rating:number = 0;
 
+  private _onRatingSet:EventEmitter<number> = new EventEmitter<number>();
+
   constructor() {
   }
 
   ngOnInit() {
+    this.onRatingSet.emit(this.rating);
   }
 
   setRating(rating:number):void{

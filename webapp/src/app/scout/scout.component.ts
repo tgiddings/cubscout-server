@@ -8,17 +8,19 @@ import {ApiRootService} from "../api-root.service";
 import {ApiRoot} from "../api-root";
 
 @Component({
-             selector: 'app-root',
-             templateUrl: './fill-scorecard.component.html',
-             styleUrls: ['./fill-scorecard.component.css']
+             selector: 'scout-form',
+             templateUrl: 'scout.component.html',
+             styleUrls: ['scout.component.css']
            })
-export class FillScorecardComponent implements OnInit {
+export class ScoutComponent implements OnInit {
   title = 'app works!';
   games:Game[] = [];
   selectedGame: Game = null;
   events:Event[] = [];
   selectedEvent: Event = null;
   scorecard: Scorecard = null;
+
+  scores:number[] = [];
 
   apiRoot:ApiRoot;
 
@@ -55,6 +57,8 @@ export class FillScorecardComponent implements OnInit {
       scorecards => {
         this.scorecard = scorecards[0];
         console.log(JSON.stringify(scorecards));
+        this.scores = [];
+        this.scorecard.sections.forEach(section=>this.scores.push(null));
       },
       error => console.log(error.toString()));
 
@@ -68,8 +72,13 @@ export class FillScorecardComponent implements OnInit {
     console.log("changed");
   }
   submitButtonPressed():void{
-    console.log("pressed!");
+    console.log("scores:"+JSON.stringify(this.scores));
   }
+
+  setScore(index:number,score:number):void{
+    this.scores[index-1] = score;
+  }
+
 }
 
 @Pipe({name:"sortScorecardSection",pure:true})

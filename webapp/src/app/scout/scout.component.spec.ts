@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FillScorecardComponent } from './fill-scorecard.component';
+import { ScoutComponent } from './scout.component';
 
-describe('FillScorecardComponent', () => {
-  let component: FillScorecardComponent;
-  let fixture: ComponentFixture<FillScorecardComponent>;
+describe('ScoutComponent', () => {
+  let component: ScoutComponent;
+  let fixture: ComponentFixture<ScoutComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FillScorecardComponent ]
+      declarations: [ ScoutComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FillScorecardComponent);
+    fixture = TestBed.createComponent(ScoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +24,7 @@ public class FieldSection extends ScorecardSection {
 
     private NullWhen nullWhen;
 
-    private String CheckBoxMessage;
+    private String checkboxMessage;
 
     private boolean isOptional = false;
 
@@ -61,12 +60,12 @@ public class FieldSection extends ScorecardSection {
         this.nullWhen = nullWhen;
     }
 
-    public String getCheckBoxMessage() {
-        return CheckBoxMessage;
+    public String getCheckboxMessage() {
+        return checkboxMessage;
     }
 
-    public void setCheckBoxMessage(String checkBoxMessage) {
-        CheckBoxMessage = checkBoxMessage;
+    public void setCheckboxMessage(String checkboxMessage) {
+        this.checkboxMessage = checkboxMessage;
     }
 
     public boolean isOptional() {
