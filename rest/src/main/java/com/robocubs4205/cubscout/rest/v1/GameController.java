@@ -1,10 +1,7 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.*;
-import com.robocubs4205.cubscout.model.scorecard.FieldSection;
-import com.robocubs4205.cubscout.model.scorecard.Scorecard;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardSectionRepository;
+import com.robocubs4205.cubscout.model.scorecard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,11 +14,12 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@RequestMapping(value ="/games",produces = "application/vnd.robocubs-v1+json")
+@RequestMapping(value = "/games", produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
     private final EventRepository eventRepository;
@@ -60,7 +58,7 @@ public class GameController {
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
         game = gameRepository.saveAndFlush(game);
         GameResource gameResource = new GameResourceAssembler().toResource(game);
-        response.setHeader(LOCATION,gameResource.getLink("self").getHref());
+        response.setHeader(LOCATION, gameResource.getLink("self").getHref());
         return gameResource;
     }
 
@@ -103,13 +101,13 @@ public class GameController {
         event.setGame(game);
         if (event.getDistrict() != null) {
             event.setDistrict(districtRepository
-                    .findByCode(event.getDistrict().getCode()));
+                                      .findByCode(event.getDistrict().getCode()));
             if (event.getDistrict() == null)
                 throw new DistrictDoesNotExistException();
         }
         event = eventRepository.saveAndFlush(event);
         EventResource eventResource = new EventResourceAssembler().toResource(event);
-        response.setHeader(LOCATION,eventResource.getLink("self").getHref());
+        response.setHeader(LOCATION, eventResource.getLink("self").getHref());
         return eventResource;
     }
 
@@ -133,14 +131,30 @@ public class GameController {
         if (game.getScorecard() != null)
             throw new GameAlreadyHasScorecardException();
         scorecard.setGame(game);
-        scorecard.getSections().forEach(scorecardSection -> scorecardSection.setScorecard(scorecard));
-        scorecard.getSections().stream().filter(scorecardSection -> scorecardSection instanceof FieldSection)
-                 .map(scorecardSection -> (FieldSection)scorecardSection)
-                 .forEach(fieldSection -> fieldSection.getWeight().setField(fieldSection));
-        Scorecard finalScorecard = scorecardRepository.saveAndFlush(scorecard);
 
-        ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(scorecard);
-        response.setHeader(LOCATION,scorecardResource.getLink("self").getHref());
+        scorecard.getSections().forEach(scorecardSection -> scorecardSection.setScorecard(scorecard));
+
+        scorecard.getRobotRoles().forEach(robotRole -> robotRole.setScorecard(scorecard));
+        scorecard.getRobotRoles().forEach(robotRole -> {
+            robotRole.getWeights().forEach(weight -> weight.setRobotRole(robotRole));
+        });
+        scorecard.getRobotRoles().stream().flatMap(robotRole -> robotRole.getWeights().stream()).forEach(weight -> {
+            Optional<FieldSection> section =
+                    scorecard.getSections().stream()
+                             .filter(scorecardSection -> scorecardSection.getIndex() == weight
+                                     .getField().getIndex())
+                             .filter(scorecardSection -> scorecardSection instanceof
+                                     FieldSection)
+                             .map(scorecardSection -> (FieldSection) scorecardSection)
+                             .findFirst();
+            if(!section.isPresent()) throw new IndexIsNotAFieldException();
+            weight.setField(section.get());
+            section.get().getWeights().add(weight);
+        });
+
+        ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(
+                scorecardRepository.saveAndFlush(scorecard));
+        response.setHeader(LOCATION, scorecardResource.getLink("self").getHref());
         return scorecardResource;
     }
 
@@ -160,5 +174,10 @@ public class GameController {
             reason = "game already has a scorecard. currently, only one " +
                     "scorecard per game is supported")
     class GameAlreadyHasScorecardException extends RuntimeException {
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+    reason = "The index specified for the field for a weight does not exist or is not a field")
+    class IndexIsNotAFieldException extends RuntimeException {
     }
 }

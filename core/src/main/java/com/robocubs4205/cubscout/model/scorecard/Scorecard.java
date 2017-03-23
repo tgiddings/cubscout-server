@@ -6,6 +6,7 @@ import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
 import javax.validation.groups.Default;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,10 +23,16 @@ public class Scorecard implements Identifiable<Long> {
 
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
     @NotEmpty(groups = {Default.class,Creating.class})
-    private Set<ScorecardSection> sections;
+    private Set<ScorecardSection> sections = new HashSet<>();
 
     @OneToMany(mappedBy = "scorecard")
-    private Set<Result> results;
+    private Set<Result> results = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
+    private Set<RobotRole> robotRoles = new HashSet<>();
+
+    @OneToOne
+    private RobotRole defaultRole;
 
     public Scorecard() {
     }
@@ -62,6 +69,10 @@ public class Scorecard implements Identifiable<Long> {
 
     public Set<Result> getResults() {
         return results;
+    }
+
+    public Set<RobotRole> getRobotRoles() {
+        return robotRoles;
     }
 
     public interface Creating{

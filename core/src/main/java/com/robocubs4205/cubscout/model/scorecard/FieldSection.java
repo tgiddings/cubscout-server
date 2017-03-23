@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,8 +33,9 @@ public class FieldSection extends ScorecardSection {
     @OneToMany(mappedBy = "field")
     private Set<ScorecardFieldResult> results = new HashSet<>();
 
-    @OneToOne(optional = false,mappedBy = "field",cascade = CascadeType.ALL)
-    private ScoreWeight weight;
+    @JsonIgnore
+    @OneToMany(mappedBy = "field",cascade = CascadeType.ALL)
+    private Set<ScoreWeight> weights = new HashSet<>();
 
     public FieldSection() {
     }
@@ -87,12 +89,8 @@ public class FieldSection extends ScorecardSection {
         return results;
     }
 
-    public ScoreWeight getWeight() {
-        return weight;
-    }
-
-    public void setWeight(ScoreWeight weight) {
-        this.weight = weight;
+    public Set<ScoreWeight> getWeights() {
+        return weights;
     }
 
     public enum NullWhen {

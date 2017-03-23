@@ -1,32 +1,30 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"field","robotRole"})
+)
 public class ScoreWeight {
     @Id
     @GeneratedValue
     private long id;
-    @JsonIgnore
-    @OneToOne(optional = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(optional = false)
+    @JoinColumn(name="field")
     private FieldSection field;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name="robotRole")
+    private RobotRole robotRole;
 
     private float weight;
 
     public ScoreWeight(){}
-
-    public ScoreWeight(float weight){
-        setWeight(weight);
-    }
-
-    public ScoreWeight(int weight){
-        setWeight(weight);
-    }
 
     public FieldSection getField() {
         return field;
@@ -50,5 +48,13 @@ public class ScoreWeight {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public RobotRole getRobotRole() {
+        return robotRole;
+    }
+
+    public void setRobotRole(RobotRole robotRole) {
+        this.robotRole = robotRole;
     }
 }
