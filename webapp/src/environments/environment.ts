@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "http://192.168.254.33:8080/rest/"
+  apiBaseUrl: "http://192.168.254.33:8080/"
 };

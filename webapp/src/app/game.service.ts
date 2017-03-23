@@ -13,7 +13,7 @@ export class GameService {
     let link:Link = root.links.find(link=>link.rel=="games");
     if(link==null) return Observable.throw("ApiRoot is missing a link with rel \"games\"");
     return this.http.get(link.href)
-      .map(res=>res.json() || []).catch(error=>{
+      .map(res=>res.json().data).catch(error=>{
       let errMsg: string;
       if (error instanceof Response) {
         const body = error.json() || '';

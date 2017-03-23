@@ -2,6 +2,7 @@ package com.robocubs4205.cubscout.rest.v1;
 
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,8 @@ public class ScorecardController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<ScorecardResource> getAllScorecards(){
-        return new ScorecardResourceAssembler().toResources(scorecardRepository.findAll());
+    public JsonArrayContainer<ScorecardResource> getAllScorecards(){
+        return new JsonArrayContainer<>(new ScorecardResourceAssembler().toResources(scorecardRepository.findAll()));
     }
 
     @RequestMapping(value = "/{scorecard:[0-9]+}")
@@ -35,8 +36,8 @@ public class ScorecardController {
     }
 
     @RequestMapping(value = "/{scorecard:[0-9]+}/results")
-    public List<ResultResource> getResults(@PathVariable Scorecard scorecard) {
+    public JsonArrayContainer<ResultResource> getResults(@PathVariable Scorecard scorecard) {
         if(scorecard==null)throw new ResourceNotFoundException("scorecard does not exist");
-        return new ResultResourceAssembler().toResources(scorecard.getResults());
+        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(scorecard.getResults()));
     }
 }

@@ -13,7 +13,7 @@ export class ScorecardService {
     let link:Link = game.links.find(link=>link.rel=="scorecards")
     if(link==null) return Observable.throw("game does not have a link with rel \"scorecards\"");
     return this.http.get(link.href)
-      .map(res=>res.json() || {}).catch(error=>{
+      .map(res=>res.json().data).catch(error=>{
         let errMsg: string;
         if (error instanceof Response) {
           const body = error.json() || '';

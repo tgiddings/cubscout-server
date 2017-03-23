@@ -11,7 +11,7 @@ export class EventService {
   getEventsByGame(game:Game):Observable<Event[]>{
     let link:Link = game.links.find(link=>link.rel=="events");
     if(link==null) return Observable.throw("game does not have link with rel \"events\"");
-    return this.http.get(link.href).map(res=>res.json()).catch(error=>{
+    return this.http.get(link.href).map(res=>res.json().data).catch(error=>{
       let errMsg: string;
       if (error instanceof Response) {
         const body = error.json() || '';

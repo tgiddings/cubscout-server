@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.Team;
 import com.robocubs4205.cubscout.model.TeamRepository;
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class TeamController {
         this.robotRepository = robotRepository;
     }
     @RequestMapping(method = RequestMethod.GET)
-    List<TeamResource> getAll(){
-        return new TeamResourceAssembler().toResources(teamRepository.findAll());
+    JsonArrayContainer<TeamResource> getAll(){
+        return new JsonArrayContainer<>(new TeamResourceAssembler().toResources(teamRepository.findAll()));
     }
     @RequestMapping(value = "/{team:[0-9]+}",method = RequestMethod.GET)
     TeamResource get(@PathVariable Team team){
@@ -51,7 +52,7 @@ public class TeamController {
         return new TeamResourceAssembler().toResource(team);
     }
     @RequestMapping(value = "/{team:[0-9]+}/matches",method = RequestMethod.GET)
-    public List<RobotResource> getRobots(@PathVariable Team team){
-        return new RobotResourceAssembler().toResources(robotRepository.findByTeam(team));
+    public JsonArrayContainer<RobotResource> getRobots(@PathVariable Team team){
+        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(robotRepository.findByTeam(team)));
     }
 }

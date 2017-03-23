@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.robocubs4205.cubscout.model.Robot;
 import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class RobotController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<RobotResource> getAll() {
-        return new RobotResourceAssembler().toResources(robotRepository.findAll());
+    public JsonArrayContainer<RobotResource> getAll() {
+        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(robotRepository.findAll()));
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}", method = RequestMethod.GET)
@@ -60,14 +61,14 @@ public class RobotController {
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}/results",method = RequestMethod.GET)
-    public List<ResultResource> getResults(@PathVariable Robot robot) {
+    public JsonArrayContainer<ResultResource> getResults(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
-        return new ResultResourceAssembler().toResources(resultRepository.findByRobot(robot));
+        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(resultRepository.findByRobot(robot)));
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}/matches",method = RequestMethod.GET)
-    public List<MatchResource> getMatches(@PathVariable Robot robot) {
+    public JsonArrayContainer<MatchResource> getMatches(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
-        return new MatchResourceAssembler().toResources(robot.getMatches());
+        return new JsonArrayContainer<>(new MatchResourceAssembler().toResources(robot.getMatches()));
     }
 }

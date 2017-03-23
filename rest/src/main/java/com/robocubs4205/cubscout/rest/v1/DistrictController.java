@@ -1,5 +1,6 @@
 package com.robocubs4205.cubscout.rest.v1;
 
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.model.District;
 import com.robocubs4205.cubscout.model.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 
@@ -24,8 +24,8 @@ public class DistrictController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DistrictResource> getAll() {
-        return new DistrictResourceAssembler().toResources(districtRepository.findAll());
+    public JsonArrayContainer<DistrictResource> getAll() {
+        return new JsonArrayContainer<>(new DistrictResourceAssembler().toResources(districtRepository.findAll()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -59,15 +59,15 @@ public class DistrictController {
         districtRepository.flush();
     }
     @RequestMapping(value = "/{district}/events",method = RequestMethod.GET)
-    public List<EventResource> getEvents(@PathVariable District district) {
+    public JsonArrayContainer<EventResource> getEvents(@PathVariable District district) {
         if(district==null)throw new ResourceNotFoundException();
-        return new EventResourceAssembler().toResources(district.getEvents());
+        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(district.getEvents()));
     }
 
     @RequestMapping(value = "/{district}/teams",method = RequestMethod.GET)
-    public List<TeamResource> getTeams(@PathVariable District district) {
+    public JsonArrayContainer<TeamResource> getTeams(@PathVariable District district) {
         if(district==null)throw new ResourceNotFoundException();
-        return new TeamResourceAssembler().toResources(district.getTeams());
+        return new JsonArrayContainer<>(new TeamResourceAssembler().toResources(district.getTeams()));
     }
 
     @ResponseStatus(value = HttpStatus.CONFLICT, reason = "District with that code already exists")

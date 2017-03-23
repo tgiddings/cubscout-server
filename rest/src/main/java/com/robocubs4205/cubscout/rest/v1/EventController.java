@@ -1,5 +1,6 @@
 package com.robocubs4205.cubscout.rest.v1;
 
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -34,8 +34,8 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    List<EventResource> getAllEvents() {
-        return new EventResourceAssembler().toResources(eventRepository.findAll());
+    JsonArrayContainer<EventResource> getAllEvents() {
+        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(eventRepository.findAll()));
     }
 
     @RequestMapping(value = "/{event:[0-9]+}", method = RequestMethod.GET)
@@ -66,9 +66,9 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.GET)
-    List<MatchResource> getAllMatches(@PathVariable Event event) {
+    JsonArrayContainer<MatchResource> getAllMatches(@PathVariable Event event) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
-        return new MatchResourceAssembler().toResources(matchRepository.findByEvent(event));
+        return new JsonArrayContainer<>(new MatchResourceAssembler().toResources(matchRepository.findByEvent(event)));
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)
@@ -83,7 +83,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/results", method = RequestMethod.GET)
-    List<ResultResource> getResults(@PathVariable Event event,
+    JsonArrayContainer<ResultResource> getResults(@PathVariable Event event,
                                     @RequestParam("scorecard") Scorecard scorecard) {
         Function<Match, Set<Result>> resultsForScorecard = match -> match.getResults().stream()
                                                                          .filter(result -> {
@@ -135,6 +135,6 @@ public class EventController {
                      .map(averageResultsForMatch)
                      .flatMap(Collection::stream)
                      .collect(Collectors.toSet()));
-        return new ResultResourceAssembler().toResources(results);
+        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(results));
     }
 }

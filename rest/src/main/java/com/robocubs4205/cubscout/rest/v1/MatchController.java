@@ -5,6 +5,7 @@ import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -43,9 +44,9 @@ public class MatchController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<MatchResource> getAllMatches() {
-        return new MatchResourceAssembler()
-                .toResources(matchRepository.findAll());
+    public JsonArrayContainer<MatchResource> getAllMatches() {
+        return new JsonArrayContainer<>(new MatchResourceAssembler()
+                .toResources(matchRepository.findAll()));
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.GET)
@@ -74,10 +75,10 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)
-    public List<RobotResource> getAllRobots(@PathVariable Match match) {
+    public JsonArrayContainer<RobotResource> getAllRobots(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
-        return new RobotResourceAssembler().toResources(match.getRobots());
+        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(match.getRobots()));
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.POST)
@@ -164,11 +165,11 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.GET)
-    public List<ResultResource> getAllResults(@PathVariable Match match) {
+    public JsonArrayContainer<ResultResource> getAllResults(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
-        return new ResultResourceAssembler()
-                .toResources(resultRepository.findByMatch(match));
+        return new JsonArrayContainer<>(new ResultResourceAssembler()
+                .toResources(resultRepository.findByMatch(match)));
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,

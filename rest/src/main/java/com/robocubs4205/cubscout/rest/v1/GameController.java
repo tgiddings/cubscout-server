@@ -1,5 +1,6 @@
 package com.robocubs4205.cubscout.rest.v1;
 
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -41,9 +41,9 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<GameResource> getAllGames() {
-        return new GameResourceAssembler()
-                .toResources(gameRepository.findAll());
+    public JsonArrayContainer<GameResource> getAllGames() {
+        return new JsonArrayContainer<>(new GameResourceAssembler()
+                .toResources(gameRepository.findAll()));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}", method = RequestMethod.GET)
@@ -84,10 +84,10 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.GET)
-    public List<EventResource> getAllEvents(@PathVariable Game game) {
+    public JsonArrayContainer<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new EventResourceAssembler().toResources(eventRepository.findByGame(game));
+        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(eventRepository.findByGame(game)));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
@@ -112,12 +112,12 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.GET)
-    public List<ScorecardResource> getAllScorecards(@PathVariable Game game) {
+    public JsonArrayContainer<ScorecardResource> getAllScorecards(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        if (game.getScorecard() == null) return new ArrayList<>();
-        else return new ScorecardResourceAssembler()
-                .toResources(Collections.singletonList(game.getScorecard()));
+        if (game.getScorecard() == null) return new JsonArrayContainer<>(new ArrayList<>());
+        else return new JsonArrayContainer<>(new ScorecardResourceAssembler()
+                .toResources(Collections.singletonList(game.getScorecard())));
     }
 
     @Transactional
@@ -159,10 +159,10 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/robots", method = RequestMethod.GET)
-    public List<RobotResource> getAllRobots(@PathVariable Game game) {
+    public JsonArrayContainer<RobotResource> getAllRobots(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new RobotResourceAssembler().toResources(game.getRobots());
+        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(game.getRobots()));
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
