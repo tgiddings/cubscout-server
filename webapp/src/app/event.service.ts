@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {Game} from "./game";
 import {Observable} from "rxjs";
-import {Http, Response} from "@angular/http";
+import {Http, Response, RequestOptions, Headers} from "@angular/http";
 import {environment} from "../environments/environment";
 import {Link} from "./link";
+import {Event} from "./event"
 
 @Injectable()
 export class EventService {
@@ -11,7 +12,11 @@ export class EventService {
   getEventsByGame(game:Game):Observable<Event[]>{
     let link:Link = game.links.find(link=>link.rel=="events");
     if(link==null) return Observable.throw("game does not have link with rel \"events\"");
-    return this.http.get(link.href).map(res=>res.json().data).catch(error=>{
+    return this.http.get(link.href,new RequestOptions({
+      headers: new Headers([
+        {'accept': 'application/vnd.robocubs-v1+json'}
+      ])
+    })).map(res=>res.json().data).catch(error=>{
       let errMsg: string;
       if (error instanceof Response) {
         const body = error.json() || '';

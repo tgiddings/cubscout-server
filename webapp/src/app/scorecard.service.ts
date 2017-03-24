@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Scorecard} from "./scorecard";
 import {Observable} from "rxjs";
-import {Http, Response} from "@angular/http";
+import {Http, Response, RequestOptions, Headers} from "@angular/http";
 import {environment} from "../environments/environment";
 import {Game} from "./game";
 import {Link} from "./link";
@@ -12,7 +12,11 @@ export class ScorecardService {
   getScorecardsByGame(game:Game):Observable<Scorecard[]>{
     let link:Link = game.links.find(link=>link.rel=="scorecards")
     if(link==null) return Observable.throw("game does not have a link with rel \"scorecards\"");
-    return this.http.get(link.href)
+    return this.http.get(link.href,new RequestOptions({
+      headers: new Headers([
+        {'accept': 'application/vnd.robocubs-v1+json'}
+      ])
+    }))
       .map(res=>res.json().data).catch(error=>{
         let errMsg: string;
         if (error instanceof Response) {

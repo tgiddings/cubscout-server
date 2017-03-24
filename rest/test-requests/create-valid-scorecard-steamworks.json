@@ -5,6 +5,7 @@
       "label": "Defense effectiveness",
       "optional": true,
       "checkboxMessage":"Played Defense",
+      "nullWhen":"UNCHECKED",
       "type": "RATING",
       "index": 1
     },
@@ -13,6 +14,7 @@
       "label": "Low boiler effectiveness",
       "optional": true,
       "checkboxMessage":"Used Low Boiler",
+      "nullWhen":"UNCHECKED",
       "type": "RATING",
       "index": 2
     },
@@ -20,6 +22,7 @@
       "sectionType": "field",
       "label": "High boiler effectiveness",
       "optional": true,
+      "nullWhen":"UNCHECKED",
       "checkboxMessage":"used High Boiler",
       "type": "RATING",
       "index": 3

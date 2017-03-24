@@ -1,11 +1,18 @@
 import {Component, OnInit, Pipe, PipeTransform, NgModule} from '@angular/core';
-import {ScorecardSection, FieldSection, TitleSection, ParagraphSection, Scorecard} from "../scorecard";
+import {ScorecardSection, FieldSection, TitleSection, ParagraphSection, Scorecard, NullWhen} from "../scorecard";
 import {ScorecardService} from "../scorecard.service";
 import {Game} from "../game";
 import {GameService} from "../game.service";
 import {EventService} from "../event.service";
 import {ApiRootService} from "../api-root.service";
 import {ApiRoot} from "../api-root";
+import {Headers, RequestOptions, Response} from "@angular/http";
+import {ResultService} from "../result.service";
+import {Match} from "../match";
+import {MatchService} from "../match.service";
+import {Event} from "../event"
+import {Observable} from "rxjs";
+import {ResultSubmission, ScorecardFieldResult} from "../result";
 
 @Component({
              selector: 'scout-form',
@@ -14,79 +21,176 @@ import {ApiRoot} from "../api-root";
            })
 export class ScoutComponent implements OnInit {
   title = 'app works!';
-  games:Game[] = [];
+  games: Game[] = [];
   selectedGame: Game = null;
-  events:Event[] = [];
+  events: Event[] = [];
   selectedEvent: Event = null;
+  noSelectedEventErrorShowing: boolean = false;
   scorecard: Scorecard = null;
 
-  scores:number[] = [];
+  sectionModels: ScorecardSection[] = [];
 
-  apiRoot:ApiRoot;
+  robotNumber: number;
+  robotNumberMissingErrorShown: boolean = false;
 
-  constructor(private scorecardService: ScorecardService,private gameService:GameService,
-              private eventService:EventService, private apiRootService:ApiRootService) {}
+  matchNumber: number;
+  matchType: string;
+  matchNumberMissingErrorShown: boolean = false;
+  matchTypeMissingErrorShown: boolean = false;
+
+  apiRoot: ApiRoot;
+
+  constructor(private scorecardService: ScorecardService, private gameService: GameService,
+              private eventService: EventService, private apiRootService: ApiRootService,
+              private resultService: ResultService, private matchService: MatchService) {}
 
   ngOnInit() {
-
-    this.apiRootService.getRoot().subscribe(root=>{
+    this.apiRootService.getRoot().subscribe(root => {
       this.apiRoot = root;
-      console.log(JSON.stringify(root))
+      console.log(JSON.stringify(root));
 
-      this.gameService.getAllGames(root).subscribe(games=>{
+      this.gameService.getAllGames(root).subscribe(games => {
         this.games = games;
         console.log(JSON.stringify(games));
       });
     });
   }
 
-  isFieldSection(section: ScorecardSection): boolean {return section.sectionType=="field"}
+  isFieldSection(section: ScorecardSection): boolean {return section.sectionType == "field"}
 
-  toFieldSection(section: ScorecardSection): FieldSection {return <FieldSection><any>section}
+  toFieldSectionModel(section: ScorecardSection): FieldSectionModel {return <FieldSectionModel><any>section}
 
-  isTitleSection(section: ScorecardSection): boolean {return section.sectionType=="title"}
+  isTitleSection(section: ScorecardSection): boolean {return section.sectionType == "title"}
 
   toTitleSection(section: ScorecardSection): TitleSection {return <TitleSection><any>section}
 
-  isParagraphSection(section: ScorecardSection): boolean {return section.sectionType=="paragraph"}
+  isParagraphSection(section: ScorecardSection): boolean {return section.sectionType == "paragraph"}
 
   toParagraphSection(section: ScorecardSection): ParagraphSection {return <ParagraphSection><any>section}
 
-  selectedGameChange():void{
+  selectedGameChange(): void {
     this.scorecardService.getScorecardsByGame(this.selectedGame).subscribe(
       scorecards => {
         this.scorecard = scorecards[0];
         console.log(JSON.stringify(scorecards));
-        this.scores = [];
-        this.scorecard.sections.forEach(section=>this.scores.push(null));
+        this.sectionModels = this.scorecard.sections.map(
+          (section) => {
+            if (this.isFieldSection(section))return new FieldSectionModel(section);
+            else return section;
+          }).sort((section1, section2) => {
+          if (section1.index == section2.index) return 0;
+          return section1.index > section2.index ? 1 : -1;
+        });
       },
       error => console.log(error.toString()));
 
     this.eventService.getEventsByGame(this.selectedGame).subscribe(
-      events=>{
+      events => {
         this.events = events;
       },
-      error=>console.log(error.toString())
+      error => console.log(error.toString())
     );
 
     console.log("changed");
   }
-  submitButtonPressed():void{
-    console.log("scores:"+JSON.stringify(this.scores));
+
+  validateRobotNumberFieldAndShowError(): boolean {
+    return !(this.robotNumberMissingErrorShown = (this.robotNumber == null));
   }
 
-  setScore(index:number,score:number):void{
-    this.scores[index-1] = score;
+  validateSelectedEventAndShowError(): boolean {
+    return !(this.noSelectedEventErrorShowing = (this.selectedEvent == null));
   }
+
+  validateMatchNumberFieldAndShowError(): boolean {
+    return !(this.matchNumberMissingErrorShown = (this.matchNumber == null));
+  }
+
+  validateMatchTypeAndShowError(): boolean {
+    return !(this.matchTypeMissingErrorShown = (this.matchType == null));
+  }
+
+  submitButtonPressed(): void {
+    console.log("scores:" + JSON.stringify(this.sectionModels.map(
+                  section => {
+                    if (this.isFieldSection(section))return (<FieldSectionModel>section).value;
+                    else return null;
+                  })
+                ));
+    let currentMatch:Match = null;
+    let robotNumberValid = this.validateRobotNumberFieldAndShowError();
+    let selectedEventValid = this.validateSelectedEventAndShowError();
+    let matchNumberValid = this.validateMatchNumberFieldAndShowError();
+    let matchTypeValid = this.validateMatchTypeAndShowError();
+    if (robotNumberValid&&selectedEventValid&&matchNumberValid&&matchTypeValid) {
+      this.matchService.getMatches(this.selectedEvent)
+          .flatMap(matches => Observable.from(matches))
+          .filter(match => match.number == this.matchNumber)
+          .filter(match=>match.type==this.matchType).subscribe(
+        match => currentMatch = match,
+        error => console.log(JSON.stringify(error)),
+        () => {
+          let submitResult = () => {
+            this.resultService.submitResult(new ResultSubmission({
+              scorecard: this.scorecard.id,
+              scores: this.sectionModels.filter(section => this.isFieldSection(section))
+                          .map(section => this.toFieldSectionModel(section))
+                          .map(model => new ScorecardFieldResult({
+                            score: (model.optional && (model.checked === (model.nullWhen === NullWhen.CHECKED))) ? null : model.value,
+                            field: {
+                              id: model.id,
+                              sectionType: model.sectionType
+                            }
+                          })),
+              robot: {
+                number: this.robotNumber
+              }
+            }), currentMatch).subscribe(
+              (result)=>{console.log(JSON.stringify(result))},
+              error=>console.log(JSON.stringify(error))
+            );
+          };
+          if (currentMatch == null) {
+            this.matchService
+                .createMatch(this.selectedEvent, new Match({number: this.matchNumber,type:this.matchType}))
+                .subscribe(
+                  (match)=>{
+                    currentMatch=match;
+                    submitResult();
+                  },
+                  error => {
+                    //if (error instanceof Response && (<Response>error).status == 409) submitResult();
+                  }
+                )
+          }
+          else {
+            submitResult();
+          }
+        }
+      );
+    }
+  }
+
+  log(message: any): void {console.log(message);}
 
 }
 
-@Pipe({name:"sortScorecardSection",pure:true})
-export class sortScorecardSectionPipe implements PipeTransform{
-  transform(value:ScorecardSection[]):ScorecardSection[]{
-    return value.sort((section1,section2)=>{
-      if(section1.index==section2.index) return 0;
-      return section1.index>section2.index?1:-1;
-    })
+/*@Pipe({name:"sortScorecardSection",pure:true})
+ export class sortScorecardSectionPipe implements PipeTransform{
+ transform(value:ScorecardSection[]):ScorecardSection[]{
+ return value.sort((section1,section2)=>{
+ if(section1.index==section2.index) return 0;
+ return section1.index>section2.index?1:-1;
+ })
+ }
+ }*/
+
+class FieldSectionModel extends FieldSection {
+  value: number = 0;
+  checked: boolean = false;
+
+  constructor(values: Object = {}) {
+    super(values);
+    Object.assign(this, values);
   }
 }

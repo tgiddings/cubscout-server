@@ -1,11 +1,28 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.css']
+  styleUrls: ['./rating.component.css'],
+  providers:[{provide:NG_VALUE_ACCESSOR,useExisting:forwardRef(()=>RatingComponent),multi:true}]
 })
-export class RatingComponent implements OnInit {
+export class RatingComponent implements OnInit, ControlValueAccessor {
+  onChange=(_)=>{};
+  onTouched=()=>{};
+
+  writeValue(obj: any): void {
+    this.rating=obj;
+    this.onChange(obj);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange=fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched=fn;
+  }
   get onRatingSet(): EventEmitter<any> {
     return this._onRatingSet;
   }
@@ -22,6 +39,7 @@ export class RatingComponent implements OnInit {
   set rating(value: number) {
     this._rating = value;
     this.onRatingSet.emit(this.rating);
+    this.onChange(this._rating);
   }
   get numStars(): number {
     return this._numStars;
@@ -56,7 +74,6 @@ export class RatingComponent implements OnInit {
 
   setRating(rating:number):void{
     this.rating = rating;
-    console.log(this.rating);
   }
 
   charForStar(index:number):string{

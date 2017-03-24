@@ -15,7 +15,9 @@ import {ApiRootService} from "./api-root.service";
 import { RatingComponent } from './rating/rating.component';
 import { ArrayWithSizePipe } from './array-with-size.pipe';
 import { MakeScorecardComponent } from './make-scorecard/make-scorecard.component';
-import {ScoutComponent, sortScorecardSectionPipe} from './scout/scout.component';
+import {ScoutComponent} from './scout/scout.component';
+import {MatchService} from "./match.service";
+import {ResultService} from "./result.service";
 
 const routs:Routes = [
   {path:'fill_scorecard', component: ScoutComponent}
@@ -24,7 +26,6 @@ const routs:Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    sortScorecardSectionPipe,
     RatingComponent,
     ArrayWithSizePipe,
     MakeScorecardComponent,
@@ -42,7 +43,9 @@ const routs:Routes = [
     ScorecardService,
     GameService,
     EventService,
-    ApiRootService
+    ApiRootService,
+    MatchService,
+    ResultService
   ],
   bootstrap: [AppComponent]
 })

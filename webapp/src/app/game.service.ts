@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from "@angular/http";
+import {Http, Response, RequestOptions, Headers} from "@angular/http";
 import {environment} from "../environments/environment";
 import {Observable} from "rxjs";
 import {Game} from "./game";
@@ -12,7 +12,11 @@ export class GameService {
   getAllGames(root:ApiRoot):Observable<Game[]>{
     let link:Link = root.links.find(link=>link.rel=="games");
     if(link==null) return Observable.throw("ApiRoot is missing a link with rel \"games\"");
-    return this.http.get(link.href)
+    return this.http.get(link.href,new RequestOptions({
+      headers: new Headers([
+        {'accept': 'application/vnd.robocubs-v1+json'}
+      ])
+    }))
       .map(res=>res.json().data).catch(error=>{
       let errMsg: string;
       if (error instanceof Response) {
