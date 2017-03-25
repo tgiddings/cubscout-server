@@ -11,6 +11,7 @@ import {Scorecard, FieldSection, ScorecardSection} from "../scorecard";
 import {ScorecardService} from "../scorecard.service";
 import {Observable, ReplaySubject} from "rxjs";
 import {RobotService} from "../robot.service";
+import {RobotRole} from "../robot-role";
 
 @Component({
              selector: 'app-results',
@@ -36,7 +37,10 @@ export class ResultsComponent implements OnInit {
           resultObservable.subscribe();
           resultObservable.zip(resultObservable.flatMap(result => this.robotService.getRobot(result)),
                                (result, robot) => new ResultModel(Object.assign(result, {robotNumber: robot.number}))
-          ).toArray().subscribe(results => this.results = results);
+          ).toArray().subscribe(results => {
+            this.results = results;
+            console.log("results got: "+results.length);
+          });
         }
       );
     }
@@ -50,10 +54,12 @@ export class ResultsComponent implements OnInit {
     this._selectedGame = value;
     if (value) {
       this.scorecardService.getScorecardsByGame(this.selectedGame)
-                                        .flatMap(scorecards => Observable.from(scorecards))
-                                        .first().subscribe(this.getScorecardObservable);
+          .flatMap(scorecards => Observable.from(scorecards))
+          .first().subscribe(this.getScorecardObservable);
 
-      this.getScorecardObservable.subscribe(scorecard => this.scorecard = scorecard);
+      this.getScorecardObservable.subscribe(scorecard => {
+        this.scorecard = scorecard;
+      });
       this.eventService.getEventsByGame(this.selectedGame).subscribe(
         events => {
           this.events = events;
@@ -68,8 +74,11 @@ export class ResultsComponent implements OnInit {
   scorecard: Scorecard;
   getScorecardObservable: ReplaySubject<Scorecard> = new ReplaySubject();
 
-  events: Event[];
+  events: Event[] = [];
   private _selectedEvent: Event;
+
+  roles: RobotRole[] = [];
+  selectedRole: RobotRole;
 
   results: ResultModel[] = [];
 
@@ -107,16 +116,21 @@ export class FilterResultScores implements PipeTransform {
   }
 
 }
-@Pipe({name:"sortResults",pure:true})
-export class SortResults implements PipeTransform{
+@Pipe({name: "sortResults", pure: true})
+export class SortResults implements PipeTransform {
   transform(value: any, ...args: any[]): any {
-    return (<Result[]>value).sort();
+    return (<Result[]>value).sort((result1,result2)=>roleScore(result1,args[0])-roleScore(result2,args[0])).reverse();
   }
 
 }
 
-function roleScore(result:Result,role:number):number{
-
+function roleScore(result: Result, role: RobotRole): number {
+  return role.weights.map(
+    weight => {
+      let score = result.scores.filter(score => score.field.id == weight.field.id)[0];
+      return weight.weight * (score?score.score:0);
+    })
+             .reduce((num, num2) => num + num2)
 }
 
 export class ResultModel extends Result {
@@ -126,4 +140,8 @@ export class ResultModel extends Result {
     super(values);
     Object.assign(this, values);
   }
+}
+
+export class RoleModel extends RobotRole{
+
 }

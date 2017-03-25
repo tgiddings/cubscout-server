@@ -1,8 +1,10 @@
 import {Link} from "./link";
+import {RobotRole} from "./robot-role";
 export class Scorecard {
   id:number;
   sections:ScorecardSection[];
-  gameId:number;
+  roles:RobotRole[];
+  defaultRole:RobotRole;
 
   links:Link[];
 

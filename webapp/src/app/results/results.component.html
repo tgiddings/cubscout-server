@@ -3,21 +3,27 @@
     <md-option *ngFor="let game of games" [value]="game">{{game.name}}</md-option>
   </md-select>
   <md-select [(ngModel)]="selectedEvent"
-             [placeholder]="selectedGame?'Event':'Please select a game'">
+             placeholder="Event"
+             *ngIf="selectedGame">
     <md-option *ngFor="let event of events" [value]="event">
       {{event.shortName}}
     </md-option>
   </md-select>
   <ng-container *ngIf="scorecard">
-    <md-card *ngFor="let result of results">
+    <md-select [(ngModel)]="selectedRole"
+               placeholder="Role">
+      <md-option *ngFor="let role of scorecard.roles" [value]="role">{{role.name}}</md-option>
+    </md-select>
+    <md-card *ngFor="let result of results | sortResults:(selectedRole?selectedRole:scorecard.defaultRole)">
       <md-card-title>{{result.robotNumber}}</md-card-title>
       <md-card-content>
-      <ng-container *ngFor="let field of scorecard.sections | filterSections">
-        <div class="result-row">
-          <p>{{field.label}}</p>
-          <p>{{(result.scores | filterResultScores:field).length==0?"N/a":(result.scores | filterResultScores:field)[0].score}}</p>
-        </div>
-      </ng-container>
+        <ng-container *ngFor="let field of scorecard.sections | filterSections">
+          <div class="result-row">
+            <p>{{field.label}}</p>
+            <p>{{(result.scores | filterResultScores:field).length==0?"N/a":(result.scores |
+              filterResultScores:field)[0].score}}</p>
+          </div>
+        </ng-container>
       </md-card-content>
     </md-card>
   </ng-container>
