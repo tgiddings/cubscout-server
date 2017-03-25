@@ -1,4 +1,5 @@
-import {Component, OnInit, Pipe, PipeTransform, NgModule} from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform, NgModule, ElementRef} from '@angular/core';
+import {MdSnackBar, MdSnackBarRef} from '@angular/material';
 import {ScorecardSection, FieldSection, TitleSection, ParagraphSection, Scorecard, NullWhen} from "../scorecard";
 import {ScorecardService} from "../scorecard.service";
 import {Game} from "../game";
@@ -25,7 +26,8 @@ export class ScoutComponent implements OnInit {
   selectedGame: Game = null;
   events: Event[] = [];
   selectedEvent: Event = null;
-  noSelectedEventErrorShowing: boolean = false;
+  noSelectedEventSnackBar: MdSnackBarRef<any> = null;
+  noSelectedEventSnackBarShown: boolean = false;
   scorecard: Scorecard = null;
 
   sectionModels: ScorecardSection[] = [];
@@ -36,13 +38,15 @@ export class ScoutComponent implements OnInit {
   matchNumber: number;
   matchType: string;
   matchNumberMissingErrorShown: boolean = false;
-  matchTypeMissingErrorShown: boolean = false;
+  matchTypeMissingSnackBar: MdSnackBarRef<any> = null;
+  matchTypeMissingSnackBarShown: boolean = false;
 
   apiRoot: ApiRoot;
 
   constructor(private scorecardService: ScorecardService, private gameService: GameService,
               private eventService: EventService, private apiRootService: ApiRootService,
-              private resultService: ResultService, private matchService: MatchService) {}
+              private resultService: ResultService, private matchService: MatchService,
+              private snackBar: MdSnackBar, private rootElement:ElementRef) {}
 
   ngOnInit() {
     this.apiRootService.getRoot().subscribe(root => {
@@ -95,11 +99,22 @@ export class ScoutComponent implements OnInit {
   }
 
   validateRobotNumberFieldAndShowError(): boolean {
+    if(this.robotNumber == null){
+
+    }
     return !(this.robotNumberMissingErrorShown = (this.robotNumber == null));
   }
 
   validateSelectedEventAndShowError(): boolean {
-    return !(this.noSelectedEventErrorShowing = (this.selectedEvent == null));
+    if (this.selectedEvent == null && !this.matchTypeMissingSnackBarShown) {
+      this.noSelectedEventSnackBarShown = true;
+      this.noSelectedEventSnackBar = this.snackBar.open("Please select an event", "", {
+        duration: 2000
+      });
+      this.noSelectedEventSnackBar.afterDismissed()
+          .subscribe(() => {}, () => {}, () => this.noSelectedEventSnackBarShown = false);
+    }
+    return !(this.selectedEvent == null);
   }
 
   validateMatchNumberFieldAndShowError(): boolean {
@@ -107,7 +122,15 @@ export class ScoutComponent implements OnInit {
   }
 
   validateMatchTypeAndShowError(): boolean {
-    return !(this.matchTypeMissingErrorShown = (this.matchType == null));
+    if (this.matchType == null) {
+      this.matchTypeMissingSnackBarShown = true;
+      this.matchTypeMissingSnackBar = this.snackBar.open("Please select a match type", "", {
+        duration: 2000
+      });
+      this.matchTypeMissingSnackBar.afterDismissed()
+          .subscribe(() => {}, () => {}, () => this.matchTypeMissingSnackBarShown = false);
+    }
+    return !(this.matchType == null);
   }
 
   submitButtonPressed(): void {
@@ -117,16 +140,16 @@ export class ScoutComponent implements OnInit {
                     else return null;
                   })
                 ));
-    let currentMatch:Match = null;
+    let currentMatch: Match = null;
     let robotNumberValid = this.validateRobotNumberFieldAndShowError();
     let selectedEventValid = this.validateSelectedEventAndShowError();
     let matchNumberValid = this.validateMatchNumberFieldAndShowError();
     let matchTypeValid = this.validateMatchTypeAndShowError();
-    if (robotNumberValid&&selectedEventValid&&matchNumberValid&&matchTypeValid) {
+    if (robotNumberValid && selectedEventValid && matchNumberValid && matchTypeValid) {
       this.matchService.getMatches(this.selectedEvent)
           .flatMap(matches => Observable.from(matches))
           .filter(match => match.number == this.matchNumber)
-          .filter(match=>match.type==this.matchType).subscribe(
+          .filter(match => match.type == this.matchType).subscribe(
         match => currentMatch = match,
         error => console.log(JSON.stringify(error)),
         () => {
@@ -146,16 +169,19 @@ export class ScoutComponent implements OnInit {
                 number: this.robotNumber
               }
             }), currentMatch).subscribe(
-              (result)=>{console.log(JSON.stringify(result))},
-              error=>console.log(JSON.stringify(error))
+              (result) => {
+                console.log(JSON.stringify(result));
+                this.clearScorecard();
+              },
+              error => console.log(JSON.stringify(error))
             );
           };
           if (currentMatch == null) {
             this.matchService
-                .createMatch(this.selectedEvent, new Match({number: this.matchNumber,type:this.matchType}))
+                .createMatch(this.selectedEvent, new Match({number: this.matchNumber, type: this.matchType}))
                 .subscribe(
-                  (match)=>{
-                    currentMatch=match;
+                  (match) => {
+                    currentMatch = match;
                     submitResult();
                   },
                   error => {
@@ -169,6 +195,16 @@ export class ScoutComponent implements OnInit {
         }
       );
     }
+  }
+
+  clearScorecard(): void {
+    this.sectionModels.filter(this.isFieldSection)
+        .map(this.toFieldSectionModel).forEach(section => {
+      section.value = 0;
+      section.checked = false;
+    });
+    this.robotNumber = null;
+    this.matchNumber = null;
   }
 
   log(message: any): void {console.log(message);}

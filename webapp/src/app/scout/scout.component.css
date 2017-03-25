@@ -1,21 +1,28 @@
 .scout-root{
-  width: 280px;
-  margin:24px auto;
-  padding:16px;
+  max-width: 280px;
+  width: 100%;
+  margin: 16px auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .scout-root *{
-  width:280px;
+  max-width: 280px;
+  width: 100%;
 }
 .scout-root md-select{
   height: 48px;
   margin: 8px 0;
 }
+
+.scout-root md-input-container{
+  margin: 0 0 8px 0;
+}
+
 .scout-root button{
   width:auto;
 }
+
 .scout-root .scout-optional-header{
   width:auto;
   align-self: flex-start;

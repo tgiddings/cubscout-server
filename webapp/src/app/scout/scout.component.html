@@ -5,8 +5,7 @@
     </ng-container>
   </md-select>
   <md-select ngDefaultControl [(ngModel)]="selectedEvent"
-             [placeholder]="selectedGame?'Event':'Please select a game'"
-             (blur)="validateSelectedEventAndShowError()">
+             [placeholder]="selectedGame?'Event':'Please select a game'">
     <ng-container *ngIf="events">
       <md-option *ngFor="let event of events" [value]="event" ngDefaultControl>
         {{event.shortName}}
@@ -19,7 +18,7 @@
            (blur)="validateRobotNumberFieldAndShowError()" ngDefaultControl>
   </md-input-container>
   <md-input-container>
-    <md-hint color="red" *ngIf="matchNumberMissingErrorShown">Required</md-hint>
+    <md-hint style="color:red" *ngIf="matchNumberMissingErrorShown">Required</md-hint>
     <input mdInput placeholder="Match" [(ngModel)]="matchNumber" type="number" min="0" minlength="1"
            (blur)="validateMatchNumberFieldAndShowError()" ngDefaultControl>
   </md-input-container>
