@@ -16,6 +16,8 @@ public class ScorecardResourceAssembler extends
         ScorecardResource resource = createResource(entity);
         resource.setScorecardId(entity.getId());
         resource.setSections(entity.getSections());
+        resource.setRoles(entity.getRoles());
+        resource.setDefaultRole(entity.getDefaultRole());
         resource.add(linkTo(GameController.class).slash(entity.getGame())
                                                  .withRel("game"));
         resource.add(linkTo(ScorecardController.class).slash(entity).slash("results")

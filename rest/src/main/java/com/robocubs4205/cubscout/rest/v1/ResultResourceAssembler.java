@@ -15,6 +15,7 @@ public class ResultResourceAssembler extends IdentifiableResourceAssemblerSuppor
         ResultResource resultResource = new ResultResource();
         resultResource.setResultId(entity.getId());
         resultResource.setScores(entity.getScores());
+        resultResource.setRoles(entity.getScorecard().getRoles());
         resultResource.add(linkTo(RobotController.class).slash(entity.getRobot())
                                                         .slash("results").slash(entity)
                                                         .withSelfRel());

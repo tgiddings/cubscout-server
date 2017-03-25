@@ -13,13 +13,13 @@ public class ScoreWeight {
     @Id
     @GeneratedValue
     private long id;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false)
     @JoinColumn(name="field")
     private FieldSection field;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="robotRole")
+    @JsonIgnore
     private RobotRole robotRole;
 
     private float weight;

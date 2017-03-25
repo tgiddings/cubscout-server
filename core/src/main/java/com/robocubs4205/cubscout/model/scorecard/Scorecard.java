@@ -31,7 +31,7 @@ public class Scorecard implements Identifiable<Long> {
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
     private Set<RobotRole> robotRoles = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private RobotRole defaultRole;
 
     public Scorecard() {
@@ -73,6 +73,18 @@ public class Scorecard implements Identifiable<Long> {
 
     public Set<RobotRole> getRobotRoles() {
         return robotRoles;
+    }
+
+    public Set<RobotRole> getRoles() {
+        return robotRoles;
+    }
+
+    public RobotRole getDefaultRole() {
+        return defaultRole;
+    }
+
+    public void setDefaultRole(RobotRole defaultRole) {
+        this.defaultRole = defaultRole;
     }
 
     public interface Creating{

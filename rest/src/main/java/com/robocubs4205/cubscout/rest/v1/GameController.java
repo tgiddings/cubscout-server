@@ -155,6 +155,13 @@ public class GameController {
             section.get().getWeights().add(weight);
         });
 
+        Optional<RobotRole> defaultRole = scorecard.getRoles().stream().filter(role-> Objects
+                .equals(role.getName(), scorecard.getDefaultRole().getName())).findFirst();
+
+        if(!defaultRole.isPresent()) throw new DefaultRoleNotInRoleList();
+
+        scorecard.setDefaultRole(defaultRole.get());
+
         ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(
                 scorecardRepository.saveAndFlush(scorecard));
         response.setHeader(LOCATION, scorecardResource.getLink("self").getHref());
@@ -216,5 +223,11 @@ public class GameController {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
     reason = "The index specified for the field for a weight does not exist or is not a field")
     class IndexIsNotAFieldException extends RuntimeException {
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
+            reason = "The default role specified is not a role in the roles list")
+    class DefaultRoleNotInRoleList extends RuntimeException{
+
     }
 }

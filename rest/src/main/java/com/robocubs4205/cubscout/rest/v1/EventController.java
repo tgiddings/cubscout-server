@@ -111,6 +111,8 @@ public class EventController {
                      .flatMap(Collection::stream)
                      .collect(Collectors.toSet()));
 
+        results.forEach(result->result.setScorecard(scorecard));
+
         return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(results));
     }
 }
