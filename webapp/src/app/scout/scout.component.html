@@ -1,4 +1,4 @@
-<div class="scout-root">
+<div class="scout-root column-component">
   <md-select ngDefaultControl placeholder="Game" [(ngModel)]="selectedGame" (change)="selectedGameChange()">
     <ng-container *ngIf="games">
       <md-option *ngFor="let game of games" [value]="game" ngDefaultControl>{{game.name}}</md-option>

@@ -3,10 +3,10 @@
   <div>
     <button *ngFor="let index of numStars | arrayWithSize"
             (click)="setRating(index+1)"
-            style="padding: 0;border: none;background: none;font-size:40px;">{{charForStar(index)}}
+            style="width:auto;padding: 0;border: none;background: none;font-size:40px;">{{charForStar(index)}}
     </button>
     <button
       (click)="setRating(0)"
-      style="padding: 0;border: none;background: none;">clear</button>
+      style="width:auto;padding: 0;border: none;background: none;">clear</button>
   </div>
 </div>

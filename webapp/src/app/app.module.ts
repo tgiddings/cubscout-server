@@ -18,9 +18,13 @@ import { MakeScorecardComponent } from './make-scorecard/make-scorecard.componen
 import {ScoutComponent} from './scout/scout.component';
 import {MatchService} from "./match.service";
 import {ResultService} from "./result.service";
+import {ResultsModule} from "./results/results.module";
+import {ResultsComponent} from "./results/results.component";
+import {RobotService} from "./robot.service";
 
 const routs:Routes = [
-  {path:'fill_scorecard', component: ScoutComponent}
+  {path:'scout', component: ScoutComponent},
+  {path:'results',component:ResultsComponent}
 ];
 
 @NgModule({
@@ -37,6 +41,7 @@ const routs:Routes = [
     HttpModule,
     JsonpModule,
     MaterialModule,
+    ResultsModule,
     RouterModule.forRoot(routs)
   ],
   providers: [
@@ -45,7 +50,8 @@ const routs:Routes = [
     EventService,
     ApiRootService,
     MatchService,
-    ResultService
+    ResultService,
+    RobotService
   ],
   bootstrap: [AppComponent]
 })

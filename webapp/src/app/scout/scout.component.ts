@@ -46,7 +46,7 @@ export class ScoutComponent implements OnInit {
   constructor(private scorecardService: ScorecardService, private gameService: GameService,
               private eventService: EventService, private apiRootService: ApiRootService,
               private resultService: ResultService, private matchService: MatchService,
-              private snackBar: MdSnackBar, private rootElement:ElementRef) {}
+              private snackBar: MdSnackBar) {}
 
   ngOnInit() {
     this.apiRootService.getRoot().subscribe(root => {
@@ -99,9 +99,6 @@ export class ScoutComponent implements OnInit {
   }
 
   validateRobotNumberFieldAndShowError(): boolean {
-    if(this.robotNumber == null){
-
-    }
     return !(this.robotNumberMissingErrorShown = (this.robotNumber == null));
   }
 

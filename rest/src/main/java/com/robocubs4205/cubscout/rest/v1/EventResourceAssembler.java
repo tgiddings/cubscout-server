@@ -28,6 +28,7 @@ public class EventResourceAssembler extends IdentifiableResourceAssemblerSupport
         resource.add(linkTo(GameController.class).slash(entity.getGame()).withRel("game"));
         resource.add(linkTo(EventController.class).slash(entity).slash("matches")
                                                   .withRel("matches"));
+        resource.add(linkTo(EventController.class).slash(entity).slash("results").withRel("results"));
         return resource;
     }
 }
