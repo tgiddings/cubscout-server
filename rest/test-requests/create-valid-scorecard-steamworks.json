@@ -33,6 +33,12 @@
       "optional": false,
       "type": "COUNT",
       "index": 4
+    },
+    {
+      "sectionType":"field",
+      "label":"Climbed Rope",
+      "type":"BOOLEAN",
+      "index":5
     }
   ],
   "robotRoles": [

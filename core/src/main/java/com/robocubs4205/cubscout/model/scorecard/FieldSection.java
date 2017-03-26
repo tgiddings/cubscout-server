@@ -97,6 +97,6 @@ public class FieldSection extends ScorecardSection {
     }
 
     public enum FieldType{
-        COUNT,RATING
+        COUNT,RATING,BOOLEAN
     }
 }

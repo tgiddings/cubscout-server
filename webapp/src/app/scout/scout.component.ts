@@ -131,12 +131,6 @@ export class ScoutComponent implements OnInit {
   }
 
   submitButtonPressed(): void {
-    console.log("scores:" + JSON.stringify(this.sectionModels.map(
-                  section => {
-                    if (this.isFieldSection(section))return (<FieldSectionModel>section).value;
-                    else return null;
-                  })
-                ));
     let currentMatch: Match = null;
     let robotNumberValid = this.validateRobotNumberFieldAndShowError();
     let selectedEventValid = this.validateSelectedEventAndShowError();
@@ -156,7 +150,7 @@ export class ScoutComponent implements OnInit {
               scores: this.sectionModels.filter(section => this.isFieldSection(section))
                           .map(section => this.toFieldSectionModel(section))
                           .map(model => new ScorecardFieldResult({
-                            score: (model.optional && (model.checked === (model.nullWhen === NullWhen.CHECKED))) ? null : model.value,
+                            score: model.type=="BOOLEAN"?(model.checked?1:0):((model.optional && (model.checked === (model.nullWhen === NullWhen.CHECKED))) ? null : model.value),
                             field: {
                               id: model.id,
                               sectionType: model.sectionType

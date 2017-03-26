@@ -39,7 +39,6 @@
         <ng-container *ngIf="!section.optional||(section.checked!==(section.nullWhen==CHECKED))">
           <md-input-container *ngIf="section.type=='COUNT'">
             <input mdInput [(ngModel)]="section.value"
-                   (change)="log(section.value)"
                    placeholder="{{section.label}}" type="number" min="0" ngDefaultControl>
           </md-input-container>
           <app-rating *ngIf="section.type=='RATING'"
@@ -48,6 +47,10 @@
                       (change)="log(section.value)"
                       [label]="section.label">
           </app-rating>
+          <div class="scout-optional-header" *ngIf="section.type=='BOOLEAN'">
+            <h6>{{section.label}}</h6>
+            <input [(ngModel)]="section.checked" type="checkbox">
+          </div>
         </ng-container>
       </ng-container>
       <h3 *ngIf="isTitleSection(section)">{{toTitleSection(section).title}}</h3>
