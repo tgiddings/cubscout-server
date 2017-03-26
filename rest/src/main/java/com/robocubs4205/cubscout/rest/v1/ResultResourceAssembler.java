@@ -6,7 +6,7 @@ import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 public class ResultResourceAssembler extends IdentifiableResourceAssemblerSupport<Result, ResultResource> {
-    public ResultResourceAssembler() {
+    ResultResourceAssembler() {
         super(RobotController.class, ResultResource.class);
     }
 
@@ -15,7 +15,6 @@ public class ResultResourceAssembler extends IdentifiableResourceAssemblerSuppor
         ResultResource resultResource = new ResultResource();
         resultResource.setResultId(entity.getId());
         resultResource.setScores(entity.getScores());
-        resultResource.setRoles(entity.getScorecard().getRoles());
         resultResource.add(linkTo(ResultController.class).slash(entity)
                                                         .withSelfRel());
         resultResource.add(linkTo(MatchController.class).slash(entity.getMatch())

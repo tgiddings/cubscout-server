@@ -1,7 +1,6 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.robocubs4205.cubscout.model.scorecard.RobotRole;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -15,15 +14,13 @@ public class ResultResource extends ResourceSupport {
 
     private Set<ScorecardFieldResult> scores;
 
-    private Set<RobotRole> roles;
-
-    public ResultResource(){}
+    ResultResource(){}
 
     public Set<ScorecardFieldResult> getScores() {
         return scores;
     }
 
-    public void setScores(Set<ScorecardFieldResult> scores) {
+    void setScores(Set<ScorecardFieldResult> scores) {
         this.scores = scores;
     }
 
@@ -32,15 +29,7 @@ public class ResultResource extends ResourceSupport {
         return id;
     }
 
-    public void setResultId(long id) {
+    void setResultId(long id) {
         this.id = id;
-    }
-
-    public Set<RobotRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<RobotRole> roles) {
-        this.roles = roles;
     }
 }
