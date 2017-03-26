@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
@@ -8,6 +8,22 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
   providers:[{provide:NG_VALUE_ACCESSOR,useExisting:forwardRef(()=>RatingComponent),multi:true}]
 })
 export class RatingComponent implements OnInit, ControlValueAccessor {
+  @Input()
+  get small(): boolean {
+    return this._small;
+  }
+
+  set small(value: boolean) {
+    this._small = value;
+  }
+  @Input()
+  get fixed(): boolean {
+    return this._fixed;
+  }
+
+  set fixed(value: boolean) {
+    this._fixed = value;
+  }
   onChange=(_)=>{};
   onTouched=()=>{};
 
@@ -35,6 +51,11 @@ export class RatingComponent implements OnInit, ControlValueAccessor {
   get rating(): number {
     return this._rating;
   }
+
+   private
+  _small:boolean = false;
+
+  private _fixed:boolean = false;
 
   set rating(value: number) {
     this._rating = value;

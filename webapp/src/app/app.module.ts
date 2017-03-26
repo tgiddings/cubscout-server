@@ -1,26 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import {HttpModule, JsonpModule} from '@angular/http';
-import { RouterModule, Routes } from '@angular/router';
-
-import {AppComponent} from './app.component';
+import {BrowserModule} from "@angular/platform-browser";
+import {NgModule} from "@angular/core";
+import {FormsModule} from "@angular/forms";
+import {HttpModule, JsonpModule} from "@angular/http";
+import {RouterModule, Routes} from "@angular/router";
+import {AppComponent} from "./app.component";
 import {MaterialModule} from "@angular/material";
-
-import 'hammerjs'
+import "hammerjs";
 import {ScorecardService} from "./scorecard.service";
 import {GameService} from "./game.service";
 import {EventService} from "./event.service";
 import {ApiRootService} from "./api-root.service";
-import { RatingComponent } from './rating/rating.component';
-import { ArrayWithSizePipe } from './array-with-size.pipe';
-import { MakeScorecardComponent } from './make-scorecard/make-scorecard.component';
-import {ScoutComponent} from './scout/scout.component';
+import {MakeScorecardComponent} from "./make-scorecard/make-scorecard.component";
+import {ScoutComponent} from "./scout/scout.component";
 import {MatchService} from "./match.service";
 import {ResultService} from "./result.service";
 import {ResultsModule} from "./results/results.module";
 import {ResultsComponent} from "./results/results.component";
 import {RobotService} from "./robot.service";
+import {RatingModule} from "./rating/rating.module";
 
 const routs:Routes = [
   {path:'scout', component: ScoutComponent},
@@ -30,8 +27,6 @@ const routs:Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    RatingComponent,
-    ArrayWithSizePipe,
     MakeScorecardComponent,
     ScoutComponent
   ],
@@ -42,6 +37,7 @@ const routs:Routes = [
     JsonpModule,
     MaterialModule,
     ResultsModule,
+    RatingModule,
     RouterModule.forRoot(routs)
   ],
   providers: [
