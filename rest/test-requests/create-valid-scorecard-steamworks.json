@@ -57,21 +57,28 @@
             "sectionType": "field",
             "index": 2
           },
-          "weight": 2
+          "weight": 1
         },
         {
           "field": {
             "sectionType": "field",
             "index": 3
           },
-          "weight": 3
+          "weight": 1
         },
         {
           "field": {
             "sectionType": "field",
             "index": 4
           },
-          "weight": 4
+          "weight": 1
+        },
+        {
+          "field":{
+            "sectionType": "field",
+            "index": 5
+          },
+          "weight":1
         }
       ]
     },
