@@ -1,5 +1,5 @@
-import {Component, OnInit, Pipe, PipeTransform, NgModule, ElementRef} from '@angular/core';
-import {MdSnackBar, MdSnackBarRef} from '@angular/material';
+import {Component, OnInit} from "@angular/core";
+import {MdSnackBar, MdSnackBarRef} from "@angular/material";
 import {ScorecardSection, FieldSection, TitleSection, ParagraphSection, Scorecard, NullWhen} from "../scorecard";
 import {ScorecardService} from "../scorecard.service";
 import {Game} from "../game";
@@ -7,11 +7,10 @@ import {GameService} from "../game.service";
 import {EventService} from "../event.service";
 import {ApiRootService} from "../api-root.service";
 import {ApiRoot} from "../api-root";
-import {Headers, RequestOptions, Response} from "@angular/http";
 import {ResultService} from "../result.service";
 import {Match} from "../match";
 import {MatchService} from "../match.service";
-import {Event} from "../event"
+import {Event} from "../event";
 import {Observable} from "rxjs";
 import {ResultSubmission, ScorecardFieldResult} from "../result";
 
@@ -162,6 +161,9 @@ export class ScoutComponent implements OnInit {
             }), currentMatch).subscribe(
               (result) => {
                 console.log(JSON.stringify(result));
+                this.snackBar.open("Submission Successful", "", {
+                  duration: 2000
+                });
                 this.clearScorecard();
               },
               error => console.log(JSON.stringify(error))
