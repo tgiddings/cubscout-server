@@ -1,6 +1,6 @@
-import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform} from "@angular/core";
 import {Game} from "../game";
-import {Event} from "../event"
+import {Event} from "../event";
 import {ApiRoot} from "../api-root";
 import {Result, ScorecardFieldResult} from "../result";
 import {ApiRootService} from "../api-root.service";
@@ -35,7 +35,7 @@ export class ResultsComponent implements OnInit {
                 .do(result => console.log(JSON.stringify(result)))
                 .publishReplay().refCount();
           resultObservable.subscribe();
-          resultObservable.zip(resultObservable.flatMap(result => this.robotService.getRobot(result)),
+          resultObservable.zip(resultObservable.concatMap(result => this.robotService.getRobot(result)),
                                (result, robot) => new ResultModel(Object.assign(result, {robotNumber: robot.number}))
           ).toArray().subscribe(results => {
             this.results = results;
@@ -77,7 +77,6 @@ export class ResultsComponent implements OnInit {
   events: Event[] = [];
   private _selectedEvent: Event;
 
-  roles: RobotRole[] = [];
   selectedRole: RobotRole;
 
   results: ResultModel[] = [];
@@ -100,8 +99,12 @@ export class ResultsComponent implements OnInit {
     });
   }
 
+  getScoreForField(result:Result,field:FieldSection):ScorecardFieldResult{
+    return result.scores.filter(score=>score.field.id==field.id)[0];
+  }
+
 }
-@Pipe({name: "filterSections", pure: true})
+@Pipe({name: "filterSections", pure: false})
 export class FilterSections implements PipeTransform {
   transform(value: any, ...args: any[]): any {
     return (<ScorecardSection[]>value).filter(section => section.sectionType == "field")
@@ -109,14 +112,8 @@ export class FilterSections implements PipeTransform {
                                       .sort((section1, section2) => section1.index - section2.index);
   }
 }
-@Pipe({name: "filterResultScores", pure: true})
-export class FilterResultScores implements PipeTransform {
-  transform(value: any, ...args: any[]): any {
-    return (<ScorecardFieldResult[]>value).filter(score => score.field.id == (<FieldSection>args[0]).id);
-  }
 
-}
-@Pipe({name: "sortResults", pure: true})
+@Pipe({name: "sortResults", pure: false})
 export class SortResults implements PipeTransform {
   transform(value: any, ...args: any[]): any {
     return (<Result[]>value).sort((result1,result2)=>roleScore(result1,args[0])-roleScore(result2,args[0])).reverse();
@@ -140,8 +137,4 @@ export class ResultModel extends Result {
     super(values);
     Object.assign(this, values);
   }
-}
-
-export class RoleModel extends RobotRole{
-
 }

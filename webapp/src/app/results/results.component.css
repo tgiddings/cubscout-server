@@ -23,7 +23,7 @@
 }
 
 .result-row *:first-child{
-  width:100%;
+  width:auto;
 }
 
 .result-row *:nth-child(2){
