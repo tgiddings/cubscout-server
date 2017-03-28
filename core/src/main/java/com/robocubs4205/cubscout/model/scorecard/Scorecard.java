@@ -18,20 +18,20 @@ public class Scorecard implements Identifiable<Long> {
     @GeneratedValue
     private long id;
 
-    @OneToOne(optional = false)
+    @OneToOne(cascade = CascadeType.PERSIST, optional = false)
     private Game game;
 
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "scorecard")
     @NotEmpty(groups = {Default.class,Creating.class})
     private Set<ScorecardSection> sections = new HashSet<>();
 
     @OneToMany(mappedBy = "scorecard")
     private Set<Result> results = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "scorecard")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "scorecard")
     private Set<RobotRole> robotRoles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private RobotRole defaultRole;
 
     public Scorecard() {
