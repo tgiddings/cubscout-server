@@ -93,6 +93,37 @@
           "weight": 1
         }
       ]
+    },
+    {
+      "name":"gear collector",
+      "weights":[
+        {
+          "field":{
+            "sectionType":"field",
+            "index":4
+          },
+          "weight":1
+        }
+      ]
+    },
+    {
+      "name":"Boiler bot",
+      "weights":[
+        {
+          "field":{
+            "sectionType":"field",
+            "index":2
+          },
+          "weight":1
+        },
+        {
+          "field":{
+            "sectionType":"field",
+            "index":3
+          },
+          "weight":3
+        }
+      ]
     }
   ],
   "defaultRole": "default"
