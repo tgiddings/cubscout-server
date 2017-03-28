@@ -5,6 +5,7 @@ import org.springframework.hateoas.Identifiable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,9 +14,11 @@ import java.util.Set;
  */
 @Entity
 public class District implements Identifiable<String> {
+    @NotNull
     @Id
     private String code;
 
+    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "district")
