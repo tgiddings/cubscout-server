@@ -14,7 +14,8 @@
                placeholder="Role">
       <md-option *ngFor="let role of scorecard.roles" [value]="role">{{role.name}}</md-option>
     </md-select>
-    <md-card *ngFor="let result of results | sortResults:(selectedRole?selectedRole:scorecard.defaultRole)">
+    <md-card
+      *ngFor="let result of results | sortResults:scorecard.defaultRole | sortResults:(selectedRole?selectedRole:scorecard.defaultRole)">
       <md-card-title>{{result.robotNumber}}</md-card-title>
       <md-card-content>
         <ng-container *ngFor="let field of scorecard.sections | filterSections">

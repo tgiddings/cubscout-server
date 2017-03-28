@@ -12,6 +12,7 @@ import {ScorecardService} from "../scorecard.service";
 import {Observable, ReplaySubject} from "rxjs";
 import {RobotService} from "../robot.service";
 import {RobotRole} from "../robot-role";
+import * as stable from "stable";
 
 @Component({
              selector: 'app-results',
@@ -116,7 +117,7 @@ export class FilterSections implements PipeTransform {
 @Pipe({name: "sortResults", pure: false})
 export class SortResults implements PipeTransform {
   transform(value: any, ...args: any[]): any {
-    return (<Result[]>value).sort((result1,result2)=>roleScore(result1,args[0])-roleScore(result2,args[0])).reverse();
+    return stable(<Result[]>value,(result1,result2)=>roleScore(result2,args[0])-roleScore(result1,args[0]));
   }
 
 }
