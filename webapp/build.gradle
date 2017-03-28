@@ -19,6 +19,9 @@ task angular(type: Exec) {
   dependsOn npm
   executable = 'ng'
   args 'build'
+  args '--prod'
+  args '--env'
+  args 'prod'
   args "--output-path"
   args "$buildDir/angular"
 }

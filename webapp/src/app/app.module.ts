@@ -21,6 +21,7 @@ import {RatingModule} from "./rating/rating.module";
 
 const routs:Routes = [
   {path:'scout', component: ScoutComponent},
+  {path:'',redirectTo:'scout',pathMatch:'full'},
   {path:'results',component:ResultsComponent}
 ];
 
