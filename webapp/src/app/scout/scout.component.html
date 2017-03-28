@@ -7,7 +7,7 @@
   <md-select ngDefaultControl [(ngModel)]="selectedEvent"
              [placeholder]="selectedGame?'Event':'Please select a game'">
     <ng-container *ngIf="events">
-      <md-option *ngFor="let event of events" [value]="event" ngDefaultControl>
+      <md-option *ngFor="let event of events | currentEvents" [value]="event" ngDefaultControl>
         {{event.shortName}}
       </md-option>
     </ng-container>

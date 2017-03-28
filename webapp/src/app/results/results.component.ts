@@ -105,6 +105,7 @@ export class ResultsComponent implements OnInit {
   }
 
 }
+
 @Pipe({name: "filterSections", pure: false})
 export class FilterSections implements PipeTransform {
   transform(value: any, ...args: any[]): any {

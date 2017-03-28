@@ -18,6 +18,7 @@ import {ResultsModule} from "./results/results.module";
 import {ResultsComponent} from "./results/results.component";
 import {RobotService} from "./robot.service";
 import {RatingModule} from "./rating/rating.module";
+import {RobocubsPipesModule} from "./robocubs-pipes/robocubs-pipes.module";
 
 const routs:Routes = [
   {path:'scout', component: ScoutComponent},
@@ -39,7 +40,8 @@ const routs:Routes = [
     MaterialModule,
     ResultsModule,
     RatingModule,
-    RouterModule.forRoot(routs)
+    RouterModule.forRoot(routs),
+    RobocubsPipesModule
   ],
   providers: [
     ScorecardService,

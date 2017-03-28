@@ -1,16 +1,19 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {ArrayWithSizePipe} from "../array-with-size.pipe";
+import {ArrayWithSizePipe} from "./array-with-size.pipe";
+import {CurrentEventsPipe} from "./current-events.pipe";
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    ArrayWithSizePipe
+    ArrayWithSizePipe,
+    CurrentEventsPipe
   ],
   exports:[
-    ArrayWithSizePipe
+    ArrayWithSizePipe,
+    CurrentEventsPipe
   ]
 })
 export class RobocubsPipesModule { }

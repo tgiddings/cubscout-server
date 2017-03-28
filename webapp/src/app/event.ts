@@ -4,6 +4,9 @@ export class Event {
   shortName:string;
   address:string;
 
+  startDate:Date;
+  endDate:Date;
+
   links:Link[];
 
   constructor(values: Object = {}) {
