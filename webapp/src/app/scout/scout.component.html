@@ -5,6 +5,7 @@
     </ng-container>
   </md-select>
   <md-select ngDefaultControl [(ngModel)]="selectedEvent"
+             *ngIf="(!selectedGame)||(!eventsFetched)||(events | currentEvents).length>0"
              [placeholder]="selectedGame?'Event':'Please select a game'">
     <ng-container *ngIf="events">
       <md-option *ngFor="let event of events | currentEvents" [value]="event" ngDefaultControl>
@@ -12,6 +13,10 @@
       </md-option>
     </ng-container>
   </md-select>
+  <h5 style="height:48px; padding:0; margin: 8px 0" *ngIf="selectedGame&&eventsFetched&&(events | currentEvents).length==0">
+    There are no ongoing events for this game
+  </h5>
+  <ng-container *ngIf="!(selectedGame&&eventsFetched&&(events | currentEvents).length==0)">
   <md-input-container>
     <md-hint style="color:red" *ngIf="robotNumberMissingErrorShown">Required</md-hint>
     <input mdInput placeholder="Robot" [(ngModel)]="robotNumber" type="number" min="0" minlength="1"
@@ -57,5 +62,6 @@
       <p *ngIf="isParagraphSection(section)">{{toParagraphSection(section).text}}</p>
     </ng-container>
     <button color="primary" md-raised-button (click)="submitButtonPressed()">Submit</button>
+  </ng-container>
   </ng-container>
 </div>

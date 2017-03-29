@@ -24,6 +24,7 @@ export class ScoutComponent implements OnInit {
   games: Game[] = [];
   selectedGame: Game = null;
   events: Event[] = [];
+  eventsFetched:boolean=false;
   selectedEvent: Event = null;
   noSelectedEventSnackBar: MdSnackBarRef<any> = null;
   noSelectedEventSnackBarShown: boolean = false;
@@ -72,6 +73,7 @@ export class ScoutComponent implements OnInit {
   toParagraphSection(section: ScorecardSection): ParagraphSection {return <ParagraphSection><any>section}
 
   selectedGameChange(): void {
+    this.eventsFetched = false;
     this.scorecardService.getScorecardsByGame(this.selectedGame).subscribe(
       scorecards => {
         this.scorecard = scorecards[0];
@@ -90,6 +92,7 @@ export class ScoutComponent implements OnInit {
     this.eventService.getEventsByGame(this.selectedGame).subscribe(
       events => {
         this.events = events;
+        this.eventsFetched = true;
       },
       error => console.log(error.toString())
     );
@@ -141,7 +144,7 @@ export class ScoutComponent implements OnInit {
           .filter(match => match.number == this.matchNumber)
           .filter(match => match.type == this.matchType).subscribe(
         match => currentMatch = match,
-        error => console.log(JSON.stringify(error)),
+        error => {},
         () => {
           let submitResult = () => {
             this.resultService.submitResult(new ResultSubmission({
@@ -165,8 +168,7 @@ export class ScoutComponent implements OnInit {
                   duration: 2000
                 });
                 this.clearScorecard();
-              },
-              error => console.log(JSON.stringify(error))
+              }
             );
           };
           if (currentMatch == null) {
@@ -176,9 +178,6 @@ export class ScoutComponent implements OnInit {
                   (match) => {
                     currentMatch = match;
                     submitResult();
-                  },
-                  error => {
-                    //if (error instanceof Response && (<Response>error).status == 409) submitResult();
                   }
                 )
           }
