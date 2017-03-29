@@ -26,6 +26,7 @@ export class ResultsComponent implements OnInit {
 
   set selectedEvent(value: Event) {
     this._selectedEvent = value;
+    this.resultsFetched = false;
     if (value) {
       this.getScorecardObservable.subscribe(
         (scorecard) => {
@@ -40,6 +41,7 @@ export class ResultsComponent implements OnInit {
                                (result, robot) => new ResultModel(Object.assign(result, {robotNumber: robot.number}))
           ).toArray().subscribe(results => {
             this.results = results;
+            this.resultsFetched = true;
             console.log("results got: "+results.length);
           });
         }
@@ -81,6 +83,7 @@ export class ResultsComponent implements OnInit {
   selectedRole: RobotRole;
 
   results: ResultModel[] = [];
+  resultsFetched:boolean = false;
 
   apiRoot: ApiRoot;
 
