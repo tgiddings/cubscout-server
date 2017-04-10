@@ -9,6 +9,15 @@ Many of the existing scouting solutions did very little actual data processing, 
 # Contributing
 CubScout is currently in the pre-release stage. You can [create a new issue](https://github.com/robocubs4205/cubscout-server/issues) for proposed features, bugs, etc. as well as comment on [existing issues](https://github.com/robocubs4205/cubscout-server/issues). You can also contribute code by creating a fork of the repository with the fork button at the top of the page. You can make your changes to your fork then [create a pull request](https://github.com/robocubs4205/cubscout-server/pulls) to have your changes integrated into the project. Take a look at the [issues](https://github.com/robocubs4205/cubscout-server/issues) for information on what needs to be done, and please [create a new issue](https://github.com/robocubs4205/cubscout-server/issues) and discuss it with a core team member before starting on a feature that does not already have an issue.
 
+# Modules
+this repository contains multiple modules for the different components of CubScout.
+
+## REST API Server
+This component performs the data analysis and collection and exposes the functionality of CubScout via a REST API. This module is contained in the `rest` directory of the repository and is the `rest` gradle project.
+
+## Web app.
+This component is the official front end of CubScout. It creates a convenient user interface for the functionality of the CubSout server. It is contained in the `webapp` directory of the project ans is the `webapp` gradle project.
+
 # Building
 This project uses gradle for builds. The repository comes with a gradle wrapper script that allows you to build the project without installing gradle. Since this is a java-based project, java must be installed.
 
