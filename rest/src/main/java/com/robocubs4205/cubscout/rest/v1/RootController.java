@@ -1,6 +1,7 @@
 package com.robocubs4205.cubscout.rest.v1;
 
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
+@PreAuthorize("denyAll()")
 @RequestMapping(value="/",produces = "application/vnd.robocubs-v1+json")
 public class RootController {
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public ResourceSupport get(){
         ResourceSupport resource = new ResourceSupport();
 

@@ -1,12 +1,13 @@
 package com.robocubs4205.cubscout.rest.v1;
 
-import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.model.scorecard.*;
+import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,13 @@ import static com.robocubs4205.cubscout.util.ResultUtil.resultsForRobot;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
+@PreAuthorize("denyAll()")
 @RequestMapping(value = "/games", produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
     private final EventRepository eventRepository;
     private final DistrictRepository districtRepository;
     private final ScorecardRepository scorecardRepository;
-    private final ScorecardSectionRepository scorecardSectionRepository;
 
     @Autowired
     public GameController(GameRepository gameRepository,
@@ -40,16 +41,17 @@ public class GameController {
         this.eventRepository = eventRepository;
         this.districtRepository = districtRepository;
         this.scorecardRepository = scorecardRepository;
-        this.scorecardSectionRepository = scorecardSectionRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<GameResource> getAllGames() {
         return new JsonArrayContainer<>(new GameResourceAssembler()
                 .toResources(gameRepository.findAll()));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public GameResource getGame(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
@@ -58,6 +60,7 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('MANAGE_GAMES')")
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
         game = gameRepository.saveAndFlush(game);
         GameResource gameResource = new GameResourceAssembler().toResource(game);
@@ -66,6 +69,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}", method = RequestMethod.PUT)
+    @PreAuthorize("hasRole('MANAGE_GAMES')")
     public GameResource updateGame(@PathVariable Game game,
                                    @Valid @RequestBody Game newGame) {
         if (game == null)
@@ -79,6 +83,7 @@ public class GameController {
 
     @RequestMapping(value = "/{game:[0-9]+}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('MANAGE_GAMES')")
     public void deleteGame(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
@@ -87,6 +92,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
@@ -95,6 +101,7 @@ public class GameController {
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('MANAGE_EVENTS')")
     @Transactional
     public EventResource createEvent(@PathVariable Game game,
                                      @Validated(Event.Creating.class) @RequestBody Event event,
@@ -115,6 +122,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<ScorecardResource> getAllScorecards(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
@@ -124,6 +132,7 @@ public class GameController {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('MANAGE_SCORECARDS')")
     @RequestMapping(value = "/{game:[0-9]+}/scorecards", method = RequestMethod.POST)
     public ScorecardResource createScorecard(@PathVariable Game game,
                                              @Validated(Scorecard.Creating.class)
@@ -169,6 +178,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/robots", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<RobotResource> getAllRobots(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
@@ -176,6 +186,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/results", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<ResultResource> getResults(@PathVariable Game game,
                                                          @RequestParam("scorecard") Scorecard scorecard){
         BiFunction<Game, Set<Result>, Set<Result>>

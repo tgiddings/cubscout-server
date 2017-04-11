@@ -5,9 +5,11 @@ import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@PreAuthorize("denyAll()")
 @RequestMapping("/results")
 public class ResultController {
 
@@ -19,12 +21,14 @@ public class ResultController {
     }
 
     @RequestMapping(value="/{result:[0-9]+}",method=RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public ResultResource getResult(@PathVariable Result result){
         if(result==null) throw new ResourceNotFoundException();
         return new ResultResourceAssembler().toResource(result);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('MANAGE_RESULTS')")
     @RequestMapping(value="/{result:[0-9]+}",method= RequestMethod.DELETE)
     public void deleteResult(@PathVariable Result result){
         if(result==null) throw new ResourceNotFoundException();

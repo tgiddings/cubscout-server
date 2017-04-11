@@ -9,15 +9,16 @@ import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
+@PreAuthorize("denyAll()")
 @RequestMapping(value = "/matches",produces = "application/vnd.robocubs-v1+json")
 public class MatchController {
     private final MatchRepository matchRepository;
@@ -44,12 +45,14 @@ public class MatchController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<MatchResource> getAllMatches() {
         return new JsonArrayContainer<>(new MatchResourceAssembler()
                 .toResources(matchRepository.findAll()));
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public MatchResource getMatch(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
@@ -57,6 +60,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.PUT)
+    @PreAuthorize("hasRole('MANAGE_MATCHES')")
     public MatchResource updateMatch(@PathVariable Match match,
                                      @RequestBody Match newMatch) {
         if (match == null)
@@ -67,6 +71,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('MANAGE_MATCHES')")
     public void deleteMatch(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
@@ -75,6 +80,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<RobotResource> getAllRobots(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
@@ -83,6 +89,7 @@ public class MatchController {
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('SCOUT_MATCHES')")
     public ResultResource createResult(@PathVariable Match match,
                                        @Validated(Result.Creating.class)
                                        @RequestBody Result result,
@@ -165,6 +172,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/results", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public JsonArrayContainer<ResultResource> getAllResults(@PathVariable Match match) {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
