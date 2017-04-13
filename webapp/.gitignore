@@ -7,10 +7,10 @@
 .idea/modules/b.iml
 .idea/modules/b_main.iml
 .idea/modules/b_test.iml
-.idea/modules/cubscout-webapp.iml
+.idea/modules/com.robocubs4205.cubscout-webapp.iml
 .idea/workspace.xml
 build/
 dist/
-cubscout-webapp.iws
+com.robocubs4205.cubscout-webapp.iws
 gradle/
 node_modules/

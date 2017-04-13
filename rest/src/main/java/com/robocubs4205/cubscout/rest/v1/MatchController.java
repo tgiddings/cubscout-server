@@ -1,11 +1,12 @@
 package com.robocubs4205.cubscout.rest.v1;
 
-import com.robocubs4205.cubscout.model.*;
-import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
+import com.robocubs4205.cubscout.model.Match;
+import com.robocubs4205.cubscout.model.MatchRepository;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
+import com.robocubs4205.cubscout.service.ScoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -23,25 +24,19 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 public class MatchController {
     private final MatchRepository matchRepository;
     private final ResultRepository resultRepository;
-    private final RobotRepository robotRepository;
 
     private final ScorecardRepository scorecardRepository;
-    private final FieldSectionRepository fieldSectionRepository;
-    private final TeamRepository teamRepository;
+    private final ScoutService scoutService;
 
     @Autowired
     public MatchController(MatchRepository matchRepository,
                            ResultRepository resultRepository,
-                           RobotRepository robotRepository,
                            ScorecardRepository scorecardRepository,
-                           FieldSectionRepository fieldSectionRepository,
-                           TeamRepository teamRepository) {
+                           ScoutService scoutService) {
         this.matchRepository = matchRepository;
         this.resultRepository = resultRepository;
-        this.robotRepository = robotRepository;
         this.scorecardRepository = scorecardRepository;
-        this.fieldSectionRepository = fieldSectionRepository;
-        this.teamRepository = teamRepository;
+        this.scoutService = scoutService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -102,71 +97,8 @@ public class MatchController {
             throw new ScorecardDoesNotExistException();
         }
 
-        result.setMatch(match);
+        ResultResource resultResource = new ResultResourceAssembler().toResource(scoutService.scoutMatch(result,match));
 
-        //remove null scores
-        result.getScores().removeIf(
-                fieldResult -> fieldResult.getScore() == null
-        );
-
-        //replace transient robot with entity from database
-        Robot existingRobot = robotRepository
-                .findByNumberAndGame(result.getRobot().getNumber(),result.getScorecard().getGame());
-        if (existingRobot == null) { //create new robot
-            //find team for this robot
-            Team existingTeam = teamRepository
-                    .findByNumberAndGameType(
-                            result.getRobot().getNumber(),
-                            result.getScorecard().getGame().getType());
-            if (existingTeam == null) {
-                Team team = new Team();
-                team.setNumber(result.getRobot().getNumber());
-                team.setGameType(result.getMatch().getEvent().getGame().getType());
-                team.setDistrict(result.getMatch().getEvent().getDistrict());
-                result.getRobot().setTeam(teamRepository.saveAndFlush(team));
-            }
-            else result.getRobot().setTeam(existingTeam);
-
-            result.getRobot().setGame(result.getMatch().getEvent().getGame());
-
-            result.setRobot(robotRepository.save(result.getRobot()));
-        } else result.setRobot(existingRobot);
-
-        //replace transient FieldSections with entities from database
-        //todo: reduce database hits
-        //noinspection ResultOfMethodCallIgnored
-        result.getScores().stream()
-              .peek(fieldResult -> fieldResult.setField(
-                      fieldSectionRepository.findByIdAndScorecard(
-                              fieldResult.getField().getId(),
-                              result.getScorecard())))
-              .peek(fieldResult -> {
-                  if (fieldResult.getField() == null)
-                      throw new ScoresDoNotExistException();
-              })
-              .forEach(fieldResult->fieldResult.setResult(result));
-
-
-        if (!result.scoresMatchScorecardSections()) {
-            throw new ScoresDoNotMatchScorecardException();
-        }
-
-        if (!result.allMissingScoresAreOptional()) {
-            throw new RequiredScoresAbsentException();
-        }
-
-        if (!result.gameMatchesScorecard()) {
-            throw new GameDoesNotMatchScorecardException();
-        }
-
-        match.getRobots().add(result.getRobot());
-        result.getRobot().getMatches().add(match);
-        result.setRobot(robotRepository.saveAndFlush(result.getRobot()));
-        matchRepository.saveAndFlush(match);
-
-        Result finalResult = resultRepository.saveAndFlush(result);
-
-        ResultResource resultResource = new ResultResourceAssembler().toResource(result);
         response.setHeader(LOCATION,resultResource.getLink("self").getHref());
         return resultResource;
     }
@@ -183,30 +115,5 @@ public class MatchController {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
             reason = "The Scorecard specified does not exist")
     private class ScorecardDoesNotExistException extends RuntimeException {
-    }
-
-    //todo: allow detailed errors
-
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The scores provided do not match the specified" +
-                    " scorecard")
-    private class ScoresDoNotMatchScorecardException extends RuntimeException {
-    }
-
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "Some scores required by the specified " +
-                    "scorecard are absent or null")
-    private class RequiredScoresAbsentException extends RuntimeException {
-    }
-
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The Game for this match does not match the " +
-                    "game for the specified scorecard")
-    private class GameDoesNotMatchScorecardException extends RuntimeException {
-    }
-
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The scores provided do not match any scorecard")
-    private class ScoresDoNotExistException extends RuntimeException {
     }
 }

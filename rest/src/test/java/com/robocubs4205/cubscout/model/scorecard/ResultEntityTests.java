@@ -1,6 +1,5 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.model.scorecard;
 
-import com.robocubs4205.cubscout.model.scorecard.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

@@ -3,21 +3,16 @@ package com.robocubs4205.cubscout.tbascraper;
 import com.robocubs4205.cubscout.model.*;
 import com.robocubs4205.cubscout.tbascraper.model.TBAEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public final class TBAScraper {
@@ -55,7 +50,7 @@ public final class TBAScraper {
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-TBA-App-Id", "4205:scouting app:" + this.getClass().getPackage().getImplementationVersion());
             headers.set("Accept","application/json");
-            headers.set("User-Agent","cubscout");
+            headers.set("User-Agent", "com/robocubs4205/cubscout");
             HttpEntity<?> requestEntity = new HttpEntity<>(headers);
             ResponseEntity<TBAEvent[]> response =
                     restTemplate.exchange(getEventsForYearString, HttpMethod.GET, requestEntity, TBAEvent[].class,game.getYear());
@@ -71,7 +66,7 @@ public final class TBAScraper {
                         districtRepository.saveAndFlush(district);
                     }
                 }
-                Event event = tbaEvent.toEvent(game,district);
+                Event event = tbaEvent.toEvent(game, district);
                 eventRepository.saveAndFlush(event);
             });
         });

@@ -1,8 +1,5 @@
-package com.robocubs4205.cubscout;
+package com.robocubs4205.cubscout.model.scorecard;
 
-import com.robocubs4205.cubscout.model.scorecard.FieldSection;
-import com.robocubs4205.cubscout.model.scorecard.Result;
-import com.robocubs4205.cubscout.model.scorecard.ScorecardFieldResult;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

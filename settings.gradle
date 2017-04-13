@@ -1,3 +1,2 @@
 include 'rest'
-include 'core'
 include 'webapp'
