@@ -1,12 +1,10 @@
-package com.robocubs4205.cubscout.model.user;
+package com.robocubs4205.cubscout.model.access;
 
+import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,8 +20,10 @@ public class User implements UserDetails{
     private String username;
 
     @OneToMany
-    private
-    Set<GrantedAuthorityImpl> authorities = new HashSet<>();
+    private Set<GrantedAuthorityImpl> authorities = new HashSet<>();
+
+    @OneToOne(optional = false)
+    private SidImpl sid;
 
     /**
      * even though the field is called {@literal password}, the password is
@@ -43,9 +43,17 @@ public class User implements UserDetails{
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -68,11 +76,39 @@ public class User implements UserDetails{
         return true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    public Sid asSid(){
+        return new UserSid(this);
+    }
+
+    public SidImpl getSid() {
+        return sid;
+    }
+
+    public void setSid(SidImpl sid) {
+        this.sid = sid;
+    }
+
+    private class UserSid extends User implements Sid{
+
+        private final User user;
+
+        public UserSid(User user) {
+
+            this.user = user;
+        }
+
+        @Override
+        public boolean equals(Object o){
+            return !(o==null)&&o instanceof UserSid&&((UserSid)o).user.getId()==getId();
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.robocubs4205.cubscout.service;
 
-import com.robocubs4205.cubscout.model.user.UserRepository;
+import com.robocubs4205.cubscout.model.access.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

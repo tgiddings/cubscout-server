@@ -1,4 +1,4 @@
-package com.robocubs4205.cubscout.model.user;
+package com.robocubs4205.cubscout.model.access;
 
 import org.springframework.security.core.GrantedAuthority;
 
