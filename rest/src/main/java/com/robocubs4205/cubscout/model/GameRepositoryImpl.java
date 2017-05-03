@@ -8,6 +8,7 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,62 +16,58 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 
 @Repository
 @Scope(SCOPE_PROTOTYPE)
-public class EventRepositoryImpl implements EventRepository {
+public class GameRepositoryImpl implements GameRepository {
 
     private final PersistenceManagerFactory pmf;
 
     @Autowired
-    EventRepositoryImpl(PersistenceManagerFactory pmf) {
+    public GameRepositoryImpl(PersistenceManagerFactory pmf) {
         this.pmf = pmf;
     }
 
     @Override
-    public Event find(long id) {
+    public Game find(long id) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return pm.getObjectById(Event.class,id);
+            return pm.getObjectById(Game.class,id);
         }
     }
 
-    //todo: replace q.setUnique(true)+q.execute with q.executeUnique when datanucleus 5.1.0-m3 is released
     @Override
-    public Event find(String shortName) {
+    public Game find(String name) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            Query<Event> q = pm.newQuery(Event.class)
-                               .filter("this.shortName==:shortName");
+            Query<Game> q = pm.newQuery(Game.class)
+                              .filter("this.name==:name");
             q.setUnique(true);
-            return (Event) q.execute(shortName);
+            return (Game) q.execute(name);
         }
     }
 
     @Override
-    public Set<Event> find(Game game) {
+    public Set<Game> find(Year year) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            Query<Event> q = pm.newQuery(Event.class)
-                               .filter("this.game==:game");
-            q.setParameters(game);
-            return new HashSet<>(q.executeList());
+            return new HashSet<>(pm.newQuery(Game.class).filter("this.year==year").executeList());
         }
     }
 
     @Override
-    public Set<Event> findAll() {
+    public Set<Game> findAll() {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return new HashSet<>(pm.newQuery(Event.class).executeList());
+            return new HashSet<>(pm.newQuery(Game.class).executeList());
         }
     }
 
     @Override
-    public Event save(Event event) {
+    public Game save(Game game) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return pm.makePersistent(event);
+            return pm.makePersistent(game);
         }
     }
 
     @Override
-    public void delete(Event event) {
+    public void delete(Game game) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            if(JDOHelper.isPersistent(event))pm.deletePersistent(event);
-            else pm.newQuery(Event.class).filter("this.id=:id").deletePersistentAll(event.getId());
+            if(JDOHelper.isPersistent(game))pm.deletePersistent(game);
+            else pm.newQuery(Game.class).filter("this.id=:id").deletePersistentAll(game.getId());
         }
     }
 }

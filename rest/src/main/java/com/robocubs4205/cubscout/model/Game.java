@@ -4,6 +4,7 @@ import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import org.springframework.hateoas.Identifiable;
 
 import javax.validation.constraints.NotNull;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class Game implements Identifiable<Long> {
     private String type;
 
     @NotNull
-    private int year;
+    private Year year;
 
     private Set<Event> events = new HashSet<>();
 
@@ -57,11 +58,11 @@ public class Game implements Identifiable<Long> {
         this.type = type;
     }
 
-    public int getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Year year) {
         this.year = year;
     }
 

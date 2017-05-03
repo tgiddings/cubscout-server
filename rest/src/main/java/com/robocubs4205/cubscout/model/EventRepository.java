@@ -1,10 +1,7 @@
 package com.robocubs4205.cubscout.model;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.Set;
 
-@Repository
 public interface EventRepository{
     Event find(long id);
     Event find(String shortName);

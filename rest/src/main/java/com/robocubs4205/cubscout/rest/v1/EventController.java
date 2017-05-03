@@ -76,7 +76,7 @@ public class EventController {
     @PreAuthorize("permitAll()")
     JsonArrayContainer<MatchResource> getAllMatches(@PathVariable Event event) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
-        return new JsonArrayContainer<>(new MatchResourceAssembler().toResources(matchRepository.findByEvent(event)));
+        return new JsonArrayContainer<>(new MatchResourceAssembler().toResources(matchRepository.find(event)));
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.POST)

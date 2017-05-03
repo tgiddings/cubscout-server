@@ -1,17 +1,14 @@
 package com.robocubs4205.cubscout.model;
 
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import java.time.Year;
 import java.util.Set;
 
-@Repository
 public interface GameRepository{
-    Game findById(int id);
+    Game find(long id);
 
-    Game findByName(String name);
+    Game find(String name);
 
-    List<Game> findByYear(int year);
+    Set<Game> find(Year year);
 
     Set<Game> findAll();
 
