@@ -4,7 +4,6 @@ import com.robocubs4205.cubscout.model.District;
 import com.robocubs4205.cubscout.model.DistrictRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +34,8 @@ public class DistrictController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGE_DISTRICTS')")
     public DistrictResource create(@Valid @RequestBody District district, HttpServletResponse response) {
-        if(districtRepository.findByCode(district.getCode())!=null) throw new DistrictConflictException();
-        district = districtRepository.saveAndFlush(district);
+        if(districtRepository.find(district.getCode())!=null) throw new DistrictConflictException();
+        district = districtRepository.save(district);
         DistrictResource districtResource = new DistrictResourceAssembler().toResource(district);
         response.setHeader(LOCATION,districtResource.getLink("self").getHref());
         return districtResource;
@@ -54,7 +53,7 @@ public class DistrictController {
         if(district==null)throw new ResourceNotFoundException();
         district.setCode(newDistrict.getCode());
         district.setName(newDistrict.getName());
-        district = districtRepository.saveAndFlush(district);
+        district = districtRepository.save(district);
         return new DistrictResourceAssembler().toResource(district);
     }
     @RequestMapping(value = "/{district}",method = RequestMethod.DELETE)
@@ -63,7 +62,6 @@ public class DistrictController {
     public void delete(@PathVariable District district){
         if(district==null)throw new ResourceNotFoundException();
         districtRepository.delete(district);
-        districtRepository.flush();
     }
     @RequestMapping(value = "/{district}/events",method = RequestMethod.GET)
     @PreAuthorize("permitAll()")

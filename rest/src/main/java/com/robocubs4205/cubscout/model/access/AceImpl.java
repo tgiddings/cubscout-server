@@ -5,20 +5,17 @@ import org.springframework.security.acls.model.Acl;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 public class AceImpl implements AccessControlEntry{
-    @ManyToOne(optional = false)
+
     Acl acl;
-    @ManyToOne(optional = false)
+
     SidImpl sid;
-    @Id
-    @GeneratedValue
+
     private long id;
     private boolean isGranting;
-    @Embedded
+
     private PermissionImpl permission;
 
     @Override

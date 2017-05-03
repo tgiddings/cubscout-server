@@ -5,7 +5,6 @@ import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +43,7 @@ public class RobotController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('MANAGE_ROBOTS','SCOUT_MATCHES')")
     public RobotResource create(@RequestBody Robot robot, HttpServletResponse response) {
-        robot = robotRepository.saveAndFlush(robot);
+        robot = robotRepository.save(robot);
         RobotResource robotResource = new RobotResourceAssembler().toResource(robot);
         response.setHeader(LOCATION,robotResource.getLink("self").getHref());
         return robotResource;
@@ -54,7 +53,7 @@ public class RobotController {
     @PreAuthorize("hasRole('MANAGE_ROBOTS')")
     public RobotResource update(@PathVariable Robot robot, @RequestBody Robot newRobot) {
         robot.setYear(newRobot.getYear());
-        robot = robotRepository.saveAndFlush(robot);
+        robot = robotRepository.save(robot);
         return new RobotResourceAssembler().toResource(robot);
     }
 
@@ -63,7 +62,6 @@ public class RobotController {
     @PreAuthorize("hasRole('MANAGE_ROBOTS')")
     public void delete(@PathVariable Robot robot) {
         robotRepository.delete(robot);
-        robotRepository.flush();
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}/results",method = RequestMethod.GET)

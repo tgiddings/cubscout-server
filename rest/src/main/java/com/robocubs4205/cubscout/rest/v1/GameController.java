@@ -5,7 +5,6 @@ import com.robocubs4205.cubscout.model.scorecard.*;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.*;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -45,7 +45,7 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
-    public JsonArrayContainer<GameResource> getAllGames() {
+    public JsonArrayContainer<GameResource> getAllGames() throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
         return new JsonArrayContainer<>(new GameResourceAssembler()
                 .toResources(gameRepository.findAll()));
     }
@@ -62,7 +62,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGE_GAMES')")
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
-        game = gameRepository.saveAndFlush(game);
+        game = gameRepository.save(game);
         GameResource gameResource = new GameResourceAssembler().toResource(game);
         response.setHeader(LOCATION, gameResource.getLink("self").getHref());
         return gameResource;
@@ -77,7 +77,7 @@ public class GameController {
         game.setName(newGame.getName());
         game.setYear(newGame.getYear());
         game.setType(newGame.getType());
-        game = gameRepository.saveAndFlush(game);
+        game = gameRepository.save(game);
         return new GameResourceAssembler().toResource(game);
     }
 
@@ -88,7 +88,6 @@ public class GameController {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
         gameRepository.delete(game);
-        gameRepository.flush();
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.GET)
@@ -96,7 +95,7 @@ public class GameController {
     public JsonArrayContainer<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(eventRepository.findByGame(game)));
+        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(eventRepository.find(game)));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)
@@ -111,11 +110,11 @@ public class GameController {
         event.setGame(game);
         if (event.getDistrict() != null) {
             event.setDistrict(districtRepository
-                                      .findByCode(event.getDistrict().getCode()));
+                                      .find(event.getDistrict().getCode()));
             if (event.getDistrict() == null)
                 throw new DistrictDoesNotExistException();
         }
-        event = eventRepository.saveAndFlush(event);
+        event = eventRepository.save(event);
         EventResource eventResource = new EventResourceAssembler().toResource(event);
         response.setHeader(LOCATION, eventResource.getLink("self").getHref());
         return eventResource;
@@ -172,7 +171,7 @@ public class GameController {
         scorecard.setDefaultRole(defaultRole.get());
 
         ScorecardResource scorecardResource = new ScorecardResourceAssembler().toResource(
-                scorecardRepository.saveAndFlush(scorecard));
+                scorecardRepository.save(scorecard));
         response.setHeader(LOCATION, scorecardResource.getLink("self").getHref());
         return scorecardResource;
     }

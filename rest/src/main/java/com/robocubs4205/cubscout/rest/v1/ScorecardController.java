@@ -4,7 +4,6 @@ import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +47,5 @@ public class ScorecardController {
     public void deleteScorecard(@PathVariable Scorecard scorecard){
         if(scorecard==null)throw new ResourceNotFoundException("scorecard does not exist");
         scorecardRepository.delete(scorecard);
-        scorecardRepository.flush();
     }
 }

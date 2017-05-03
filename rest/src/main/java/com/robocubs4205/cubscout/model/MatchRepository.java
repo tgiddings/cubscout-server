@@ -1,15 +1,17 @@
 package com.robocubs4205.cubscout.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
-@Transactional
-public interface MatchRepository extends JpaRepository<Match,Long>{
-    Match findById(int id);
-
+public interface MatchRepository{
+    Match find(int id);
     List<Match> findByEvent(Event event);
+    Match save(Match match);
+
+    Set<Match> findAll();
+
+    void delete(Match match);
 }

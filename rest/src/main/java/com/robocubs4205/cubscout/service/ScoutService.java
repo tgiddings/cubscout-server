@@ -66,7 +66,7 @@ public class ScoutService {
                 team.setNumber(result.getRobot().getNumber());
                 team.setGameType(result.getMatch().getEvent().getGame().getType());
                 team.setDistrict(result.getMatch().getEvent().getDistrict());
-                result.getRobot().setTeam(teamRepository.saveAndFlush(team));
+                result.getRobot().setTeam(teamRepository.save(team));
             } else result.getRobot().setTeam(existingTeam);
 
             result.getRobot().setGame(result.getMatch().getEvent().getGame());
@@ -97,9 +97,9 @@ public class ScoutService {
 
         match.getRobots().add(result.getRobot());
         result.getRobot().getMatches().add(match);
-        result.setRobot(robotRepository.saveAndFlush(result.getRobot()));
-        matchRepository.saveAndFlush(match);
-        return resultRepository.saveAndFlush(result);
+        result.setRobot(robotRepository.save(result.getRobot()));
+        matchRepository.save(match);
+        return resultRepository.save(result);
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,

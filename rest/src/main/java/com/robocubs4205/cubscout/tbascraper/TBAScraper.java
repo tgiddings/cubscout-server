@@ -56,18 +56,18 @@ public final class TBAScraper {
                     restTemplate.exchange(getEventsForYearString, HttpMethod.GET, requestEntity, TBAEvent[].class,game.getYear());
             Arrays.asList(response.getBody()).forEach(tbaEvent->{
                 //todo: better checking for existing event
-                if(eventRepository.findByShortName(tbaEvent.getShortName())!=null) return;
+                if(eventRepository.find(tbaEvent.getShortName())!=null) return;
                 District district = null;
                 String districtCode = districtCodeFromTBADistrictNumber(tbaEvent.getDistrict());
                 if(districtCode!=null){
-                    district = districtRepository.findByCode(districtCode);
+                    district = districtRepository.find(districtCode);
                     if(district==null){
                         district = new District(districtCode);
-                        districtRepository.saveAndFlush(district);
+                        districtRepository.save(district);
                     }
                 }
                 Event event = tbaEvent.toEvent(game, district);
-                eventRepository.saveAndFlush(event);
+                eventRepository.save(event);
             });
         });
     }

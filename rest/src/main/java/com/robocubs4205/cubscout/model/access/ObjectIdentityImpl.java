@@ -2,15 +2,10 @@ package com.robocubs4205.cubscout.model.access;
 
 import org.springframework.security.acls.model.ObjectIdentity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.io.Serializable;
 
-@Entity
 public class ObjectIdentityImpl implements ObjectIdentity{
-    @Id
-    @GeneratedValue
+
     private long id;
 
     private String type;

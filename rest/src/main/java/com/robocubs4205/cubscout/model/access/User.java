@@ -4,25 +4,20 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class User implements UserDetails{
-    @Id
-    @GeneratedValue
+public class User implements UserDetails {
+
     private long id;
 
     @NotNull
     private String username;
 
-    @OneToMany
     private Set<GrantedAuthorityImpl> authorities = new HashSet<>();
 
-    @OneToOne(optional = false)
     private SidImpl sid;
 
     /**
@@ -31,6 +26,7 @@ public class User implements UserDetails{
      * This naming is to match the naming of the UserDetails interface
      * provided by Spring.
      */
+
     private String password;
 
     @Override
@@ -84,7 +80,7 @@ public class User implements UserDetails{
         this.id = id;
     }
 
-    public Sid asSid(){
+    public Sid asSid() {
         return new UserSid(this);
     }
 
@@ -96,7 +92,7 @@ public class User implements UserDetails{
         this.sid = sid;
     }
 
-    private class UserSid extends User implements Sid{
+    private class UserSid extends User implements Sid {
 
         private final User user;
 
@@ -106,8 +102,8 @@ public class User implements UserDetails{
         }
 
         @Override
-        public boolean equals(Object o){
-            return !(o==null)&&o instanceof UserSid&&((UserSid)o).user.getId()==getId();
+        public boolean equals(Object o) {
+            return !(o == null) && o instanceof UserSid && ((UserSid) o).user.getId() == getId();
         }
     }
 

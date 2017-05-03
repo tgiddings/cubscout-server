@@ -2,23 +2,20 @@ package com.robocubs4205.cubscout.model.access;
 
 import org.springframework.security.acls.model.*;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 public class AclImpl implements MutableAcl {
-    @Id
+
     private long id;
-    @OneToMany(mappedBy = "acl")
-    @OrderColumn
+
     private List<AceImpl> aces = new ArrayList<>();
-    @ManyToOne
+
     private SidImpl owner;
-    @OneToOne
+
     private AclImpl parent;
     private boolean isEntriesInheriting;
-    @ManyToOne
+
     private ObjectIdentityImpl objectIdentity;
 
     @Override

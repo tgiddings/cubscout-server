@@ -9,7 +9,6 @@ import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +60,7 @@ public class EventController {
         event.setStartDate(newEvent.getStartDate());
         event.setEndDate(newEvent.getEndDate());
         event.setAddress(newEvent.getAddress());
-        event = eventRepository.saveAndFlush(event);
+        event = eventRepository.save(event);
         return new EventResourceAssembler().toResource(event);
     }
 
@@ -71,7 +70,6 @@ public class EventController {
     void deleteEvent(@PathVariable Event event) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         eventRepository.delete(event);
-        eventRepository.flush();
     }
 
     @RequestMapping(value = "/{event:[0-9]+}/matches", method = RequestMethod.GET)
@@ -87,7 +85,7 @@ public class EventController {
     MatchResource createMatch(@PathVariable Event event, @RequestBody Match match, HttpServletResponse response) {
         if (event == null) throw new ResourceNotFoundException("event does not exist");
         match.setEvent(event);
-        match = matchRepository.saveAndFlush(match);
+        match = matchRepository.save(match);
         MatchResource matchResource = new MatchResourceAssembler().toResource(match);
         response.setHeader(LOCATION,matchResource.getLink("self").getHref());
         return matchResource;

@@ -8,7 +8,6 @@ import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
 import com.robocubs4205.cubscout.service.ScoutService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -61,7 +60,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         match.setNumber(newMatch.getNumber());
-        matchRepository.saveAndFlush(match);
+        matchRepository.save(match);
         return new MatchResourceAssembler().toResource(match);
     }
 
@@ -71,7 +70,6 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         matchRepository.delete(match);
-        matchRepository.flush();
     }
 
     @RequestMapping(value = "/{match:[0-9]+}/robots", method = RequestMethod.GET)

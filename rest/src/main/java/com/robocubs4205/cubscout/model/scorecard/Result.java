@@ -4,7 +4,6 @@ import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.Robot;
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
@@ -16,24 +15,18 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Entity
 public class Result implements Identifiable<Long> {
-    @Id
-    @GeneratedValue
+
     private long id;
 
-    @ManyToOne(optional = false)
     private Match match;
 
-    @ManyToOne(optional = false)
     @NotNull(groups = {Default.class, Creating.class})
     private Robot robot;
 
-    @ManyToOne(optional = false)
     @NotNull(groups = {Default.class, Creating.class})
     private Scorecard scorecard;
 
-    @OneToMany(mappedBy = "result",cascade = CascadeType.PERSIST)
     private Set<ScorecardFieldResult> scores = new HashSet<>();
 
     public Result() {

@@ -1,13 +1,7 @@
 package com.robocubs4205.cubscout.service;
 
-import com.robocubs4205.cubscout.model.access.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-@Service
+//import com.robocubs4205.cubscout.model.access.UserRepository;
+/*@Service
 public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
@@ -22,4 +16,4 @@ public class UserService implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.getUserByUsername(username);
     }
-}
+}*/

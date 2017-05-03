@@ -1,7 +1,7 @@
 /.idea/workspace.xml
 **/.idea/artifacts/*
 **/.idea/libraries/*
-.gradle
+.gradle/
 
 *.iml
 
@@ -19,3 +19,4 @@ gradle-app.setting
 /lib/
 build/
 /out/
+!/rest/build.gradle

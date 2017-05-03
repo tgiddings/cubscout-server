@@ -2,22 +2,18 @@ package com.robocubs4205.cubscout.model.scorecard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
 public class RobotRole {
-    @Id
-    @GeneratedValue
+
     private long id;
-    @ManyToOne
+
     @JsonIgnore
     private Scorecard scorecard;
-    @OneToMany(mappedBy = "robotRole", cascade = CascadeType.ALL)
     private Set<ScoreWeight> weights = new HashSet<>();
     @NotNull
     private String name;

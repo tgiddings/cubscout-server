@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -16,18 +15,13 @@ import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
         @Type(value = FieldSection.class,name = "field")
 })
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ScorecardSection {
-    @Id
-    @GeneratedValue
+
     private long id;
 
     @NotNull
     private Integer index;
 
-
-    @ManyToOne(optional = false)
     @JsonIgnore
     private Scorecard scorecard;
 

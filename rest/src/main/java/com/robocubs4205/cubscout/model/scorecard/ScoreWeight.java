@@ -2,22 +2,11 @@ package com.robocubs4205.cubscout.model.scorecard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
-
-@Entity
-@Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"field","robotRole"})
-)
 public class ScoreWeight {
-    @Id
-    @GeneratedValue
+
     private long id;
-    @ManyToOne(optional = false)
-    @JoinColumn(name="field")
     private FieldSection field;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="robotRole")
     @JsonIgnore
     private RobotRole robotRole;
 

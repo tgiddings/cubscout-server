@@ -2,15 +2,13 @@ package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Team implements Identifiable<Long> {
-    @Id
-    @GeneratedValue
+
+public class Team implements Identifiable<Long>{
+
     private long id;
 
     @NotNull
@@ -21,10 +19,8 @@ public class Team implements Identifiable<Long> {
     @NotNull
     private String gameType;
 
-    @ManyToOne
     private District district;
 
-    @OneToMany(mappedBy = "team")
     private Set<Robot> robots = new HashSet<>();
 
     public Team() {

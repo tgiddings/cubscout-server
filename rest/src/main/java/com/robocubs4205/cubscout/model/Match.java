@@ -3,34 +3,21 @@ package com.robocubs4205.cubscout.model;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by trevor on 2/14/17.
- */
-@Entity
+
 public class Match implements Identifiable<Long> {
-    @Id
-    @GeneratedValue
+
     private long id;
 
     @NotNull
-    @ManyToOne(optional = false)
     private Event event;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(
-            name = "match_robot",
-            joinColumns = {@JoinColumn(name = "Match_id")},
-            inverseJoinColumns = {@JoinColumn(name = "Robot_id")}
-    )
     private Set<Robot> robots = new HashSet<>();
 
-    @OneToMany(mappedBy = "match")
     private Set<Result> results = new HashSet<>();
 
     @NotNull(groups = {Default.class,Creating.class})

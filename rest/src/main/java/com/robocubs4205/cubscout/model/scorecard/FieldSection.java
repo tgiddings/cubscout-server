@@ -4,18 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by trevor on 2/27/17.
- */
-@Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldSection extends ScorecardSection {
-    @Enumerated(EnumType.STRING)
     @NotNull
     private FieldType type;
 
@@ -29,11 +23,9 @@ public class FieldSection extends ScorecardSection {
     private boolean isOptional = false;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "field")
     private Set<ScorecardFieldResult> results = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "field",cascade = CascadeType.ALL)
     private Set<ScoreWeight> weights = new HashSet<>();
 
     public FieldSection() {

@@ -2,7 +2,6 @@ package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -11,14 +10,10 @@ import java.util.Set;
 /**
  * Created by trevor on 2/14/17.
  */
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"number","game"}))
 public class Robot implements Identifiable<Long> {
-    @Id
-    @GeneratedValue
+
     private long id;
 
-    @ManyToOne(optional = false)
     private Team team;
 
     @NotNull
@@ -28,11 +23,8 @@ public class Robot implements Identifiable<Long> {
     private int year;
 
     private String name;
-    @ManyToMany(cascade = CascadeType.PERSIST,mappedBy = "robots")
     private Set<Match> matches = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="game")
     private Game game;
 
     public Robot(){}

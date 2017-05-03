@@ -3,9 +3,6 @@ package com.robocubs4205.cubscout.model.access;
 import org.springframework.security.acls.domain.AclFormattingUtils;
 import org.springframework.security.acls.model.Permission;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class PermissionImpl implements Permission{
     private int mask;
 

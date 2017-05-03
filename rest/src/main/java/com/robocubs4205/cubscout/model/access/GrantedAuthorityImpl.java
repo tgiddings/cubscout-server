@@ -2,12 +2,8 @@ package com.robocubs4205.cubscout.model.access;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class GrantedAuthorityImpl implements GrantedAuthority{
-    @Id
+
     private long id;
 
     private String authority;

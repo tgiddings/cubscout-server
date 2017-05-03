@@ -2,21 +2,17 @@ package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 public class Event implements Identifiable<Long> {
-    @Id
-    @GeneratedValue
+
     private long id;
 
     @NotNull
-    @ManyToOne(optional = false)
     private Game game;
 
     @NotNull(groups = {Default.class,Creating.class})
@@ -24,10 +20,8 @@ public class Event implements Identifiable<Long> {
 
     private String address;
 
-    @ManyToOne
     private District district;
 
-    @OneToMany(mappedBy = "event")
     private Set<Match> matches = new HashSet<>();
 
     private Date startDate;

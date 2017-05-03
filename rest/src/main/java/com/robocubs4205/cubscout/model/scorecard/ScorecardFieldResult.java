@@ -2,22 +2,13 @@ package com.robocubs4205.cubscout.model.scorecard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-@Entity
 public class ScorecardFieldResult {
-    @Id
-    @GeneratedValue
+
     private long id;
 
-    @ManyToOne(optional=false)
     private FieldSection field;
 
     @JsonIgnore
-    @ManyToOne(optional = false)
     private Result result;
 
     private Float score;
