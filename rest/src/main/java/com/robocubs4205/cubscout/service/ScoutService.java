@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Objects;
+
 @Service
 public class ScoutService {
 
@@ -40,7 +42,7 @@ public class ScoutService {
     @PreAuthorize("hasRole('TEAM_MEMBER')")
     public Result scoutMatch(Result result, Match match) {
         result.setScorecard(scorecardRepository
-                                    .findById(result.getScorecard().getId()));
+                            .find(result.getScorecard().getId()));
         if (result.getScorecard() == null) {
             throw new ScorecardDoesNotExistException();
         }
@@ -49,18 +51,19 @@ public class ScoutService {
 
         //remove null scores
         result.getScores().removeIf(
-                fieldResult -> fieldResult.getScore() == null
+        fieldResult -> fieldResult.getScore() == null
         );
 
         //replace transient robot with entity from database
         Robot existingRobot = robotRepository
-                .find(result.getRobot().getNumber(), result.getScorecard().getGame());
+                              .find(result.getRobot().getNumber(),
+                                    result.getScorecard().getGame());
         if (existingRobot == null) { //create new robot
             //find team for this robot
             Team existingTeam = teamRepository
-                    .findByNumberAndGameType(
-                            result.getRobot().getNumber(),
-                            result.getScorecard().getGame().getType());
+                                .findByNumberAndGameType(
+                                result.getRobot().getNumber(),
+                                result.getScorecard().getGame().getType());
             if (existingTeam == null) {
                 Team team = new Team();
                 team.setNumber(result.getRobot().getNumber());
@@ -77,9 +80,12 @@ public class ScoutService {
         //replace transient FieldSections with entities from database
         //todo: reduce database hits
         result.getScores().forEach(fieldResult -> {
-            fieldResult.setField(fieldSectionRepository.findByIdAndScorecard(fieldResult.getId(),
-                                                                             result.getScorecard()));
-            if(fieldResult.getField()==null) throw new ScoresDoNotExistException();
+            fieldResult.setField(fieldSectionRepository.find(fieldResult.getId()));
+            if (fieldResult.getField() == null
+                || !Objects.equals(fieldResult.getField().getScorecard().getId(),
+                                   result.getScorecard().getId())) {
+                throw new ScoresDoNotExistException();
+            }
             fieldResult.setResult(result);
         });
 
@@ -103,32 +109,32 @@ public class ScoutService {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The scores provided do not match any scorecard")
+    reason = "The scores provided do not match any scorecard")
     private class ScoresDoNotExistException extends RuntimeException {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The Scorecard specified does not exist")
+    reason = "The Scorecard specified does not exist")
     private class ScorecardDoesNotExistException extends RuntimeException {
     }
 
     //todo: allow detailed errors
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The scores provided do not match the specified" +
-                    " scorecard")
+    reason = "The scores provided do not match the specified" +
+             " scorecard")
     private class ScoresDoNotMatchScorecardException extends RuntimeException {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "Some scores required by the specified " +
-                    "scorecard are absent or null")
+    reason = "Some scores required by the specified " +
+             "scorecard are absent or null")
     private class RequiredScoresAbsentException extends RuntimeException {
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,
-            reason = "The Game for this match does not match the " +
-                    "game for the specified scorecard")
+    reason = "The Game for this match does not match the " +
+             "game for the specified scorecard")
     private class GameDoesNotMatchScorecardException extends RuntimeException {
     }
 }

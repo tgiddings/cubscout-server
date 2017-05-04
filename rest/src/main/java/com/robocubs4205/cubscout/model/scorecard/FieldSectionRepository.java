@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FieldSectionRepository{
-    FieldSection findById(long id);
-    FieldSection findByIdAndScorecard(long id, Scorecard scorecard);
+    FieldSection find(long id);
+    FieldSection find(long id, Scorecard scorecard);
 }

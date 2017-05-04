@@ -90,7 +90,7 @@ public class MatchController {
         if (match == null) throw new ResourceNotFoundException();
 
         result.setScorecard(scorecardRepository
-                .findById(result.getScorecard().getId()));
+                .find(result.getScorecard().getId()));
         if (result.getScorecard() == null) {
             throw new ScorecardDoesNotExistException();
         }

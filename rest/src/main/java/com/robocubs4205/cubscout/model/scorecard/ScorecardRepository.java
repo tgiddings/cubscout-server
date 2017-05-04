@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Repository
 public interface ScorecardRepository{
-    Scorecard findById(long id);
+    Scorecard find(long id);
 
     Set<Scorecard> findAll();
 
