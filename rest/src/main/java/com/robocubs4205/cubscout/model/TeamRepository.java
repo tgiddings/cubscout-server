@@ -3,7 +3,7 @@ package com.robocubs4205.cubscout.model;
 import java.util.Set;
 
 public interface TeamRepository{
-    Team findById(int id);
+    Team findById(long id);
     Set<Team> findByNumber(int number);
 
     Team findByNumberAndGameType(int number, String gameType);

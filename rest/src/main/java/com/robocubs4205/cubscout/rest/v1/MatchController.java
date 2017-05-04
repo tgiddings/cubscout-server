@@ -107,7 +107,7 @@ public class MatchController {
         if (match == null)
             throw new ResourceNotFoundException("match does not exist");
         return new JsonArrayContainer<>(new ResultResourceAssembler()
-                .toResources(resultRepository.findByMatch(match)));
+                .toResources(resultRepository.find(match)));
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY,

@@ -35,8 +35,7 @@ public class GameController {
     public GameController(GameRepository gameRepository,
                           EventRepository eventRepository,
                           DistrictRepository districtRepository,
-                          ScorecardRepository scorecardRepository,
-                          ScorecardSectionRepository scorecardSectionRepository) {
+                          ScorecardRepository scorecardRepository) {
         this.gameRepository = gameRepository;
         this.eventRepository = eventRepository;
         this.districtRepository = districtRepository;

@@ -58,6 +58,6 @@ public class TeamController {
     @RequestMapping(value = "/{team:[0-9]+}/matches",method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public JsonArrayContainer<RobotResource> getRobots(@PathVariable Team team){
-        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(robotRepository.findByTeam(team)));
+        return new JsonArrayContainer<>(new RobotResourceAssembler().toResources(robotRepository.find(team)));
     }
 }

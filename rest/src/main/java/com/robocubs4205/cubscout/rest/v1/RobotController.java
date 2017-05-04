@@ -68,7 +68,7 @@ public class RobotController {
     @PreAuthorize("permitAll()")
     public JsonArrayContainer<ResultResource> getResults(@PathVariable Robot robot) {
         if (robot == null) throw new ResourceNotFoundException();
-        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(resultRepository.findByRobot(robot)));
+        return new JsonArrayContainer<>(new ResultResourceAssembler().toResources(resultRepository.find(robot)));
     }
 
     @RequestMapping(value = "/{robot:[0-9]+}/matches",method = RequestMethod.GET)

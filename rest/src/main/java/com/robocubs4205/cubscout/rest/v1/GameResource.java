@@ -3,6 +3,8 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.time.Year;
+
 /**
  * Created by trevor on 2/15/17.
  */
@@ -19,8 +21,8 @@ public class GameResource extends ResourceSupport {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setYear(Year year) {
+        this.year = year.getValue();
     }
 
     public String getType() {

@@ -2,14 +2,12 @@ package com.robocubs4205.cubscout.model.scorecard;
 
 import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.Robot;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Set;
 
-@Repository
 public interface ResultRepository{
-    List<Result> findByRobot(Robot robot);
-    List<Result> findByMatch(Match match);
+    Set<Result> find(Robot robot);
+    Set<Result> find(Match match);
     Result find(Robot robot, Match match);
 
     void delete(Result result);

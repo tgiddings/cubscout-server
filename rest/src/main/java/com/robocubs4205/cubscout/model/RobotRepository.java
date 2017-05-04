@@ -1,12 +1,11 @@
 package com.robocubs4205.cubscout.model;
 
-import java.util.List;
 import java.util.Set;
 
 public interface RobotRepository{
-    Robot findById(long id);
-    List<Robot> findByTeam(Team team);
-    Robot findByNumberAndGame(int number, Game game);
+    Robot find(long id);
+    Set<Robot> find(Team team);
+    Robot find(int number, Game game);
 
     Set<Robot> findAll();
 
