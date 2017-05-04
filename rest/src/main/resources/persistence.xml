@@ -9,6 +9,7 @@
             <property name="javax.jdo.option.ConnectionDriverName" value="org.h2.Driver"/>
             <property name="javax.jdo.option.ConnectionUserName" value="sa"/>
             <property name="datanucleus.generateSchema.database.mode" value="create"/>
+            <property name="datanucleus.DetachAllOnCommit" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

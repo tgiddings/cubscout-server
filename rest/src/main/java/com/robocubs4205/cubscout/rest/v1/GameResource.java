@@ -12,17 +12,17 @@ public class GameResource extends ResourceSupport {
     private long id;
     private String name;
     private String type;
-    private Year year;
+    private int year;
 
     public GameResource() {
     }
 
-    public Year getYear() {
+    public int getYear() {
         return year;
     }
 
     public void setYear(Year year) {
-        this.year = year;
+        this.year = year.getValue();
     }
 
     public String getType() {
