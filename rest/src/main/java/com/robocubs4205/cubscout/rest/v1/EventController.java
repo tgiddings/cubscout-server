@@ -7,6 +7,7 @@ import com.robocubs4205.cubscout.model.MatchRepository;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
+import com.robocubs4205.cubscout.rest.ResourceNotFoundException;
 import com.robocubs4205.cubscout.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

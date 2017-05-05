@@ -4,6 +4,7 @@ import com.robocubs4205.cubscout.model.RobotRepository;
 import com.robocubs4205.cubscout.model.Team;
 import com.robocubs4205.cubscout.model.TeamRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
+import com.robocubs4205.cubscout.rest.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

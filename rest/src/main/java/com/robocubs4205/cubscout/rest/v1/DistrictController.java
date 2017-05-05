@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.rest.v1;
 import com.robocubs4205.cubscout.model.District;
 import com.robocubs4205.cubscout.model.DistrictRepository;
 import com.robocubs4205.cubscout.rest.JsonArrayContainer;
+import com.robocubs4205.cubscout.rest.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
