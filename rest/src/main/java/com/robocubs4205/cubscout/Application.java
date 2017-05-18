@@ -1,6 +1,7 @@
 package com.robocubs4205.cubscout;
 
 import org.h2.server.web.WebServlet;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.orm.jdo.JdoTransactionManager;
+import org.springframework.orm.jdo.TransactionAwarePersistenceManagerFactoryProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.jdo.JDOHelper;
@@ -36,8 +39,21 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    PersistenceManagerFactory pmf(){
+    TransactionAwarePersistenceManagerFactoryProxy pmf(@Qualifier("true") PersistenceManagerFactory truepmf){
+        TransactionAwarePersistenceManagerFactoryProxy pmf = new TransactionAwarePersistenceManagerFactoryProxy();
+        pmf.setTargetPersistenceManagerFactory(truepmf);
+
+        return pmf;
+    }
+    @Bean
+    @Qualifier("true")
+    PersistenceManagerFactory truepmf(){
         return JDOHelper.getPersistenceManagerFactory("PU");
+    }
+
+    @Bean
+    JdoTransactionManager jdoTransactionManager(@Qualifier("true") PersistenceManagerFactory pmf){
+        return new JdoTransactionManager(pmf);
     }
 
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

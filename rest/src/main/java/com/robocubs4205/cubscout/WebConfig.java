@@ -9,21 +9,21 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.jdo.PersistenceManagerFactory;
-
 @Configuration
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
-    private final PersistenceManagerFactory pmf;
+
+    private final StringToGameConverterFactory stringToGameConverterFactory;
 
     @Autowired
-    public WebConfig(PersistenceManagerFactory pmf){
-        this.pmf = pmf;
+    public WebConfig(StringToGameConverterFactory stringToGameConverterFactory){
+
+        this.stringToGameConverterFactory = stringToGameConverterFactory;
     }
     @Override
     public void addFormatters(FormatterRegistry registry){
-        registry.addConverterFactory(new StringToGameConverterFactory(pmf));
+        registry.addConverterFactory(stringToGameConverterFactory);
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {

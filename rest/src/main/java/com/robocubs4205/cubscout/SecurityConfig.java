@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -28,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ClientDetailsService clientService;
@@ -45,13 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.authorizeRequests().anyRequest().permitAll();
+        /*http.csrf().disable()
             .anonymous().disable()
             .authorizeRequests()
             .antMatchers("/oauth/token").permitAll()
             .and().csrf().disable().authorizeRequests()
-            .antMatchers("/console*//**").permitAll()
-            .and().headers().frameOptions().disable();
+            .antMatchers("/console/**").permitAll()
+            .and().headers().frameOptions().disable();*/
     }
 
     @Override

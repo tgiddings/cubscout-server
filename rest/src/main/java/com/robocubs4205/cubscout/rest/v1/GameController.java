@@ -24,7 +24,7 @@ import static com.robocubs4205.cubscout.util.ResultUtil.resultsForRobot;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @RestController
-@PreAuthorize("denyAll()")
+//@PreAuthorize("denyAll()")
 @RequestMapping(value = "/games", produces = "application/vnd.robocubs-v1+json")
 public class GameController {
     private final GameRepository gameRepository;
@@ -61,6 +61,7 @@ public class GameController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGE_GAMES')")
+    @Transactional
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
         game = gameRepository.save(game);
         GameResource gameResource = new GameResourceAssembler().toResource(game);
