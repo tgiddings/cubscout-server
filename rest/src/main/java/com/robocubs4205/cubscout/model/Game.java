@@ -3,7 +3,6 @@ package com.robocubs4205.cubscout.model;
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
 import org.springframework.hateoas.Identifiable;
 
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
@@ -26,13 +25,10 @@ public class Game implements Identifiable<Long> {
     @NotNull
     private Year year;
 
-    @NotPersistent
     private Set<Event> events = new HashSet<>();
 
-    @NotPersistent
     private Scorecard scorecard;
 
-    @NotPersistent
     private Set<Robot> robots = new HashSet<>();
 
     public Game(){}

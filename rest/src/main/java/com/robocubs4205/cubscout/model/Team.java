@@ -2,13 +2,16 @@ package com.robocubs4205.cubscout.model;
 
 import org.springframework.hateoas.Identifiable;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@PersistenceCapable
 public class Team implements Identifiable<Long>{
 
+    @PrimaryKey
     private long id;
 
     @NotNull

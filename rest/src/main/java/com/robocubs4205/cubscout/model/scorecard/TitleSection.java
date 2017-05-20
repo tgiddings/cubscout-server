@@ -1,5 +1,8 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
+import javax.jdo.annotations.PersistenceCapable;
+
+@PersistenceCapable
 public class TitleSection extends ScorecardSection {
     private String Title;
 

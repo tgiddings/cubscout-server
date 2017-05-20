@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -14,9 +16,10 @@ import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
         @Type(value = ParagraphSection.class, name = "paragraph"),
         @Type(value = FieldSection.class,name = "field")
 })
-
+@PersistenceCapable
 public abstract class ScorecardSection {
 
+    @PrimaryKey
     private long id;
 
     @NotNull

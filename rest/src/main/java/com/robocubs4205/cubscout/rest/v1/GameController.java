@@ -60,7 +60,7 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('MANAGE_GAMES')")
+    //@PreAuthorize("hasRole('MANAGE_GAMES')")
     @Transactional
     public GameResource createGame(@Valid @RequestBody Game game, HttpServletResponse response) {
         game = gameRepository.save(game);

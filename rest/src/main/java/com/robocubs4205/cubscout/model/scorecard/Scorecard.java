@@ -4,14 +4,18 @@ import com.robocubs4205.cubscout.model.Game;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.Identifiable;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
 import javax.validation.groups.Default;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@PersistenceCapable
 public class Scorecard implements Identifiable<Long> {
 
+    @PrimaryKey
     private long id;
 
     private Game game;

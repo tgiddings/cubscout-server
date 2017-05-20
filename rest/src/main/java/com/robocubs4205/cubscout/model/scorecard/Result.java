@@ -4,6 +4,8 @@ import com.robocubs4205.cubscout.model.Match;
 import com.robocubs4205.cubscout.model.Robot;
 import org.springframework.hateoas.Identifiable;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
@@ -15,8 +17,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@PersistenceCapable
 public class Result implements Identifiable<Long> {
 
+    @PrimaryKey
     private long id;
 
     private Match match;

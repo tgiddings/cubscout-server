@@ -2,14 +2,18 @@ package com.robocubs4205.cubscout.model.scorecard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@PersistenceCapable
 public class RobotRole {
 
+    @PrimaryKey
     private long id;
 
     @JsonIgnore
