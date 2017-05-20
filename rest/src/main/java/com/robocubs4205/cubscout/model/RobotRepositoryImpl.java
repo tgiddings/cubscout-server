@@ -27,14 +27,23 @@ public class RobotRepositoryImpl implements RobotRepository {
     @Override
     public Robot find(long id) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return pm.getObjectById(Robot.class, id);
+            //in datanucleus, getObjectById returns objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(pm.getObjectById(Robot.class, id));
         }
     }
 
     @Override
     public Set<Robot> find(Team team) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return new HashSet<>(pm.newQuery(Robot.class).filter("this.team==:team").setParameters(team).executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Robot.class)
+                                                    .filter("this.team==:team")
+                                                    .setParameters(team)
+                                                    .executeList()));
         }
     }
 
@@ -43,16 +52,23 @@ public class RobotRepositoryImpl implements RobotRepository {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
             Query<Robot> q = pm.newQuery(Robot.class)
                                .filter("this.number==:number&&this.game==:game")
-                               .setParameters(number,game);
+                               .setParameters(number, game);
+            //workaround for bug that will be fixed in datanucleus-5.1.0-m3
             q.setUnique(true);
-            return q.executeUnique();
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(q.executeUnique());
         }
     }
 
     @Override
     public Set<Robot> findAll() {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return new HashSet<>(pm.newQuery(Robot.class).executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Robot.class).executeList()));
         }
     }
 
@@ -66,7 +82,7 @@ public class RobotRepositoryImpl implements RobotRepository {
     @Override
     public void delete(Robot robot) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            if(JDOHelper.isPersistent(robot)) pm.deletePersistent(robot);
+            if (JDOHelper.isPersistent(robot)) pm.deletePersistent(robot);
             else pm.newQuery(Robot.class).filter("this.id==:id").deletePersistentAll(robot.getId());
         }
     }

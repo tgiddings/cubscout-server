@@ -1,7 +1,6 @@
 package com.robocubs4205.cubscout.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import javax.jdo.JDOHelper;
@@ -11,10 +10,7 @@ import javax.jdo.Query;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-
 @Repository
-@Scope(SCOPE_PROTOTYPE)
 public class EventRepositoryImpl implements EventRepository {
 
     private final PersistenceManagerFactory pmf;
@@ -27,7 +23,10 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Event find(long id) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return pm.getObjectById(Event.class,id);
+            //in datanucleus, getObjectById returns objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(pm.getObjectById(Event.class,id));
         }
     }
 
@@ -37,8 +36,12 @@ public class EventRepositoryImpl implements EventRepository {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
             Query<Event> q = pm.newQuery(Event.class)
                                .filter("this.shortName==:shortName");
+            //workaround for bug that will be fixed in datanucleus-5.1.0-m3
             q.setUnique(true);
-            return (Event) q.execute(shortName);
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy((Event) q.execute(shortName));
         }
     }
 
@@ -48,14 +51,20 @@ public class EventRepositoryImpl implements EventRepository {
             Query<Event> q = pm.newQuery(Event.class)
                                .filter("this.game==:game");
             q.setParameters(game);
-            return new HashSet<>(q.executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(q.executeList()));
         }
     }
 
     @Override
     public Set<Event> findAll() {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return new HashSet<>(pm.newQuery(Event.class).executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Event.class).executeList()));
         }
     }
 

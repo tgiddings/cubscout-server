@@ -1,7 +1,6 @@
 package com.robocubs4205.cubscout.service;
 
 import com.robocubs4205.cubscout.model.*;
-import com.robocubs4205.cubscout.model.scorecard.FieldSectionRepository;
 import com.robocubs4205.cubscout.model.scorecard.Result;
 import com.robocubs4205.cubscout.model.scorecard.ResultRepository;
 import com.robocubs4205.cubscout.model.scorecard.ScorecardRepository;
@@ -11,15 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.Objects;
-
 @Service
 public class ScoutService {
 
     private final ScorecardRepository scorecardRepository;
     private final RobotRepository robotRepository;
     private final TeamRepository teamRepository;
-    private final FieldSectionRepository fieldSectionRepository;
+    //private final FieldSectionRepository fieldSectionRepository;
     private final MatchRepository matchRepository;
     private final ResultRepository resultRepository;
 
@@ -27,14 +24,14 @@ public class ScoutService {
     public ScoutService(ScorecardRepository scorecardRepository,
                         RobotRepository robotRepository,
                         TeamRepository teamRepository,
-                        FieldSectionRepository fieldSectionRepository,
+                        /*FieldSectionRepository fieldSectionRepository,*/
                         MatchRepository matchRepository,
                         ResultRepository resultRepository) {
 
         this.scorecardRepository = scorecardRepository;
         this.robotRepository = robotRepository;
         this.teamRepository = teamRepository;
-        this.fieldSectionRepository = fieldSectionRepository;
+        //this.fieldSectionRepository = fieldSectionRepository;
         this.matchRepository = matchRepository;
         this.resultRepository = resultRepository;
     }
@@ -77,7 +74,7 @@ public class ScoutService {
             result.setRobot(robotRepository.save(result.getRobot()));
         } else result.setRobot(existingRobot);
 
-        //replace transient FieldSections with entities from database
+/*        //replace transient FieldSections with entities from database
         //todo: reduce database hits
         result.getScores().forEach(fieldResult -> {
             fieldResult.setField(fieldSectionRepository.find(fieldResult.getId()));
@@ -87,7 +84,7 @@ public class ScoutService {
                 throw new ScoresDoNotExistException();
             }
             fieldResult.setResult(result);
-        });
+        });*/
 
         if (!result.scoresMatchScorecardSections()) {
             throw new ScoresDoNotMatchScorecardException();

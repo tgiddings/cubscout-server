@@ -1,7 +1,6 @@
 package com.robocubs4205.cubscout.model.scorecard;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import javax.jdo.JDOHelper;
@@ -10,10 +9,7 @@ import javax.jdo.PersistenceManagerFactory;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-
 @Repository
-@Scope(SCOPE_PROTOTYPE)
 public class ScorecardRepositoryImpl implements ScorecardRepository {
 
     private final PersistenceManagerFactory pmf;
@@ -26,14 +22,20 @@ public class ScorecardRepositoryImpl implements ScorecardRepository {
     @Override
     public Scorecard find(long id) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return pm.getObjectById(Scorecard.class,id);
+            //in datanucleus, getObjectById returns objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(pm.getObjectById(Scorecard.class,id));
         }
     }
 
     @Override
     public Set<Scorecard> findAll() {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            return new HashSet<>(pm.newQuery(Scorecard.class).executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Scorecard.class).executeList()));
         }
     }
 

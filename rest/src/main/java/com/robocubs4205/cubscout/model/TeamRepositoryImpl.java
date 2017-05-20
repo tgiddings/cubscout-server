@@ -1,7 +1,6 @@
 package com.robocubs4205.cubscout.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import javax.jdo.PersistenceManager;
@@ -10,10 +9,7 @@ import javax.jdo.Query;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-
 @Repository
-@Scope(SCOPE_PROTOTYPE)
 public class TeamRepositoryImpl implements TeamRepository {
 
     private final PersistenceManagerFactory pmf;
@@ -26,17 +22,23 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public Team findById(long id) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return pm.getObjectById(Team.class,id);
+            //in datanucleus, getObjectById returns objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(pm.getObjectById(Team.class,id));
         }
     }
 
     @Override
     public Set<Team> findByNumber(int number) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return new HashSet<>(pm.newQuery(Team.class)
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Team.class)
                                    .filter("this.number==:number")
                                    .setParameters(number)
-                                   .executeList());
+                                   .executeList()));
         }
     }
 
@@ -46,15 +48,22 @@ public class TeamRepositoryImpl implements TeamRepository {
             Query<Team> q = pm.newQuery(Team.class)
                               .filter("this.number==:number&&this.gameType==:gameType")
                               .setParameters(number,gameType);
+            //workaround for bug that will be fixed in datanucleus-5.1.0-m3
             q.setUnique(true);
-            return q.executeUnique();
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return pm.detachCopy(q.executeUnique());
         }
     }
 
     @Override
     public Set<Team> findAll() {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            return new HashSet<>(pm.newQuery(Team.class).executeList());
+            //datanucleus queries return objects in the hollow state when ran outside of
+            //transactions. as such, they become transient when the pm closes, even if
+            //DetachAllOnCommit is true.
+            return new HashSet<>(pm.detachCopyAll(pm.newQuery(Team.class).executeList()));
         }
     }
 
