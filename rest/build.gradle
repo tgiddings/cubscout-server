@@ -7,8 +7,9 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE")
         classpath('com.h2database:h2:1.4.193')
-        classpath('org.datanucleus:datanucleus-api-jpa:5.1.0-m1')
-        classpath('org.datanucleus:datanucleus-core:5.1.0-m1')
+        classpath('org.datanucleus:datanucleus-api-jpa:5.1.0-m3')
+        classpath('org.datanucleus:datanucleus-core:5.1.0-m3')
+        classpath('org.datanucleus:datanucleus-rdbms:5.1.0-m3')
         classpath('org.datanucleus:datanucleus-java8:4.2.3')
         classpath('org.springframework.boot:spring-boot-starter-security:1.5.2.RELEASE')
     }
@@ -100,9 +101,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.datanucleus:datanucleus-api-jdo:5.1.0-m2'
-    compile 'org.datanucleus:datanucleus-core:5.1.0-m2'
-    compile 'org.datanucleus:datanucleus-rdbms:5.1.0-m2'
+    compile 'org.datanucleus:datanucleus-api-jdo:5.1.0-m3'
+    compile 'org.datanucleus:datanucleus-core:5.1.0-m3'
+    compile 'org.datanucleus:datanucleus-rdbms:5.1.0-m3'
     compile 'org.datanucleus:javax.jdo:3.2.0-m6'
     compile 'org.datanucleus:datanucleus-java8:4.2.3'
 
