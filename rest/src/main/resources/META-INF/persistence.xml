@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
+
     <persistence-unit name="PU">
-        <class>com.robocubs4205.cubscout.model.Game</class>
-        <properties>
-            <property name="javax.jdo.PersistenceManagerFactoryClass"
-                      value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory"/>
-            <property name="javax.jdo.option.ConnectionURL" value="jdbc:h2:mem:testdb"/>
-            <property name="javax.jdo.option.ConnectionDriverName" value="org.h2.Driver"/>
-            <property name="javax.jdo.option.ConnectionUserName" value=""/>
-            <property name="javax.jdo.option.ConnectionPassword" value=""/>
-            <property name="datanucleus.generateSchema.database.mode" value="create"/>
-            <property name="datanucleus.DetachAllOnCommit" value="true"/>
-        </properties>
-    </persistence-unit>
-    <persistence-unit name="unit-test-pu">
-        <mapping-file>/META-INF/unit-tests.jdo</mapping-file>
-        <class>com.robocubs4205.cubscout.model.Game</class>
-        <!--<class>com.robocubs4205.cubscout.model.Event</class>-->
-        <exclude-unlisted-classes/>
+        <mapping-file>/META-INF/package.jdo</mapping-file>
         <properties>
             <property name="javax.jdo.PersistenceManagerFactoryClass"
                       value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory"/>
@@ -30,3 +18,4 @@
         </properties>
     </persistence-unit>
 </persistence>
+

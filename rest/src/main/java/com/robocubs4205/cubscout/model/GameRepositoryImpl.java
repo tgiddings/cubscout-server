@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.jdo.JDOHelper;
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
 import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,14 +34,15 @@ public class GameRepositoryImpl implements GameRepository {
     @Override
     public Game find(String name) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
-            Query<Game> q = pm.newQuery(Game.class)
-                              .filter("this.name==:name");
-            //workaround for bug that will be fixed in datanucleus-5.1.0-m3
-            q.setUnique(true);
             //datanucleus queries return objects in the hollow state when ran outside of
             //transactions. as such, they become transient when the pm closes, even if
             //DetachAllOnCommit is true.
-            return pm.detachCopy((Game) q.execute(name));
+            Game game = pm.detachCopy(pm.newQuery(Game.class)
+                                        .filter("this.name==:name")
+                                        .setParameters(name)
+                                        .executeUnique());
+            if(game==null) throw new JDOObjectNotFoundException();
+            return game;
         }
     }
 
@@ -52,7 +53,8 @@ public class GameRepositoryImpl implements GameRepository {
             //transactions. as such, they become transient when the pm closes, even if
             //DetachAllOnCommit is true.
             return new HashSet<>(pm.detachCopyAll(pm.newQuery(Game.class)
-                                                    .filter("this.year==year")
+                                                    .filter("this.year==:year")
+                                                    .setParameters(year)
                                                     .executeList()));
         }
     }
@@ -78,7 +80,7 @@ public class GameRepositoryImpl implements GameRepository {
     public void delete(Game game) {
         try (PersistenceManager pm = pmf.getPersistenceManager()) {
             if (JDOHelper.isPersistent(game)) pm.deletePersistent(game);
-            else pm.newQuery(Game.class).filter("this.id=:id").deletePersistentAll(game.getId());
+            else pm.newQuery(Game.class).filter("this.id==:id").deletePersistentAll(game.getId());
         }
     }
 }

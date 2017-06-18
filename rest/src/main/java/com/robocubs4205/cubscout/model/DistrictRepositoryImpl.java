@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.jdo.JDOHelper;
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import java.util.HashSet;
@@ -25,7 +26,9 @@ public class DistrictRepositoryImpl implements DistrictRepository {
             //in datanucleus, getObjectById returns objects in the hollow state when ran outside of
             //transactions. as such, they become transient when the pm closes, even if
             //DetachAllOnCommit is true.
-            return pm.detachCopy(pm.getObjectById(District.class, code));
+            District district = pm.getObjectById(District.class, code);
+            if(district==null) throw new JDOObjectNotFoundException();
+            return pm.detachCopy(district);
         }
     }
 
@@ -41,7 +44,7 @@ public class DistrictRepositoryImpl implements DistrictRepository {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
             if(JDOHelper.isPersistent(district))pm.deletePersistent(district);
             else pm.newQuery(District.class)
-                   .filter("this.id=:id")
+                   .filter("this.code==:code")
                    .deletePersistentAll(district.getId());
         }
     }

@@ -1,5 +1,7 @@
 package com.robocubs4205.cubscout.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
@@ -59,5 +61,22 @@ public class District implements Identifiable<String> {
 
     public Set<Team> getTeams() {
         return teams;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o instanceof District) {
+            District d = (District) o;
+            return new EqualsBuilder().append(code, d.code).append(name, d.name)
+                                      .append(events, d.events)
+                                      .append(teams, d.teams).build();
+        } else return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(code).append(name).append(events)
+                                    .append(teams).build();
     }
 }

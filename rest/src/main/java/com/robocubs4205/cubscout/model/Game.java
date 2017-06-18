@@ -1,6 +1,8 @@
 package com.robocubs4205.cubscout.model;
 
 import com.robocubs4205.cubscout.model.scorecard.Scorecard;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
@@ -88,5 +90,26 @@ public class Game implements Identifiable<Long> {
 
     public Set<Robot> getRobots() {
         return robots;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o==null) return false;
+        if(o instanceof Game){
+            Game g = (Game)o;
+            return new EqualsBuilder().append(id,g.id).append(name,g.name)
+                                      .append(type,g.type).append(year,g.year)
+                                      .append(events,g.events)
+                                      .append(scorecard,g.scorecard)
+                                      .append(robots,g.robots).build();
+        }
+        else return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return new HashCodeBuilder().append(id).append(name).append(type)
+                                    .append(year).append(events)               .append(scorecard)
+                                    .append(robots).build();
     }
 }
