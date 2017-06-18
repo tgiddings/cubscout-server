@@ -96,7 +96,7 @@ public class GameController {
     public JsonArrayContainer<EventResource> getAllEvents(@PathVariable Game game) {
         if (game == null)
             throw new ResourceNotFoundException("game does not exist");
-        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(eventRepository.find(game)));
+        return new JsonArrayContainer<>(new EventResourceAssembler().toResources(game.getEvents()));
     }
 
     @RequestMapping(value = "/{game:[0-9]+}/events", method = RequestMethod.POST)

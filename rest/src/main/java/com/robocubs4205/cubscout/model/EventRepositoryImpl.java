@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,31 +29,16 @@ public class EventRepositoryImpl implements EventRepository {
         }
     }
 
-    //todo: replace q.setUnique(true)+q.execute with q.executeUnique when datanucleus 5.1.0-m3 is released
     @Override
     public Event find(String shortName) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
-            Query<Event> q = pm.newQuery(Event.class)
-                               .filter("this.shortName==:shortName");
-            //workaround for bug that will be fixed in datanucleus-5.1.0-m3
-            q.setUnique(true);
             //datanucleus queries return objects in the hollow state when ran outside of
             //transactions. as such, they become transient when the pm closes, even if
             //DetachAllOnCommit is true.
-            return pm.detachCopy((Event) q.execute(shortName));
-        }
-    }
-
-    @Override
-    public Set<Event> find(Game game) {
-        try(PersistenceManager pm = pmf.getPersistenceManager()){
-            Query<Event> q = pm.newQuery(Event.class)
-                               .filter("this.game==:game");
-            q.setParameters(game);
-            //datanucleus queries return objects in the hollow state when ran outside of
-            //transactions. as such, they become transient when the pm closes, even if
-            //DetachAllOnCommit is true.
-            return new HashSet<>(pm.detachCopyAll(q.executeList()));
+            return pm.detachCopy((Event) pm.newQuery(Event.class)
+                                           .filter("this.shortName==:shortName")
+                                           .setParameters(shortName)
+                                           .executeUnique());
         }
     }
 
@@ -79,7 +63,7 @@ public class EventRepositoryImpl implements EventRepository {
     public void delete(Event event) {
         try(PersistenceManager pm = pmf.getPersistenceManager()){
             if(JDOHelper.isPersistent(event))pm.deletePersistent(event);
-            else pm.newQuery(Event.class).filter("this.id=:id").deletePersistentAll(event.getId());
+            else pm.newQuery(Event.class).filter("this.id==:id").deletePersistentAll(event.getId());
         }
     }
 }
