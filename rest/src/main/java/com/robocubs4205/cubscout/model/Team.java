@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -22,8 +23,10 @@ public class Team implements Identifiable<Long>{
     @NotNull
     private String gameType;
 
+    @Persistent
     private District district;
 
+    @Persistent
     private Set<Robot> robots = new HashSet<>();
 
     public Team() {

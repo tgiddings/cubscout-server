@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
@@ -17,6 +18,7 @@ public class Event implements Identifiable<Long> {
     private long id;
 
     @NotNull
+    @Persistent
     private Game game;
 
     @NotNull(groups = {Default.class,Creating.class})
@@ -24,8 +26,10 @@ public class Event implements Identifiable<Long> {
 
     private String address;
 
+    @Persistent
     private District district;
 
+    @Persistent
     private Set<Match> matches = new HashSet<>();
 
     private Date startDate;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,9 +26,11 @@ public class FieldSection extends ScorecardSection {
     private boolean isOptional = false;
 
     @JsonIgnore
+    @Persistent
     private Set<ScorecardFieldResult> results = new HashSet<>();
 
     @JsonIgnore
+    @Persistent
     private Set<ScoreWeight> weights = new HashSet<>();
 
     public FieldSection() {

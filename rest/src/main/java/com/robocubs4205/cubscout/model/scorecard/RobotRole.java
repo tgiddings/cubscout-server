@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model.scorecard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,12 @@ public class RobotRole {
     private long id;
 
     @JsonIgnore
+    @Persistent
     private Scorecard scorecard;
+
+    @Persistent
     private Set<ScoreWeight> weights = new HashSet<>();
+
     @NotNull
     private String name;
     private String description;

@@ -3,14 +3,15 @@ package com.robocubs4205.cubscout.model;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@PersistenceCapable
+@PersistenceCapable(detachable = "true")
 public class District implements Identifiable<String> {
-    
+
     @NotNull
     @PrimaryKey
     private String code;
@@ -18,13 +19,16 @@ public class District implements Identifiable<String> {
     @NotNull
     private String name;
 
+    @Persistent
     private Set<Event> events = new HashSet<>();
 
+    @Persistent
     private Set<Team> teams = new HashSet<>();
 
-    public District(){}
+    public District() {
+    }
 
-    public District(String code){
+    public District(String code) {
         setCode(code);
     }
 

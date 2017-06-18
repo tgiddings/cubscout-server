@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.groups.Default;
 import java.util.HashSet;
@@ -18,15 +19,20 @@ public class Scorecard implements Identifiable<Long> {
     @PrimaryKey
     private long id;
 
+    @Persistent
     private Game game;
 
     @NotEmpty(groups = {Default.class,Creating.class})
+    @Persistent
     private Set<ScorecardSection> sections = new HashSet<>();
 
+    @Persistent
     private Set<Result> results = new HashSet<>();
 
+    @Persistent
     private Set<RobotRole> robotRoles = new HashSet<>();
 
+    @Persistent
     private RobotRole defaultRole;
 
     public Scorecard() {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +27,7 @@ public abstract class ScorecardSection {
     private Integer index;
 
     @JsonIgnore
+    @Persistent
     private Scorecard scorecard;
 
     public ScorecardSection(){}

@@ -5,6 +5,7 @@ import com.robocubs4205.cubscout.model.Robot;
 import org.springframework.hateoas.Identifiable;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -23,14 +24,18 @@ public class Result implements Identifiable<Long> {
     @PrimaryKey
     private long id;
 
+    @Persistent
     private Match match;
 
     @NotNull(groups = {Default.class, Creating.class})
+    @Persistent
     private Robot robot;
 
     @NotNull(groups = {Default.class, Creating.class})
+    @Persistent
     private Scorecard scorecard;
 
+    @Persistent
     private Set<ScorecardFieldResult> scores = new HashSet<>();
 
     public Result() {

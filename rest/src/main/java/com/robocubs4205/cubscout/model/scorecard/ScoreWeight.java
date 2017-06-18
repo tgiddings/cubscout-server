@@ -3,6 +3,7 @@ package com.robocubs4205.cubscout.model.scorecard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
@@ -10,9 +11,12 @@ public class ScoreWeight {
 
     @PrimaryKey
     private long id;
+
+    @Persistent
     private FieldSection field;
 
     @JsonIgnore
+    @Persistent
     private RobotRole robotRole;
 
     private float weight;
