@@ -2,6 +2,7 @@ import org.apache.tools.ant.DefaultLogger
 
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
@@ -9,7 +10,7 @@ buildscript {
         classpath('com.h2database:h2:1.4.193')
         classpath('org.datanucleus:datanucleus-api-jpa:5.1.0-m3')
         classpath('org.datanucleus:datanucleus-core:5.1.0-m3')
-        classpath('org.datanucleus:datanucleus-rdbms:5.1.0-m3')
+        classpath('org.datanucleus:datanucleus-rdbms:5.1.0-m4-SNAPSHOT')
         classpath('org.datanucleus:datanucleus-java8:4.2.3')
         classpath('org.springframework.boot:spring-boot-starter-security:1.5.2.RELEASE')
     }
@@ -24,7 +25,7 @@ targetCompatibility = 1.8
 
 String appVersion = "1.0.0"
 
-static int gradleLogLevelToAnt(LogLevel level){
+/*static int gradleLogLevelToAnt(LogLevel level){
     switch(level){
         case LogLevel.DEBUG:
             return org.apache.tools.ant.Project.MSG_DEBUG
@@ -80,7 +81,7 @@ task datanucleusEnhance {
     }
 }
 
-classes.dependsOn datanucleusEnhance
+classes.dependsOn datanucleusEnhance*/
 
 war{
     baseName="cubscout-rest"
@@ -97,13 +98,14 @@ war{
 }
 
 repositories {
+    mavenLocal()
     jcenter()
 }
 
 dependencies {
     compile 'org.datanucleus:datanucleus-api-jdo:5.1.0-m3'
     compile 'org.datanucleus:datanucleus-core:5.1.0-m3'
-    compile 'org.datanucleus:datanucleus-rdbms:5.1.0-m3'
+    compile 'org.datanucleus:datanucleus-rdbms:5.1.0-m4-SNAPSHOT'
     compile 'org.datanucleus:javax.jdo:3.2.0-m6'
     compile 'org.datanucleus:datanucleus-java8:4.2.3'
 
@@ -119,6 +121,7 @@ dependencies {
     
     compile 'com.h2database:h2:1.4.193'
     compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'org.assertj:assertj-core:3.8.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
 
